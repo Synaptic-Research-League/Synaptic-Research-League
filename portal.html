@@ -143,6 +143,26 @@
 .proj-foot .live i{width:6px;height:6px;border-radius:50%;background:var(--clay);animation:blip 2.6s ease-out infinite}
 @keyframes blip{0%{box-shadow:0 0 0 0 rgba(10,123,148,.4)}70%{box-shadow:0 0 0 6px rgba(10,123,148,0)}100%{box-shadow:0 0 0 0 rgba(10,123,148,0)}}
 
+
+/* Administradores */
+.adm-tools{margin-top:28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.adm-tools .pub-search{flex:1;min-width:240px}
+.adm-list{margin-top:18px;border:1px solid var(--border);border-radius:20px;background:var(--linen);overflow:hidden}
+.adm-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;align-items:center;gap:14px;padding:14px 20px;border-top:1px solid var(--border)}
+.adm-row:first-child{border-top:0}
+.adm-row .avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--pine);color:var(--oat);font-size:12px;font-weight:700}
+.adm-row.is-admin .avatar{background:var(--clay);color:#fff}
+.adm-who b{display:block;font-size:14.5px;color:var(--pine);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm-who small{display:block;margin-top:2px;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.adm-row .btn[disabled]{opacity:.5;cursor:wait}
+.adm-you{font-size:12px;font-weight:600;color:var(--muted)}
+.adm-msg{padding:28px 20px;text-align:center;font-size:14px;color:var(--muted)}
+@media (max-width:720px){
+  .adm-row{grid-template-columns:40px minmax(0,1fr);row-gap:10px}
+  .adm-row .tag{justify-self:start;grid-column:2}
+  .adm-row .btn,.adm-row .adm-you{grid-column:2;justify-self:start}
+}
+
 /* Pie */
 .portal-foot{background:var(--pine);color:var(--oat);padding:34px 0;margin-top:0}
 .pf-in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
@@ -209,6 +229,7 @@
     <nav class="main-nav portal-nav" aria-label="Área de miembros">
       <a class="nav-link" href="#publicaciones">Publicaciones</a>
       <a class="nav-link" href="#proyectos">Proyectos activos</a>
+      <a class="nav-link" href="#administradores" data-admin-only hidden>Administradores</a>
     </nav>
 
     <div class="head-actions">
@@ -360,6 +381,26 @@
       </div>
     </div>
   </section>
+  <!-- ===== Administradores (solo admins) ===== -->
+  <section class="portal-sec" id="administradores" data-admin-only hidden>
+    <div class="wrap">
+      <div class="portal-head">
+        <div>
+          <span class="eyebrow">Administración</span>
+          <h2>Quién puede administrar la liga.</h2>
+          <p class="sec-intro">Los administradores editan el sitio, gestionan artículos y publicaciones, y pueden nombrar a otros administradores. La persona debe haber creado su cuenta antes.</p>
+        </div>
+        <span class="count" id="admcount"></span>
+      </div>
+      <div class="adm-tools">
+        <label class="pub-search" for="admq">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="admq" type="search" placeholder="Buscar por nombre o correo" autocomplete="off">
+        </label>
+      </div>
+      <div class="adm-list" id="admlist" aria-live="polite"><p class="adm-msg">Cargando cuentas…</p></div>
+    </div>
+  </section>
 </main>
 
 <footer class="portal-foot">
@@ -373,6 +414,7 @@
         <a href="#publicaciones">Publicaciones</a>
         <a href="#proyectos">Proyectos activos</a>
         <a href="investigacion.html" data-admin-only hidden>Panel de Administrador</a>
+        <a href="#administradores" data-admin-only hidden>Administradores</a>
         <a href="index.html">Volver al sitio</a>
       </nav>
     </div>
@@ -587,6 +629,75 @@
       })
       .catch(function(){});
   }
+
+  /* Administradores: solo se cargan si la sesión es de admin (el servidor lo vuelve a comprobar) */
+  var admUsers = [], admBusy = false;
+  var admList = document.getElementById('admlist');
+  var admCount = document.getElementById('admcount');
+  var admQ = document.getElementById('admq');
+
+  function admInitials(n){
+    return String(n || '?').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0].toUpperCase(); }).join('') || '?';
+  }
+  function admRender(){
+    var q = norm(admQ.value.trim());
+    var list = admUsers.filter(function(u){ return !q || norm((u.nombre || '') + ' ' + (u.email || '')).indexOf(q) >= 0; });
+    var nAdm = admUsers.filter(function(u){ return u.rol === 'admin'; }).length;
+    admCount.innerHTML = '<b>' + nAdm + '</b> de ' + admUsers.length + ' cuentas son administradoras';
+    if(!list.length){
+      admList.innerHTML = '<p class="adm-msg">' + (admUsers.length ? 'Ninguna cuenta coincide con la búsqueda.' : 'Aún no hay cuentas registradas.') + '</p>';
+      return;
+    }
+    var me = window.SRL && window.SRL.user ? window.SRL.user.id : null;
+    admList.innerHTML = list.map(function(u){
+      var isAdm = u.rol === 'admin', mine = u.id === me;
+      var action = mine
+        ? '<span class="adm-you">Tu cuenta</span>'
+        : '<button type="button" class="btn sm ' + (isAdm ? 'ghost' : '') + '" data-id="' + esc(u.id) + '" data-to="' + (isAdm ? 'estudiante' : 'admin') + '">' + (isAdm ? 'Quitar administrador' : 'Hacer administrador') + '</button>';
+      return '<div class="adm-row' + (isAdm ? ' is-admin' : '') + '">' +
+        '<span class="avatar" aria-hidden="true">' + esc(admInitials(u.nombre || u.email)) + '</span>' +
+        '<div class="adm-who"><b>' + esc(u.nombre || 'Sin nombre') + '</b><small>' + esc(u.email) + '</small></div>' +
+        '<span class="' + (isAdm ? 'tag clay' : 'tag') + '">' + (isAdm ? 'Administrador' : 'Miembro') + '</span>' +
+        action + '</div>';
+    }).join('');
+  }
+  function admLoad(){
+    window.SRL.sb.rpc('admin_list_users').then(function(r){
+      if(r.error){
+        admList.innerHTML = '<p class="adm-msg">No se pudieron cargar las cuentas. Ejecuta admins.sql en Supabase y recarga la página.</p>';
+        return;
+      }
+      admUsers = r.data || [];
+      admRender();
+    }).catch(function(){
+      admList.innerHTML = '<p class="adm-msg">No hay conexión con Supabase. Recarga la página.</p>';
+    });
+  }
+  admQ.addEventListener('input', admRender);
+  admList.addEventListener('click', function(e){
+    var b = e.target.closest('button[data-id]');
+    if(!b || admBusy) return;
+    var u = admUsers.filter(function(x){ return x.id === b.getAttribute('data-id'); })[0];
+    if(!u) return;
+    var to = b.getAttribute('data-to');
+    var name = u.nombre || u.email;
+    var ask = to === 'admin'
+      ? '¿Hacer administrador a ' + name + '? Podrá editar el sitio, gestionar publicaciones y nombrar a otros administradores.'
+      : '¿Quitar el permiso de administrador a ' + name + '?';
+    if(!confirm(ask)) return;
+    admBusy = true; b.disabled = true;
+    window.SRL.sb.rpc('admin_set_role', { target: u.id, nuevo_rol: to }).then(function(r){
+      admBusy = false;
+      if(r.error){ b.disabled = false; say('No se pudo cambiar el rol: ' + r.error.message); return; }
+      u.rol = to; admRender();
+      say(to === 'admin' ? name + ' ahora es administrador.' : name + ' ya no es administrador.');
+    }).catch(function(){ admBusy = false; b.disabled = false; say('No hay conexión con Supabase.'); });
+  });
+  (function waitForAdmin(n){
+    var u = window.SRL && window.SRL.user;
+    if(u){ if(u.rol === 'admin') admLoad(); return; }
+    if(n < 80) setTimeout(function(){ waitForAdmin(n + 1); }, 150);
+  })(0);
 
   render();
   loadPublicaciones();
