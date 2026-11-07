@@ -437,22 +437,8 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
   #toast{transition:none}
 }
 </style>
-<script>
-/* VISTA PREVIA DE DISEÑO: sesión de administrador simulada y base de datos vacía. No usa Supabase. */
-(function(){
-  var empty={data:[],error:null};
-  function q(){var o={};['select','order','eq','neq','insert','update','delete','upsert','limit','in'].forEach(function(m){o[m]=function(){return o;};});o.then=function(res){return Promise.resolve(empty).then(res);};o.catch=function(){return o;};return o;}
-  window.SRL={user:{id:'demo',email:'demo@example.com',nombre:'Admin Demo',rol:'admin'},sb:{from:q,rpc:function(){return q();}},signOut:function(){return Promise.resolve();}};
-  document.addEventListener('DOMContentLoaded',function(){
-    var m=document.getElementById('srl-main');
-    document.querySelectorAll('[data-user-name]').forEach(function(e){e.textContent='Admin Demo';});
-    document.querySelectorAll('[data-user-role]').forEach(function(e){e.textContent='Administrador';});
-    document.querySelectorAll('[data-user-av]').forEach(function(e){e.textContent='AD';});
-    document.querySelectorAll('[data-auth-only],[data-admin-only]').forEach(function(e){e.hidden=false;});
-    if(m){var x=document.createElement('script');x.textContent=m.textContent;document.body.appendChild(x);}
-  });
-})();
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="auth.js" data-require="admin"></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" focusable="false">
@@ -569,7 +555,7 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
 <script type="text/plain" id="srl-main">
 'use strict';
 /* ===== Utilidades ===== */
-const HOY='2026-11-07';
+const HOY=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10); /* fecha de hoy */
 const $=s=>document.querySelector(s);
 const D=s=>new Date(s+'T12:00:00Z');
 const iso=d=>d.toISOString().slice(0,10);
