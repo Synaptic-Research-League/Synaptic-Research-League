@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acceso · Synaptic Research League</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="emblema.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="srl.css">
+<style>
+body{min-height:100vh;display:flex;flex-direction:column;background:var(--oat)}
+.ah{padding:20px clamp(20px,5vw,56px)}.ah a{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font:600 17px var(--serif);color:var(--pine)}.ah img{height:44px}
+main{flex:1;display:grid;place-items:center;padding:24px 20px 64px}
+.ac{width:100%;max-width:440px;background:var(--linen);border:1px solid var(--border-strong);border-radius:20px;padding:clamp(24px,4vw,38px)}
+.ac h1{font:600 30px/1.15 var(--serif);margin:0 0 6px;color:var(--pine);letter-spacing:-.02em}.ac .s{margin:0 0 20px;color:var(--muted)}
+.tabs{display:flex;gap:6px;margin-bottom:22px;border-bottom:1px solid var(--border)}.tabs button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:10px 4px;font:700 15px var(--sans);color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--pine);border-bottom-color:var(--clay)}
+.ac label{display:block;font-weight:700;font-size:14px;margin:16px 0 6px;color:var(--pine)}
+.ac input{width:100%;padding:13px 14px;border:1px solid var(--border-strong);border-radius:12px;font:16px var(--sans);background:#fff;color:#10222f}
+.ac input:focus{outline:3px solid rgba(10,123,148,.25);border-color:var(--clay)}
+.ac .btn{width:100%;margin-top:22px}.ac .lnk{background:none;border:0;color:var(--clay-deep);font:600 14px var(--sans);text-decoration:underline;cursor:pointer;padding:0;margin-top:12px}
+.m{margin-top:16px;padding:11px 13px;border-radius:12px;font-size:14.5px;border:1px solid}.m.e{background:#fdecea;border-color:#e9a39d;color:#7d1520}.m.o{background:#e7f5ec;border-color:#9fd1b3;color:#14502f}
+.pv{margin:22px 0 0;font-size:13px;color:var(--muted)}[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="ah"><a href="index.html"><img src="emblema.png" alt="">Synaptic Research League</a></header>
+<main><section class="ac">
+  <div id="vLogin">
+    <div class="tabs" role="tablist"><button type="button" id="tL" role="tab" aria-selected="true">Entrar</button><button type="button" id="tS" role="tab" aria-selected="false">Crear cuenta</button></div>
+    <h1 id="t">Entrar</h1><p class="s" id="s">Usa el correo con el que te registraste.</p>
+    <form id="f" novalidate>
+      <div id="nf" hidden><label for="nom">Nombre completo</label><input id="nom" autocomplete="name" maxlength="120"></div>
+      <label for="em">Correo electrónico</label><input id="em" type="email" autocomplete="email" required>
+      <label for="pw">Contraseña</label><input id="pw" type="password" autocomplete="current-password" minlength="8" required>
+      <button class="btn" type="submit" id="go">Entrar</button>
+      <button class="lnk" type="button" id="fg">Olvidé mi contraseña</button>
+    </form>
+    <div id="msg" role="status" aria-live="polite"></div>
+    <p class="pv">Solo los miembros con cuenta pueden ver el área de miembros y el panel de investigación. Guardamos tu nombre, tu correo y tu rol dentro de la liga.</p>
+  </div>
+  <div id="vRec" hidden>
+    <h1>Contraseña nueva</h1><p class="s">Elige una de al menos 8 caracteres.</p>
+    <form id="fr" novalidate><label for="np">Contraseña nueva</label><input id="np" type="password" autocomplete="new-password" minlength="8" required><button class="btn" type="submit">Guardar contraseña</button></form>
+    <div id="msg2" role="status" aria-live="polite"></div>
+  </div>
+</section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script>
+const URL_='https://ncikqsyqyivdmtvtpidn.supabase.co', KEY_='sb_publishable_Esscr4NHrxRf1Hq0vulvzw_7VoVd5AV';
+const $=i=>document.getElementById(i);
+const sb=window.supabase?supabase.createClient(URL_,KEY_):null;
+const q=new URLSearchParams(location.search).get('next')||'';
+const dest=/^[a-z0-9_-]+\.html$/i.test(q)?q:'portal.html';
+let mode='login', recovering=/type=recovery/.test(location.hash);
+const say=(el,t,k)=>{el.replaceChildren();if(!t)return;const d=document.createElement('div');d.className='m '+k;d.textContent=t;el.append(d)};
+function friendly(err){
+  console.error('Supabase:',err); const raw=(err&&err.message)||'', m=raw.toLowerCase();
+  if(m.includes('invalid login'))return 'El correo o la contraseña no son correctos.';
+  if(m.includes('not confirmed'))return 'Confirma tu correo antes de entrar. Revisa tu bandeja de entrada.';
+  if(m.includes('already registered'))return 'Ese correo ya tiene una cuenta. Usa “Entrar”.';
+  if(m.includes('signups are disabled')||m.includes('provider is disabled'))return 'El registro por correo está desactivado en Supabase (Authentication → Sign In / Providers → Email).';
+  if(m.includes('database error'))return 'No se pudo guardar la cuenta en la base de datos. Revisa que setup.sql se ejecutó completo. Detalle: '+raw;
+  if(m.includes('sending')||m.includes('smtp'))return 'No se pudo enviar el correo. Espera unos minutos e inténtalo de nuevo.';
+  if(m.includes('api key')||m.includes('apikey'))return 'La clave de Supabase no es válida. Revisa la URL y la clave en el archivo.';
+  if(m.includes('failed to fetch')||m.includes('network'))return 'No hay conexión con Supabase. Revisa tu internet.';
+  if(m.includes('rate')||m.includes('seconds'))return 'Espera un momento antes de intentarlo de nuevo.';
+  if(m.includes('password'))return 'La contraseña debe tener al menos 8 caracteres.';
+  return 'No pudimos completar la acción. Detalle técnico: '+(raw||'sin detalle');
+}
+function setMode(m){mode=m;const s=m==='signup';$('tL').setAttribute('aria-selected',!s);$('tS').setAttribute('aria-selected',s);$('nf').hidden=!s;
+  $('t').textContent=s?'Crear cuenta':'Entrar';$('s').textContent=s?'Te enviaremos un correo para confirmar tu cuenta.':'Usa el correo con el que te registraste.';
+  $('go').textContent=s?'Crear cuenta':'Entrar';$('pw').autocomplete=s?'new-password':'current-password';$('fg').hidden=s;say($('msg'),'')}
+$('tL').onclick=()=>setMode('login');$('tS').onclick=()=>setMode('signup');
+$('f').addEventListener('submit',async e=>{e.preventDefault();if(!sb)return say($('msg'),'No se pudo cargar Supabase. Revisa tu conexión.','e');
+  const email=$('em').value.trim(),password=$('pw').value;
+  if(!email||password.length<8)return say($('msg'),'Escribe tu correo y una contraseña de al menos 8 caracteres.','e');
+  $('go').disabled=true;say($('msg'),'');
+  try{
+    if(mode==='signup'){const nombre=$('nom').value.trim();if(!nombre)return say($('msg'),'Escribe tu nombre completo.','e');
+      const{error}=await sb.auth.signUp({email,password,options:{data:{nombre},emailRedirectTo:location.origin+location.pathname}});if(error)throw error;
+      say($('msg'),'Cuenta creada. Revisa tu correo y confirma para poder entrar.','o');
+    }else{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;location.replace(dest)}
+  }catch(err){say($('msg'),friendly(err),'e')}finally{$('go').disabled=false}});
+$('fg').onclick=async()=>{if(!sb)return;const email=$('em').value.trim();if(!email)return say($('msg'),'Escribe tu correo y vuelve a pulsar “Olvidé mi contraseña”.','e');
+  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+  say($('msg'),error?friendly(error):'Si el correo existe, recibirás un enlace para crear una contraseña nueva.',error?'e':'o')};
+$('fr').addEventListener('submit',async e=>{e.preventDefault();const p=$('np').value;if(p.length<8)return say($('msg2'),'La contraseña debe tener al menos 8 caracteres.','e');
+  const{error}=await sb.auth.updateUser({password:p});if(error)return say($('msg2'),friendly(error),'e');say($('msg2'),'Contraseña actualizada.','o');setTimeout(()=>location.replace(dest),900)});
+if(sb){
+  sb.auth.onAuthStateChange((ev,s)=>{if(ev==='PASSWORD_RECOVERY'){recovering=true;$('vLogin').hidden=true;$('vRec').hidden=false}});
+  sb.auth.getSession().then(r=>{if(r.data.session&&!recovering)location.replace(dest)});
+}else say($('msg'),'No se pudo cargar Supabase. Revisa tu conexión.','e');
+</script>
+</body>
+</html>

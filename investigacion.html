@@ -61,6 +61,7 @@ nav a.on{color:var(--navy);border-bottom-color:var(--cyan);font-weight:600}
 .user-tx b{font-size:12.5px}.user-tx small{font-size:11px;color:var(--mut)}
 .hub{font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:7px 10px;border-radius:4px;white-space:nowrap}
 .hub:hover{background:var(--soft);border-color:var(--blue)}
+.mode-switch[hidden]{display:none!important}
 .mode-switch{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--line);border-radius:99px;background:var(--soft)}
 .mode-switch button{border:0;background:none;border-radius:99px;padding:5px 10px;font-size:11.5px;font-weight:600;color:var(--mut);cursor:pointer;white-space:nowrap}
 .mode-switch button:hover{color:var(--navy)}
@@ -432,6 +433,8 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
   #toast{transition:none}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script src="auth.js" data-require="member"></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" focusable="false">
@@ -474,6 +477,7 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
     </nav>
     <div class="bar-actions">
       <span class="user-chip"><span class="avatar" id="userAv" aria-hidden="true">MS</span><span class="user-tx"><b id="userName">Dra. Marisol Santana</b><small id="userRole">Administradora · acceso total</small></span></span>
+      <button type="button" class="btn ghost sm" data-logout>Salir</button>
       <div class="mode-switch" role="group" aria-label="Modo de la cuenta">
         <button type="button" data-mode="admin">Admin</button>
         <button type="button" data-mode="user">Usuario</button>
@@ -543,7 +547,7 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
 <footer class="foot">
   <div class="wrap"><span>Synaptic Research League · Oficina de investigación</span><span>Datos de demostración · <button class="link" type="button" data-reset>Restablecer</button></span></div>
 </footer>
-<script>
+<script type="text/plain" id="srl-main">
 'use strict';
 /* ===== Utilidades ===== */
 const HOY='2026-11-07';
@@ -678,7 +682,7 @@ function ensureFiles(a){
 A.forEach(ensureFiles);
 
 /* ===== Cuenta, roles y modo de trabajo ===== */
-const ME='Dra. Marisol Santana';
+const ME=SRL.user.nombre; /* nombre y rol reales, leídos de Supabase tras iniciar sesión */
 const ROLES_KEY='srl_roles_v1', MODE_KEY='srl_mode_v1';
 const TEAM=[...AU,'Coordinador Académico','Coordinadora de Finanzas','Coordinador de Documentación y Producción Científica','Coordinadora de Relaciones Públicas'];
 let ROLES=(function(){
@@ -690,8 +694,9 @@ let ROLES=(function(){
   }catch(e){}
   return base;
 })();
+ROLES[ME]=SRL.user.rol==='admin'?'admin':'member';
 function saveRoles(){try{localStorage.setItem(ROLES_KEY,JSON.stringify(ROLES));}catch(e){}}
-const isAdmin=()=>ROLES[ME]==='admin';
+const isAdmin=()=>SRL.user.rol==='admin'; /* el rol ya no puede cambiarse desde el navegador */
 let MODE=(function(){
   if(!isAdmin())return 'user';
   try{return localStorage.getItem(MODE_KEY)==='user'?'user':'admin';}catch(e){return 'admin';}
@@ -699,11 +704,12 @@ let MODE=(function(){
 function applyMode(){
   document.body.classList.toggle('user-mode',MODE!=='admin');
   document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on',b.dataset.mode===MODE));
+  const msw=document.querySelector('.mode-switch');if(msw)msw.hidden=!isAdmin();
   const banner=document.getElementById('modeBanner');if(banner)banner.hidden=MODE==='admin';
   const av=document.getElementById('userAv');
   if(av)av.textContent=ME.split(' ').filter(w=>/^[A-ZÁÉÍÓÚ]/.test(w)).slice(-2).map(w=>w[0]).join('')||'MS';
   const nm=document.getElementById('userName');if(nm)nm.textContent=ME;
-  const rl=document.getElementById('userRole');if(rl)rl.textContent=isAdmin()?'Administradora · acceso total':'Miembro de la liga';
+  const rl=document.getElementById('userRole');if(rl)rl.textContent=isAdmin()?'Administrador · acceso total':'Miembro de la liga';
 }
 function setMode(m){
   if(m==='admin'&&!isAdmin()){toast('Tu cuenta no tiene permisos de administración.');return;}

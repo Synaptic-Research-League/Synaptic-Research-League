@@ -193,6 +193,8 @@
   .proj-foot .live i{animation:none}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script src="auth.js" data-require="member"></script>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -211,9 +213,10 @@
 
     <div class="head-actions">
       <span class="member-chip">
-        <span class="avatar" aria-hidden="true">MS</span>
-        <span><b>Dra. Marisol Santana</b><small>Admin</small></span>
+        <span class="avatar" aria-hidden="true" data-user-av>··</span>
+        <span><b data-user-name>Miembro</b><small data-user-role>Miembro</small></span>
       </span>
+      <button type="button" class="btn sm ghost" data-logout>Salir</button>
       <a class="btn sm ghost back-btn" href="index.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
         Volver al sitio
