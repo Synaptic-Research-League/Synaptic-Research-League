@@ -134,7 +134,20 @@
 
 /* ===== Equipo ===== */
 .team{padding:clamp(72px,9vw,118px) 0}
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px}
+.team-star{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-areas:"head head head head" "fin . . rel" "a a b b" "c c d d";gap:18px;margin-top:46px}
+.star-head{grid-area:head;max-width:580px;width:100%;justify-self:center}
+.star-fin{grid-area:fin}
+.star-rel{grid-area:rel}
+.star-a{grid-area:a}
+.star-b{grid-area:b}
+.star-c{grid-area:c}
+.star-d{grid-area:d}
+.team-star .person-photo{aspect-ratio:16/6}
+.team-star .person-photo .initials{font-size:26px}
+.team-star .person-body{padding:14px 16px 16px}
+.team-star .person h3{font-size:16px}
+.team-star .person-bio{margin-top:7px;font-size:11.5px}
+.team-star .person-tags{margin-top:10px}
 .person{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:20px;background:var(--linen);overflow:hidden;transition:transform .2s var(--ease),box-shadow .25s ease,border-color .2s ease}
 .person:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:var(--border-strong)}
 .person-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(150deg,var(--oat-deep),var(--sage-soft))}
@@ -155,18 +168,18 @@
 .founders{margin-top:34px;padding-top:26px;border-top:1px solid var(--border)}
 .founders-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap}
 .founders-head p{margin:0;font-size:12.5px;color:var(--muted)}
-.founder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:16px}
-.founder{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:24px;border:1px dashed var(--border-strong);border-radius:18px;background:rgba(251,252,253,.55);min-height:148px}
-.founder .f-av{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--oat-deep);font-family:var(--serif);font-size:18px;color:rgba(14,40,58,.45);flex:none}
-.founder b{display:block;font-family:var(--serif);font-size:19px;font-weight:600;color:var(--pine)}
-.founder small{display:block;margin-top:3px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(14,40,58,.45)}
+.founder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:16px}
+.founder{display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:28px;border:1px solid var(--border);border-radius:18px;background:var(--linen);min-height:196px}
+.founder .f-av{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--clay-soft);font-family:var(--serif);font-size:22px;color:var(--clay-deep);flex:none}
+.founder b{display:block;font-family:var(--serif);font-size:23px;font-weight:600;color:var(--pine)}
+.founder small{display:block;margin-top:4px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(14,40,58,.45)}
 @media (max-width:1020px){
-  .team-grid{grid-template-columns:1fr 1fr}
+  .team-star{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"head head" "fin rel" "a b" "c d"}
   .founder-grid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:680px){
-  .team-grid{grid-template-columns:1fr;gap:16px}
-  .person-photo{aspect-ratio:16/9}
+  .team-star{grid-template-columns:1fr;grid-template-areas:"head" "fin" "rel" "a" "b" "c" "d";gap:16px}
+  .team-star .person-photo{aspect-ratio:16/8}
   .founder-grid{grid-template-columns:1fr}
 }
 
@@ -211,6 +224,22 @@
 .result-foot{margin-top:auto;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted)}
 .result-foot b{font-weight:700;color:var(--pine)}
 .demo-note{margin-top:22px;font-size:11.5px;color:rgba(14,40,58,.48)}
+.empty-panel{grid-column:1/-1;padding:34px 28px;border:1px dashed var(--border-strong);border-radius:20px;background:rgba(251,252,253,.62);text-align:center}
+.empty-panel b{display:block;font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.25;color:var(--pine)}
+.empty-panel p{margin:10px auto 0;max-width:54ch;font-size:13.5px;line-height:1.7;color:var(--muted)}
+.empty-panel .btn{margin-top:18px}
+body.has-member [data-join]{display:none!important}
+body.has-member .m-menu-join{display:none!important}
+
+/* Editor del sitio (solo administradores) */
+.edit-bar{position:fixed;left:50%;bottom:18px;z-index:120;display:none;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border-strong);border-radius:14px;background:var(--linen);box-shadow:0 18px 50px rgba(14,40,58,.22);transform:translateX(-50%);max-width:calc(100vw - 24px);flex-wrap:wrap}
+.edit-bar.on{display:flex}
+.edit-bar b{font-size:12.5px;color:var(--pine)}
+.edit-bar small{font-size:11.5px;color:var(--muted)}
+.edit-bar .btn{padding:8px 13px;font-size:12px}
+body.editing [contenteditable="true"]{outline:2px dashed rgba(10,123,148,.55);outline-offset:3px;border-radius:4px;cursor:text;min-width:1ch}
+body.editing [contenteditable="true"]:focus{outline:2px solid var(--clay);background:rgba(217,236,241,.35)}
+body.editing img[data-editable-img]{outline:3px dashed rgba(10,123,148,.6);outline-offset:4px;cursor:pointer}
 
 .pub-block{margin-top:56px;padding-top:42px;border-top:1px solid var(--border)}
 .pub-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -292,10 +321,10 @@
         <button class="nav-btn" type="button" aria-expanded="false" aria-controls="dd-inv">Investigación <span class="nav-chev" aria-hidden="true"></span></button>
         <div class="dd" id="dd-inv">
           <span class="dd-label">Secciones</span>
-          <a href="#lineas"><span>Líneas de investigación<em>14 líneas con proyecto activo</em></span><small>01</small></a>
+          <a href="#lineas"><span>Líneas de investigación<em>14 especialidades clínicas</em></span><small>01</small></a>
           <a href="#publicaciones"><span>Publicaciones recientes<em>Solo publicadas, aceptadas o en congreso</em></span><small>04</small></a>
           <span class="dd-label">Producción</span>
-          <a href="#resultados"><span>Resultados de la cohorte<em>Métricas de la cohorte 2025–2026</em></span><small>04</small></a>
+          <a href="#resultados"><span>Resultados de la cohorte<em>Verificables al cierre de cada cohorte</em></span><small>04</small></a>
           <a href="#equipo"><span>Equipo investigador<em>Mentores y coordinación editorial</em></span><small>02</small></a>
         </div>
       </div>
@@ -305,7 +334,7 @@
           <span class="dd-label">Aprender haciendo</span>
           <a href="#rutas"><span>Rutas y cohortes<em>3 rutas, de 8 semanas a 6 meses</em></span><small>03</small></a>
           <a href="#equipo"><span>Mentoría 1:1<em>Un mentor asignado por proyecto</em></span><small>02</small></a>
-          <a href="#contacto"><span>Postular<em>Cohorte 2027 · respuesta en 2 días</em></span><small>→</small></a>
+          <a href="#contacto"><span>Postular<em>Cohorte 2027 · respuesta en 3 días</em></span><small>→</small></a>
         </div>
       </div>
       <div class="nav-item">
@@ -323,19 +352,19 @@
     <div class="head-actions">
       <div class="profile" id="profile" hidden>
         <button class="profile-btn" type="button" aria-expanded="false" aria-controls="profileMenu">
-          <span class="profile-av" aria-hidden="true">MS</span>
-          <span class="profile-tx"><b>Dra. Marisol Santana</b><small>Miembro de la liga</small></span>
+          <span class="profile-av" aria-hidden="true" data-profile-av>··</span>
+          <span class="profile-tx"><b data-profile-name>Miembro</b><small data-profile-role>Miembro de la liga</small></span>
           <span class="nav-chev" aria-hidden="true"></span>
         </button>
         <div class="dd profile-dd" id="profileMenu">
           <span class="dd-label">Mi cuenta</span>
           <a href="portal.html"><span>Área de miembros<em>Publicaciones y proyectos activos</em></span><small>Abrir</small></a>
-          <a href="investigacion.html"><span>Panel de investigación<em>Acceso de administración</em></span><small>Admin</small></a>
-          <a href="#contacto"><span>Mi postulación<em>Cohorte 2027 · en revisión</em></span><small>→</small></a>
+          <a href="investigacion.html" data-admin-only hidden><span>Panel de Administrador<em>Gestión de la liga</em></span><small>Admin</small></a>
+          <a href="index.html?edit=1" data-admin-only hidden><span>Editar el sitio<em>Textos e imágenes de esta página</em></span><small>Editar</small></a>
           <button class="dd-signout" type="button" data-signout>Cerrar sesión</button>
         </div>
       </div>
-      <a class="btn sm" href="portal.html" data-join>Unirse a la Liga
+      <a class="btn sm" href="acceso.html?next=portal.html" data-join>Unirse a la Liga
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mmenu">
@@ -352,12 +381,12 @@
     <li><a href="#nosotros">La liga <span>02</span></a></li>
     <li><a href="#rutas">Rutas de formación <span>03</span></a></li>
     <li><a href="#resultados">Resultados <span>04</span></a></li>
-    <li class="m-account"><a href="portal.html">Mi área de miembros <span>Abrir</span></a></li>
-    <li class="m-account"><a href="investigacion.html">Panel de investigación <span>Admin</span></a></li>
+    <li class="m-account" data-auth-only hidden><a href="portal.html">Mi área de miembros <span>Abrir</span></a></li>
+    <li class="m-account" data-admin-only hidden><a href="investigacion.html">Panel de Administrador <span>Admin</span></a></li>
     <li><a href="#contacto">Contacto <span>→</span></a></li>
   </ul>
   <div class="mcta">
-    <a class="btn" href="portal.html" data-join>Unirse a la Liga
+    <a class="btn m-menu-join" href="acceso.html?next=portal.html" data-join>Unirse a la Liga
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </a>
     <a class="btn ghost" href="#contacto">Enviar tu idea</a>
@@ -374,7 +403,7 @@
         <h1 data-enter style="--d:.13s">De la pregunta<br><span class="nowrap">a la <span class="mark">publicación<svg viewBox="0 0 120 12" fill="none" aria-hidden="true"><path class="arc-draw" d="M2 9 C 30 2, 80 2, 118 8" stroke="#0a7b94" stroke-width="2.5" stroke-linecap="round"/></svg></span>.</span></h1>
         <p class="hero-lead" data-enter style="--d:.21s">Una liga para estudiantes de medicina que quieren investigar de verdad: mentoría 1:1, proyectos clínicos reales y acompañamiento editorial hasta que tu primer artículo se publique.</p>
         <div class="hero-actions" data-enter style="--d:.29s">
-          <a class="btn" href="portal.html" data-join>Unirse a la Liga
+          <a class="btn" href="acceso.html?next=portal.html" data-join>Unirse a la Liga
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
           <a class="hero-secondary" href="#lineas">Explorar líneas de investigación
@@ -484,101 +513,95 @@
         <p class="sec-intro">No delegamos tu proyecto. La misma persona que te ayuda a acotar la pregunta revisa el borrador, elige la revista contigo y te acompaña en la respuesta a los pares.</p>
       </div>
 
-      <div class="team-grid" id="equipo">
-        <article class="person" data-reveal>
+      <div class="team-star" id="equipo">
+        <article class="person slot star-head" data-reveal>
           <div class="person-photo">
-            <span class="initials" aria-hidden="true">MS</span>
+            <span class="initials" aria-hidden="true">CG</span>
             <span class="person-badge">Dirección</span>
-            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80" alt="Retrato de la Dra. Marisol Santana" loading="lazy" onerror="this.remove()">
           </div>
           <div class="person-body">
-            <h3>Dra. Marisol Santana</h3>
-            <p class="person-role">Directora científica</p>
-            <p class="person-bio">Diseña el método de cada proyecto y acompaña las decisiones editoriales de la liga.</p>
-            <ul class="person-tags"><li>Cardiología</li><li>Método</li><li>Editorial</li></ul>
-            <a class="link-arrow" href="#lineas">Su línea <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <h3>Coordinación General</h3>
+            <p class="person-role">Por asignar</p>
+            <p class="person-bio">Dirige la liga, define el método de cada proyecto y responde por las decisiones editoriales.</p>
+            <ul class="person-tags"><li>Dirección</li><li>Método</li><li>Editorial</li></ul>
           </div>
         </article>
 
-        <article class="person" data-reveal style="--delay:60ms">
+        <article class="person slot star-fin" data-reveal style="--delay:60ms">
           <div class="person-photo">
-            <span class="initials" aria-hidden="true">AP</span>
-            <span class="person-badge">Mentoría</span>
-            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80" alt="Retrato del Dr. Andrés Peña" loading="lazy" onerror="this.remove()">
+            <span class="initials" aria-hidden="true">CF</span>
+            <span class="person-badge">Finanzas</span>
           </div>
           <div class="person-body">
-            <h3>Dr. Andrés Peña</h3>
-            <p class="person-role">Mentor clínico</p>
-            <p class="person-bio">Dirige la línea de endocarditis y bacteriemia persistente del equipo.</p>
-            <ul class="person-tags"><li>Infectología</li><li>Cohortes</li><li>Revisión</li></ul>
-            <a class="link-arrow" href="#lineas">Su línea <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <h3>Coordinación de Finanzas</h3>
+            <p class="person-role">Por asignar</p>
+            <p class="person-bio">Gestiona el presupuesto, las becas y los costos de publicación.</p>
+            <ul class="person-tags"><li>Presupuesto</li><li>Becas</li><li>APC</li></ul>
           </div>
         </article>
 
-        <article class="person" data-reveal style="--delay:120ms">
+        <article class="person slot star-rel" data-reveal style="--delay:120ms">
           <div class="person-photo">
-            <span class="initials" aria-hidden="true">LR</span>
-            <span class="person-badge">Coordinación</span>
-            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80" alt="Retrato de Lía Reyes" loading="lazy" onerror="this.remove()">
+            <span class="initials" aria-hidden="true">RA</span>
+            <span class="person-badge">Relaciones académicas</span>
           </div>
           <div class="person-body">
-            <h3>Lía Reyes</h3>
-            <p class="person-role">Coordinadora Ejecutiva</p>
-            <p class="person-bio">Mantiene el calendario editorial y traduce las cartas de los revisores en pasos concretos.</p>
-            <ul class="person-tags"><li>Envíos</li><li>Pares</li><li>Procesos</li></ul>
-            <a class="link-arrow" href="#rutas">Ver rutas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <h3>Coordinación de Relaciones Académicas</h3>
+            <p class="person-role">Por asignar</p>
+            <p class="person-bio">Conecta la liga con hospitales, universidades y grupos de investigación.</p>
+            <ul class="person-tags"><li>Alianzas</li><li>Convenios</li><li>Vinculación</li></ul>
           </div>
         </article>
 
-        <article class="person slot" data-reveal style="--delay:180ms">
+        <article class="person slot star-a" data-reveal style="--delay:180ms">
           <div class="person-photo">
-            <span class="initials" aria-hidden="true">CA</span>
-            <span class="person-badge">Por asignar</span>
+            <span class="initials" aria-hidden="true">FC</span>
+            <span class="person-badge">Formación</span>
           </div>
           <div class="person-body">
-            <h3>Coordinador Académico</h3>
-            <p class="person-role">Formación y cohortes</p>
+            <h3>Coordinación de Formación y Cohortes</h3>
+            <p class="person-role">Por asignar</p>
             <p class="person-bio">Diseña el plan formativo y supervisa el avance de cada cohorte.</p>
             <ul class="person-tags"><li>Formación</li><li>Mentoría</li><li>Evaluación</li></ul>
           </div>
         </article>
 
-        <article class="person slot" data-reveal style="--delay:240ms">
-          <div class="person-photo">
-            <span class="initials" aria-hidden="true">CF</span>
-            <span class="person-badge">Por asignar</span>
-          </div>
-          <div class="person-body">
-            <h3>Coordinadora de Finanzas</h3>
-            <p class="person-role">Presupuesto y becas</p>
-            <p class="person-bio">Gestiona el presupuesto, las becas y los costos de publicación.</p>
-            <ul class="person-tags"><li>Becas</li><li>Convenios</li><li>Costos APC</li></ul>
-          </div>
-        </article>
-
-        <article class="person slot" data-reveal style="--delay:300ms">
+        <article class="person slot star-b" data-reveal style="--delay:240ms">
           <div class="person-photo">
             <span class="initials" aria-hidden="true">DP</span>
-            <span class="person-badge">Por asignar</span>
+            <span class="person-badge">Documentación</span>
           </div>
           <div class="person-body">
-            <h3>Coordinador de Documentación y Producción Científica</h3>
-            <p class="person-role">Archivo y manuscritos</p>
+            <h3>Coordinación de Documentación y Producción Científica</h3>
+            <p class="person-role">Por asignar</p>
             <p class="person-bio">Cuida el archivo, las referencias y el formato de cada manuscrito.</p>
             <ul class="person-tags"><li>Referencias</li><li>Formato</li><li>Archivo</li></ul>
           </div>
         </article>
 
-        <article class="person slot" data-reveal style="--delay:360ms">
+        <article class="person slot star-c" data-reveal style="--delay:300ms">
           <div class="person-photo">
             <span class="initials" aria-hidden="true">RP</span>
-            <span class="person-badge">Por asignar</span>
+            <span class="person-badge">Comunicación</span>
           </div>
           <div class="person-body">
-            <h3>Coordinadora de Relaciones Públicas</h3>
-            <p class="person-role">Alianzas y comunicación</p>
-            <p class="person-bio">Conecta la liga con hospitales, universidades y medios.</p>
-            <ul class="person-tags"><li>Alianzas</li><li>Prensa</li><li>Difusión</li></ul>
+            <h3>Coordinación de Relaciones Públicas</h3>
+            <p class="person-role">Por asignar</p>
+            <p class="person-bio">Comunica los resultados de la liga y mantiene el vínculo con medios y comunidad.</p>
+            <ul class="person-tags"><li>Prensa</li><li>Difusión</li><li>Comunidad</li></ul>
+          </div>
+        </article>
+
+        <article class="person slot star-d" data-reveal style="--delay:360ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">MC</span>
+            <span class="person-badge">Mentoría</span>
+          </div>
+          <div class="person-body">
+            <h3>Coordinación de Mentoría Clínica</h3>
+            <p class="person-role">Por asignar</p>
+            <p class="person-bio">Asigna mentores, acompaña los proyectos y revisa la calidad científica de cada trabajo.</p>
+            <ul class="person-tags"><li>Mentoría</li><li>Revisión</li><li>Método</li></ul>
           </div>
         </article>
       </div>
@@ -693,37 +716,14 @@
       </div>
 
       <div class="result-grid">
-        <article class="result" data-reveal>
-          <p class="result-kicker">Revisión sistemática</p>
-          <h3>De la pregunta al primer envío</h3>
-          <p class="result-who">Lía Reyes · cohorte 2026</p>
-          <div class="metric"><span class="from">0</span><span class="arrow">→</span><span class="to" data-count="1">1</span></div>
-          <p class="metric-label">manuscrito enviado a revisión por pares</p>
-          <div class="progress" aria-hidden="true"><span style="--p:.92"></span></div>
-          <p class="result-foot"><span>16 semanas</span><b>Completada</b></p>
-        </article>
-
-        <article class="result" data-reveal style="--delay:80ms">
-          <p class="result-kicker">Pediatría</p>
-          <h3>Menos tiempo hasta el envío</h3>
-          <p class="result-who">Sofía Fermín · cohorte 2026</p>
-          <div class="metric"><span class="from">14</span><span class="arrow">→</span><span class="to" data-count="9">9</span></div>
-          <p class="metric-label">meses desde el protocolo hasta el envío</p>
-          <div class="progress" aria-hidden="true"><span style="--p:.64"></span></div>
-          <p class="result-foot"><span>9 meses</span><b>−5 meses</b></p>
-        </article>
-
-        <article class="result" data-reveal style="--delay:160ms">
-          <p class="result-kicker">Cohorte completa</p>
-          <h3>Publicaciones que encuentran revista</h3>
-          <p class="result-who">12 estudiantes · 5 líneas activas</p>
-          <div class="metric"><span class="from">0</span><span class="arrow">→</span><span class="to" data-count="7">7</span></div>
-          <p class="metric-label">manuscritos publicados en 5 revistas indexadas</p>
-          <div class="progress" aria-hidden="true"><span style="--p:.78"></span></div>
-          <p class="result-foot"><span>2025–2026</span><b>En curso</b></p>
+        <article class="empty-panel" data-reveal>
+          <b>Aún no hay resultados publicados.</b>
+          <p>Cuando la cohorte cierre, aquí se mostrarán los manuscritos enviados, las revisiones respondidas y las publicaciones verificables. Mientras tanto puedes consultar el archivo público.</p>
+          <a class="btn ghost" href="repositorio.html">Buscar en el repositorio
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
         </article>
       </div>
-      <p class="demo-note">Cifras de demostración de la cohorte 2025–2026.</p>
 
       <div class="pub-block" id="publicaciones" data-reveal>
         <div class="pub-head">
@@ -732,40 +732,12 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         </div>
-        <ul class="pub-list">
-          <li>
-            <a class="pub-row" href="portal.html">
-              <span class="pub-title"><b>Detección molecular en endocarditis con hemocultivos negativos</b><small>Santana M, Peña A, Cabrera J, et al.</small></span>
-              <span class="pub-journal">Journal of Cardiovascular Infection<br>2026 · Vol. 12</span>
-              <span class="tag sage"><span class="dot-live" style="background:#143a52"></span>Publicado</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </li>
-          <li>
-            <a class="pub-row" href="portal.html">
-              <span class="pub-title"><b>Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar</b><small>Santana M, Reyes L, et al.</small></span>
-              <span class="pub-journal">Congreso Nacional de Cardiología<br>2026 · Presentación oral</span>
-              <span class="tag clay">Congreso</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </li>
-          <li>
-            <a class="pub-row" href="portal.html">
-              <span class="pub-title"><b>Insuficiencia cardíaca en América Latina y el Caribe</b><small>Núñez R, Fermín S, et al.</small></span>
-              <span class="pub-journal">Pan American Health<br>2025 · Vol. 8</span>
-              <span class="tag sage">Publicado</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </li>
-          <li>
-            <a class="pub-row" href="portal.html">
-              <span class="pub-title"><b>Estimulación del área de la rama izquierda tras TAVI</b><small>Peña A, Taveras D, et al.</small></span>
-              <span class="pub-journal">EP Journal<br>2025 · Aceptado</span>
-              <span class="tag">Aceptado</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-          </li>
-        </ul>
+        <div id="homePubs">
+          <div class="empty-panel">
+            <b>Todavía no hay publicaciones verificadas.</b>
+            <p>Este espacio solo mostrará trabajos publicados, aceptados o presentados en congreso. Las publicaciones aparecerán aquí en cuanto el equipo editorial las valide.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -775,7 +747,7 @@
     <div class="wrap contact-grid">
       <div class="contact-copy" data-reveal>
         <span class="eyebrow">Envíanos tu idea</span>
-        <h2>Cuéntanos qué te interesa investigar. Te respondemos en 2 días hábiles.</h2>
+        <h2>Cuéntanos qué te interesa investigar. Te respondemos en 3 días hábiles.</h2>
         <p class="lead">No necesitas un protocolo ni experiencia previa. Cuéntanos en qué etapa estás y qué te gustaría aprender; nosotros te orientamos hacia la ruta que mejor encaje.</p>
 
         <ul class="contact-list">
@@ -876,7 +848,6 @@
           <span class="brand-text"><b>Synaptic Research League</b></span>
         </a>
         <p>Una liga de investigación para estudiantes de medicina. Mentoría, proyectos reales y acompañamiento editorial hasta la publicación.</p>
-        <p class="small" style="margin-top:12px;color:rgba(251,252,253,.5)">Sitio de demostración · Datos de ejemplo</p>
       </div>
       <div class="foot-col">
         <h3>Explorar</h3>
@@ -908,11 +879,14 @@
 
     <div class="foot-legal">
       <span>© <span id="year">2026</span> Synaptic Research League. Todos los derechos reservados.</span>
-      <span>Contenido educativo; no sustituye asesoría médica. Cifras de demostración.</span>
+      <span>Contenido educativo; no sustituye asesoría médica.</span>
     </div>
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="site-auth.js"></script>
+<script src="site-edit.js"></script>
 <script>
 (function(){
   'use strict';
@@ -961,20 +935,30 @@
     if(e.key === 'Escape'){ closeMenus(); closeMobile(); }
   });
 
-  /* Perfil de miembro (aparece tras unirse a la liga) */
-  var MEMBER_KEY = 'srl_user';
+  /* Sesión real de Supabase: muestra perfil y panel solo cuando corresponde */
   var profile = document.getElementById('profile');
-  function isMember(){ try{ return localStorage.getItem(MEMBER_KEY) === '1'; }catch(e){ return false; } }
-  function setMember(on){ try{ if(on) localStorage.setItem(MEMBER_KEY,'1'); else localStorage.removeItem(MEMBER_KEY); }catch(e){} }
-  function paintMember(){
-    var on = isMember();
-    if(profile) profile.hidden = !on;
-    document.body.classList.toggle('has-member', on);
+  function initialsOf(n){
+    return (n||'').split(/\s+/).filter(Boolean).slice(0,2).map(function(w){ return w[0].toUpperCase(); }).join('') || 'SL';
   }
-  paintMember();
-  [].slice.call(document.querySelectorAll('[data-join]')).forEach(function(a){
-    a.addEventListener('click', function(){ setMember(true); });
-  });
+  function applySession(u){
+    var on = !!u;
+    document.body.classList.toggle('has-member', on);
+    document.querySelectorAll('[data-auth-only]').forEach(function(el){ el.hidden = !on; });
+    document.querySelectorAll('[data-admin-only]').forEach(function(el){ el.hidden = !(on && u && u.rol === 'admin'); });
+    if(profile){
+      profile.hidden = !on;
+      if(on){
+        var av = profile.querySelector('[data-profile-av]');
+        var nm = profile.querySelector('[data-profile-name]');
+        var rl = profile.querySelector('[data-profile-role]');
+        if(av) av.textContent = initialsOf(u.nombre);
+        if(nm) nm.textContent = u.nombre;
+        if(rl) rl.textContent = u.rol === 'admin' ? 'Administrador' : 'Miembro de la liga';
+      }
+    }
+  }
+  if(window.SRL_SITE !== undefined) applySession(window.SRL_SITE);
+  document.addEventListener('srl:session', function(e){ applySession(e.detail); });
   if(profile){
     var profileBtn = profile.querySelector('.profile-btn');
     profileBtn.addEventListener('click', function(e){
@@ -993,8 +977,8 @@
   }
   var signout = document.querySelector('[data-signout]');
   if(signout) signout.addEventListener('click', function(e){
-    e.preventDefault(); setMember(false); paintMember();
-    if(profile){ profile.classList.remove('open'); profile.querySelector('.profile-btn').setAttribute('aria-expanded','false'); }
+    e.preventDefault();
+    if(window.SRL && window.SRL.signOut) window.SRL.signOut();
   });
 
   /* Menú móvil */
@@ -1063,129 +1047,129 @@
   var LINES = {
     cardio: {
       name:'Cardiología',
-      tag:'4 proyectos activos',
+      tag:'Línea abierta',
       summary:'Insuficiencia cardíaca, prevención y riesgo cardiovascular en poblaciones latinas.',
       topics:['Insuficiencia cardíaca','Hipertensión pulmonar','Cardio-oncología','Prevención secundaria'],
       method:['Revisión sistemática y metaanálisis','Análisis de cohortes clínicas','Registro prospectivo de datos'],
       phases:[['Exploración','Pregunta clínica y revisión de alcance'],['Desarrollo','Protocolo, datos y primer borrador'],['Publicación','Envío, pares y difusión']],
-      mentor:'Dra. Marisol Santana · Directora científica'
+      mentor:'Por asignar'
     },
     infecto: {
-      name:'Infectología cardiovascular',
-      tag:'3 proyectos activos',
+      name:'Infectología',
+      tag:'Línea abierta',
       summary:'Endocarditis, bacteriemia persistente e infecciones asociadas a dispositivos cardiovasculares.',
       topics:['Endocarditis con hemocultivos negativos','Bacteriemia enterocócica persistente','Infecciones de dispositivos','Uso racional de antimicrobianos'],
       method:['Series de casos y cohortes','Cultivos y biología molecular','Revisión de guías y stewardship'],
       phases:[['Exploración','Del caso clínico a la pregunta'],['Desarrollo','Recolección y análisis microbiológico'],['Publicación','Manuscrito y revisión por pares']],
-      mentor:'Dr. Andrés Peña · Mentor de infectología'
+      mentor:'Por asignar'
     },
     onco: {
       name:'Oncología',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Cardio-oncología, toxicidad cardiovascular y supervivencia en pacientes oncológicos.',
       topics:['Cardio-oncología','Toxicidad cardiovascular','Tamizaje y seguimiento','Supervivencia y calidad de vida'],
       method:['Cohortes retrospectivas','Revisión sistemática de ensayos','Análisis de supervivencia'],
       phases:[['Exploración','Pregunta y revisión de literatura'],['Desarrollo','Datos, sesgo y análisis'],['Publicación','Revista, envío y difusión']],
-      mentor:'Luis Emilio Gómez · Mentor de oncología'
+      mentor:'Por asignar'
     },
     cirugia: {
       name:'Cirugía General',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Desenlaces perioperatorios, infección de sitio quirúrgico y recuperación en cirugía abdominal.',
       topics:['Infección de sitio quirúrgico','Recuperación acelerada','Complicaciones perioperatorias','Cirugía de mínima invasión'],
       method:['Cohortes quirúrgicas','Auditoría de historias clínicas','Revisión sistemática'],
       phases:[['Exploración','Problema quirúrgico y pregunta'],['Desarrollo','Datos perioperatorios y análisis'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dr. Daniel Taveras · Mentor de cirugía'
+      mentor:'Por asignar'
     },
     cirped: {
       name:'Cirugía Pediátrica',
-      tag:'1 proyecto activo',
+      tag:'Línea abierta',
       summary:'Malformaciones congénitas, cirugía neonatal y seguimiento del paciente pediátrico operado.',
       topics:['Malformaciones congénitas','Cirugía neonatal','Seguimiento posoperatorio','Anestesia pediátrica'],
       method:['Series de casos pediátricos','Registros quirúrgicos','Revisión de guías'],
       phases:[['Exploración','Necesidad quirúrgica pediátrica'],['Desarrollo','Registro y análisis de desenlaces'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dra. Elena Vargas · Mentora de cirugía pediátrica'
+      mentor:'Por asignar'
     },
     hema: {
       name:'Hematología',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Anemias, trombosis y trastornos hematológicos en poblaciones del Caribe.',
       topics:['Anemia ferropénica','Trombosis venosa','Hemoglobinopatías','Transfusión y seguridad'],
       method:['Series clínicas','Estudios de laboratorio','Análisis de supervivencia'],
       phases:[['Exploración','Problema hematológico y pregunta'],['Desarrollo','Laboratorio y análisis clínico'],['Publicación','Manuscrito y revisión']],
-      mentor:'Dra. Lía Reyes · Mentora de hematología'
+      mentor:'Por asignar'
     },
     psiquiatria: {
       name:'Psiquiatría',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Salud mental en estudiantes, depresión y adherencia al tratamiento.',
       topics:['Depresión y ansiedad','Salud mental estudiantil','Adherencia terapéutica','Tamizaje comunitario'],
       method:['Encuestas validadas','Cohortes clínicas','Revisión de alcance'],
       phases:[['Exploración','Problema de salud mental'],['Desarrollo','Instrumentos y análisis'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dr. José Cabrera · Mentor de psiquiatría'
+      mentor:'Por asignar'
     },
     trauma: {
       name:'Traumatología y Ortopedia',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Fracturas, rehabilitación y desenlaces funcionales en trauma musculoesquelético.',
       topics:['Fracturas de cadera','Rehabilitación funcional','Trauma deportivo','Complicaciones de implantes'],
       method:['Registros de trauma','Escalas funcionales','Análisis retrospectivo'],
       phases:[['Exploración','Problema funcional y pregunta'],['Desarrollo','Datos y escalas de desenlace'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dr. Rafael Núñez · Mentor de traumatología'
+      mentor:'Por asignar'
     },
     gineco: {
       name:'Ginecología y Obstetricia',
-      tag:'3 proyectos activos',
+      tag:'Línea abierta',
       summary:'Preeclampsia, salud materna y desenlaces obstétricos en la región.',
       topics:['Preeclampsia','Mortalidad materna','Control prenatal','Salud sexual y reproductiva'],
       method:['Cohortes maternas','Auditoría de registros','Estudios transversales'],
       phases:[['Exploración','Problema materno y pregunta'],['Desarrollo','Registro prenatal y análisis'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dra. Sofía Fermín · Mentora de obstetricia'
+      mentor:'Por asignar'
     },
     endo: {
       name:'Endocrinología',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Diabetes, obesidad y trastornos tiroideos en atención primaria.',
       topics:['Diabetes tipo 2','Obesidad y síndrome metabólico','Hipotiroidismo','Educación terapéutica'],
       method:['Cohortes de atención primaria','Encuestas poblacionales','Revisión sistemática'],
       phases:[['Exploración','Problema metabólico y pregunta'],['Desarrollo','Datos clínicos y análisis'],['Publicación','Manuscrito y revisión']],
-      mentor:'Dra. Karla Ureña · Mentora de endocrinología'
+      mentor:'Por asignar'
     },
     orl: {
       name:'Otorrinolaringología',
-      tag:'1 proyecto activo',
+      tag:'Línea abierta',
       summary:'Hipoacusia, rinosinusitis crónica y patología de vía aérea superior.',
       topics:['Hipoacusia','Rinosinusitis crónica','Adenoides y amígdalas','Vértigo periférico'],
       method:['Series de casos','Audiometría y pruebas funcionales','Revisión de guías'],
       phases:[['Exploración','Síntoma y pregunta clínica'],['Desarrollo','Pruebas funcionales y análisis'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dr. Luis Emilio Gómez · Mentor de otorrinolaringología'
+      mentor:'Por asignar'
     },
     nefro: {
       name:'Nefrología',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Enfermedad renal crónica, diálisis y complicaciones metabólicas.',
       topics:['Enfermedad renal crónica','Diálisis y acceso vascular','Lesión renal aguda','Trasplante renal'],
       method:['Cohortes renales','Análisis de laboratorio','Revisión de registros'],
       phases:[['Exploración','Problema renal y pregunta'],['Desarrollo','Laboratorio y seguimiento'],['Publicación','Manuscrito y difusión']],
-      mentor:'Dr. Andrés Peña · Mentor de nefrología'
+      mentor:'Por asignar'
     },
     neuro: {
       name:'Neurociencias y cognición',
-      tag:'2 proyectos activos',
+      tag:'Línea abierta',
       summary:'Deterioro cognitivo, sueño y rehabilitación neurológica en población adulta.',
       topics:['Deterioro cognitivo','Sueño y cognición','Rehabilitación neurológica','Neuroimagen clínica'],
       method:['Cohortes clínicas','Escalas cognitivas validadas','Revisión sistemática'],
       phases:[['Exploración','Fenotipo y pregunta de investigación'],['Desarrollo','Medición y análisis longitudinal'],['Publicación','Manuscrito y revisión']],
-      mentor:'Karla Ureña · Mentora de neurociencias'
+      mentor:'Por asignar'
     },
     pediatria: {
       name:'Pediatría y salud del adolescente',
-      tag:'3 proyectos activos',
+      tag:'Línea abierta',
       summary:'Asma, obesidad infantil y salud mental adolescente en centros escolares y clínicas.',
       topics:['Asma y obesidad infantil','Salud mental adolescente','Vacunación','Desarrollo temprano'],
       method:['Cohortes pediátricas','Encuestas escolares','Revisión de alcance'],
       phases:[['Exploración','Necesidad pediátrica y contexto'],['Desarrollo','Instrumentos y trabajo de campo'],['Publicación','Análisis, manuscrito y difusión']],
-      mentor:'Sofía Fermín · Mentora de pediatría'
+      mentor:'Por asignar'
     }
   };
 
@@ -1290,6 +1274,37 @@
       f.addEventListener('input', function(){ f.style.borderColor = ''; });
     });
   }
+
+  /* Publicaciones reales de Supabase (solo las visibles públicamente) */
+  function loadHomePubs(){
+    var box = document.getElementById('homePubs');
+    if(!box || !window.SRL || !window.SRL.sb) return;
+    var stTag = {publicado:['Publicado','tag sage'], aceptado:['Aceptado','tag'], congreso:['Congreso','tag clay']};
+    var escPub = function(s){
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    };
+    window.SRL.sb.from('publicaciones')
+      .select('t,a,v,y,st,line')
+      .order('y',{ascending:false})
+      .order('created_at',{ascending:false})
+      .limit(4)
+      .then(function(r){
+        if(r.error || !Array.isArray(r.data) || !r.data.length) return;
+        box.innerHTML = '<ul class="pub-list">' + r.data.map(function(p){
+          var s = stTag[p.st] || stTag.publicado;
+          return '<li><a class="pub-row" href="repositorio.html">' +
+            '<span class="pub-title"><b>' + escPub(p.t) + '</b><small>' + escPub(p.a || '') + '</small></span>' +
+            '<span class="pub-journal">' + escPub(p.v || '') + ' · ' + escPub(p.y) + '</span>' +
+            '<span class="' + s[1] + '">' + s[0] + '</span>' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>' +
+          '</a></li>';
+        }).join('') + '</ul>';
+      })
+      .catch(function(){});
+  }
+  loadHomePubs();
 
   /* Año del pie */
   var year = document.getElementById('year');

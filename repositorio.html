@@ -155,9 +155,9 @@
       </p>
 
       <div class="repo-stats" aria-label="Cifras del repositorio">
-        <div class="repo-stat"><b id="statPubs">8</b><span>publicaciones</span></div>
-        <div class="repo-stat"><b id="statLines">5</b><span>líneas representadas</span></div>
-        <div class="repo-stat"><b id="statJournals">5</b><span>revistas y actas</span></div>
+        <div class="repo-stat"><b id="statPubs">0</b><span>publicaciones</span></div>
+        <div class="repo-stat"><b id="statLines">0</b><span>líneas representadas</span></div>
+        <div class="repo-stat"><b id="statJournals">0</b><span>revistas y actas</span></div>
         <div class="repo-stat"><b>0</b><span>en revisión</span></div>
       </div>
     </div>
@@ -171,7 +171,7 @@
           <h2>Busca en el repositorio</h2>
           <p>Filtra por estado, línea de investigación o año. Abre el resumen de cada trabajo para leer el abstract completo.</p>
         </div>
-        <span class="count"><b id="repoCount" aria-live="polite">8 de 8 publicaciones</b></span>
+        <span class="count"><b id="repoCount" aria-live="polite">0 publicaciones</b></span>
       </div>
 
       <div class="repo-tools" data-reveal>
@@ -237,13 +237,15 @@
     </div>
     <div class="repo-copy">
       <span>© <span id="year">2026</span> Synaptic Research League. Repositorio público.</span>
-      <span>Contenido educativo; no sustituye asesoría médica. Cifras de demostración.</span>
+      <span>Contenido educativo; no sustituye asesoría médica.</span>
     </div>
   </div>
 </footer>
 
 <div id="toast" role="status" aria-live="polite"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="site-auth.js"></script>
 <script>
 (function(){
   'use strict';
@@ -255,64 +257,7 @@
   window.addEventListener('scroll', onScroll, { passive:true });
 
   /* Solo información pública: publicado, aceptado o congreso */
-  var PUBS = [
-    {
-      t:'Detección molecular en endocarditis con hemocultivos negativos',
-      a:'Santana M, Peña A, Cabrera J, et al.',
-      v:'Journal of Cardiovascular Infection · Vol. 12',
-      y:2026, st:'publicado', line:'Infectología',
-      abs:'Evaluación de PCR y secuenciación metagenómica en una cohorte de pacientes con sospecha de endocarditis y hemocultivos negativos. El trabajo describe el rendimiento diagnóstico y propone un algoritmo de uso racional.'
-    },
-    {
-      t:'Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar',
-      a:'Santana M, Reyes L, et al.',
-      v:'Congreso Nacional de Cardiología · Presentación oral',
-      y:2026, st:'congreso', line:'Cardiología',
-      abs:'Resultados preliminares de una revisión sistemática sobre dispositivos de shunt interatrial en pacientes con insuficiencia cardíaca y hipertensión pulmonar. Presentado en la sesión de insuficiencia cardíaca avanzada.'
-    },
-    {
-      t:'Insuficiencia cardíaca en América Latina y el Caribe',
-      a:'Núñez R, Fermín S, et al.',
-      v:'Pan American Health · Vol. 8',
-      y:2025, st:'publicado', line:'Cardiología',
-      abs:'Análisis de la carga epidemiológica de la insuficiencia cardíaca en la región, con énfasis en acceso a diagnóstico, heterogeneidad de registros y determinantes sociales.'
-    },
-    {
-      t:'Estimulación del área de la rama izquierda tras TAVI',
-      a:'Peña A, Taveras D, et al.',
-      v:'EP Journal · Aceptado',
-      y:2025, st:'aceptado', line:'Cardiología',
-      abs:'Revisión sistemática sobre estimulación fisiológica del sistema de conducción después de implante valvular aórtico transcatéter, con comparación de desenlaces electrocardiográficos y clínicos.'
-    },
-    {
-      t:'Asma y obesidad infantil en escolares del Distrito Nacional',
-      a:'Fermín S, Ureña K, et al.',
-      v:'Revista Pediátrica Dominicana · Vol. 4',
-      y:2025, st:'publicado', line:'Pediatría',
-      abs:'Estudio transversal en centros escolares que explora la asociación entre obesidad, actividad física y control del asma en niños de 6 a 12 años.'
-    },
-    {
-      t:'Determinantes sociales del acceso a la salud cardiovascular',
-      a:'Núñez R, Gómez L, et al.',
-      v:'Caribbean Public Health · Aceptado',
-      y:2026, st:'aceptado', line:'Cardiología',
-      abs:'Análisis de encuestas poblacionales sobre barreras de acceso a control de hipertensión y diabetes en comunidades urbanas y rurales del Caribe.'
-    },
-    {
-      t:'Deterioro cognitivo y sueño en adultos mayores',
-      a:'Ureña K, Vargas E, et al.',
-      v:'Congreso de Neurociencias · Póster',
-      y:2025, st:'congreso', line:'Neurociencias',
-      abs:'Hallazgos preliminares de una cohorte clínica que evalúa la relación entre calidad del sueño, fragilidad y desempeño cognitivo en adultos mayores de 65 años.'
-    },
-    {
-      t:'Cardiotoxicidad en pacientes con cáncer de mama',
-      a:'Santana M, Gómez L, et al.',
-      v:'Cardio-Oncology Today · Vol. 6',
-      y:2024, st:'publicado', line:'Oncología',
-      abs:'Cohorte retrospectiva de pacientes tratadas con antraciclinas y trastuzumab. El estudio describe la incidencia de disfunción ventricular y los factores asociados al seguimiento cardiológico.'
-    }
-  ];
+  var PUBS = [];
 
   var STATUS = {
     publicado:{label:'Publicado', cls:'tag sage'},
@@ -337,24 +282,29 @@
     });
   }
 
-  /* Filtros */
-  var lines = [];
-  PUBS.forEach(function(p){ if(lines.indexOf(p.line) < 0) lines.push(p.line); });
-  lines.sort(function(a,b){ return a.localeCompare(b,'es'); });
-  lines.forEach(function(l){
-    var o = document.createElement('option'); o.value = l; o.textContent = l; lineSel.appendChild(o);
-  });
-  var years = [];
-  PUBS.forEach(function(p){ if(years.indexOf(p.y) < 0) years.push(p.y); });
-  years.sort(function(a,b){ return b - a; });
-  years.forEach(function(y){
-    var o = document.createElement('option'); o.value = String(y); o.textContent = String(y); yearSel.appendChild(o);
-  });
-  document.getElementById('statPubs').textContent = String(PUBS.length);
-  document.getElementById('statLines').textContent = String(lines.length);
-  var venues = [];
-  PUBS.forEach(function(p){ var v = p.v.split('·')[0].trim(); if(venues.indexOf(v) < 0) venues.push(v); });
-  document.getElementById('statJournals').textContent = String(venues.length);
+  /* Filtros y cifras */
+  function fillFilters(){
+    lineSel.innerHTML = '<option value="">Todas las líneas</option>';
+    yearSel.innerHTML = '<option value="">Todos los años</option>';
+    var lines = [];
+    PUBS.forEach(function(p){ if(p.line && lines.indexOf(p.line) < 0) lines.push(p.line); });
+    lines.sort(function(a,b){ return a.localeCompare(b,'es'); });
+    lines.forEach(function(l){
+      var o = document.createElement('option'); o.value = l; o.textContent = l; lineSel.appendChild(o);
+    });
+    var years = [];
+    PUBS.forEach(function(p){ if(years.indexOf(p.y) < 0) years.push(p.y); });
+    years.sort(function(a,b){ return b - a; });
+    years.forEach(function(y){
+      var o = document.createElement('option'); o.value = String(y); o.textContent = String(y); yearSel.appendChild(o);
+    });
+    var venues = [];
+    PUBS.forEach(function(p){ var v = (p.v||'').split('·')[0].trim(); if(v && venues.indexOf(v) < 0) venues.push(v); });
+    document.getElementById('statPubs').textContent = String(PUBS.length);
+    document.getElementById('statLines').textContent = String(lines.length);
+    document.getElementById('statJournals').textContent = String(venues.length);
+  }
+  fillFilters();
 
   function filtered(){
     var q = norm(state.q.trim());
@@ -394,7 +344,13 @@
 
   function render(){
     var list = filtered();
-    count.innerHTML = '<b>' + list.length + '</b> de ' + PUBS.length + ' publicaciones';
+    count.innerHTML = PUBS.length
+      ? '<b>' + list.length + '</b> de ' + PUBS.length + ' publicaciones'
+      : '<b>0</b> publicaciones';
+    if(!PUBS.length){
+      results.innerHTML = '<div class="repo-empty"><b>Aún no hay publicaciones verificadas.</b><p>Aquí aparecerán únicamente los trabajos publicados, aceptados o presentados en congreso, con su título, autores y resumen. Los manuscritos en revisión no se muestran.</p><a class="btn sm" href="index.html#contacto">Enviar tu idea</a></div>';
+      return;
+    }
     if(!list.length){
       results.innerHTML = '<div class="repo-empty"><b>Sin resultados.</b><p>No hay publicaciones que coincidan con «' + esc(state.q.trim()) + '» y los filtros elegidos. Prueba con otro término o límpialos.</p><button class="btn sm" type="button" id="repoReset">Limpiar filtros</button></div>';
       var er = document.getElementById('repoReset');
@@ -466,7 +422,27 @@
   }
 
   document.getElementById('year').textContent = String(new Date().getFullYear());
+
+  /* Publicaciones reales de Supabase (solo información pública) */
+  function loadPublicaciones(){
+    if(!window.SRL || !window.SRL.sb) return;
+    window.SRL.sb.from('publicaciones')
+      .select('t,a,v,y,st,line,abs')
+      .order('y',{ascending:false})
+      .order('created_at',{ascending:false})
+      .then(function(r){
+        if(r.error){ return; }
+        PUBS = (r.data || []).map(function(p){
+          return {t:p.t, a:p.a, v:p.v, y:p.y, st:p.st, line:p.line, abs:p.abs};
+        });
+        fillFilters();
+        render();
+      })
+      .catch(function(){});
+  }
+
   render();
+  loadPublicaciones();
 })();
 </script>
 </body>

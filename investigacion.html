@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -110,10 +110,6 @@ body.user-mode .dr-form,body.user-mode .upload,body.user-mode [data-rmdoc]{displ
 .ev-form .dlg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ev-form .check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;color:var(--navy);font-weight:500}
 .ev-form .check input{width:16px;height:16px;accent-color:var(--accent)}
-
-.demo-bar{background:#eef4f7;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--mut)}
-.demo-bar .wrap{display:flex;align-items:center;gap:8px;padding:7px 0;flex-wrap:wrap}
-.demo-bar .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
 
 /* Héroe */
 .hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
@@ -433,8 +429,8 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
   #toast{transition:none}
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
-<script src="auth.js" data-require="member"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="auth.js" data-require="admin"></script>
 </head>
 <body>
 <svg class="sprite" aria-hidden="true" focusable="false">
@@ -467,6 +463,7 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
     <nav id="nav" aria-label="Secciones del panel">
       <a href="#resumen">Resumen</a>
       <a href="#articulos">Artículos</a>
+      <a href="#publicaciones" class="admin-only">Publicaciones</a>
       <a href="#manuscritos">Manuscritos</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#calendario">Calendario</a>
@@ -476,7 +473,7 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
       <a href="#ranking">Ranking</a>
     </nav>
     <div class="bar-actions">
-      <span class="user-chip"><span class="avatar" id="userAv" aria-hidden="true">MS</span><span class="user-tx"><b id="userName">Dra. Marisol Santana</b><small id="userRole">Administradora · acceso total</small></span></span>
+      <span class="user-chip"><span class="avatar" id="userAv" aria-hidden="true">··</span><span class="user-tx"><b id="userName">Miembro</b><small id="userRole">Miembro de la liga</small></span></span>
       <button type="button" class="btn ghost sm" data-logout>Salir</button>
       <div class="mode-switch" role="group" aria-label="Modo de la cuenta">
         <button type="button" data-mode="admin">Admin</button>
@@ -489,10 +486,6 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
 
 <div class="mode-banner" id="modeBanner" hidden>
   <div class="wrap"><span aria-hidden="true">👁</span><span><b>Modo usuario.</b> Estás viendo el panel como miembro: las acciones de administración están ocultas.</span><button class="btn l sm" type="button" data-mode="admin">Volver a modo administrador</button></div>
-</div>
-
-<div class="demo-bar">
-  <div class="wrap"><span class="dot" aria-hidden="true"></span><span>Datos de ejemplo de los últimos 12 meses. Los cambios se guardan en este navegador.</span><button class="link" type="button" data-reset>Restablecer datos</button></div>
 </div>
 
 <main id="app"></main>
@@ -545,7 +538,7 @@ dialog::backdrop{background:rgba(14,40,58,.45)}
 </dialog>
 
 <footer class="foot">
-  <div class="wrap"><span>Synaptic Research League · Oficina de investigación</span><span>Datos de demostración · <button class="link" type="button" data-reset>Restablecer</button></span></div>
+  <div class="wrap"><span>Synaptic Research League · Oficina de investigación</span><span>Panel interno · acceso restringido</span></div>
 </footer>
 <script type="text/plain" id="srl-main">
 'use strict';
@@ -584,119 +577,35 @@ const KEYS=Object.keys(ST);
 const PROG=['prep','borr','revint'],SENT=['env','pares','rmen','rmay','reenv'],ACC=['acep','prensa'],CLOSED=['publ','rech','ret'];
 const FASES=['Preparación','Borrador','Rev. interna','Enviado','Pares','Aceptado','Publicado'];
 
-/* ===== Datos de ejemplo ===== */
-const AU=['Dra. Marisol Santana','Dr. Andrés Peña','Lía Reyes','José Cabrera','Dr. Rafael Núñez','Sofía Fermín','Daniel Taveras','Karla Ureña','Dra. Elena Vargas','Luis Emilio Gómez'];
-const EQ=['Cardiología clínica','Infectología cardiovascular','Cardio-oncología','Epidemiología cardiovascular'];
-const P=[
- ['Detección molecular en endocarditis con hemocultivos negativos','Infectología cardiovascular',0,[1,2,3],'Análisis de datos',72,1],
- ['Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar','Insuficiencia cardíaca',1,[4,5],'Redacción',85,0],
- ['Estimulación del área de la rama izquierda tras TAVI','Electrofisiología',1,[2,6],'Redacción',90,0],
- ['Insuficiencia cardíaca en América Latina y el Caribe','Epidemiología cardiovascular',7,[3,5],'Extracción de datos',55,3],
- ['Dosis de radiación en subestructuras cardíacas','Cardio-oncología',4,[6,0],'Análisis de datos',64,2],
- ['Bacteriemia enterocócica persistente','Infectología',0,[2,7],'Redacción',78,1]
-];
-const RAW=[
- ['Diagnostic accuracy of PCR versus mNGS in blood culture-negative infective endocarditis: a systematic review',0,'Clinical Microbiology and Infection','publ',1,'2025-11-04',[0,1,2]],
- ['Interatrial shunt devices in HFpEF with pulmonary hypertension due to left heart disease: a systematic review',1,'JACC: Heart Failure','prensa',1,'2026-06-08',[1,4,5]],
- ['Left bundle branch area pacing after transcatheter aortic valve implantation: a systematic review',2,'Europace','acep',1,'2026-06-15',[1,2,6]],
- ['Heart failure epidemiology in Latin America and the Caribbean: a systematic review',3,'The Lancet Regional Health – Americas','pares',0,'2026-06-15',[7,3,5]],
- ['Cardiac substructure radiation dose and cardiovascular outcomes in cancer survivors',4,'JACC: CardioOncology','rmay',2,'2026-06-08',[4,6,0]],
- ['Treatment strategies for persistent enterococcal bacteremia: a systematic review',5,'Clinical Infectious Diseases','reenv',2,'2026-05-18',[0,2,7]],
- ['Persistent enterococcal bacteremia: protocol and rationale of a systematic review',5,'Systematic Reviews','publ',0,'2025-11-12',[0,2]],
- ['Interatrial shunts in HFpEF: protocol of a systematic review and meta-analysis',1,'BMJ Open','publ',0,'2025-12-01',[1,4]],
- ['Predictors of conduction disturbances after TAVI: a narrative overview',2,'Revista Española de Cardiología','rech',1,'2026-03-02',[2,6]],
- ['Mortality in heart failure registries of the Caribbean: data harmonization',3,'BMC Cardiovascular Disorders','revint',0,'2026-09-01',[7,3]],
- ['Turnaround time and cost of mNGS in endocarditis diagnosis',0,'Journal of Clinical Microbiology','borr',0,'2026-09-20',[1,3]],
- ['Mean heart dose thresholds in thoracic radiotherapy: a methods paper',4,'Radiotherapy and Oncology','prep',0,'2026-10-28',[4]],
- ['Pacing strategies after TAVI: conference abstract',2,'Congreso regional de cardiología','ret',0,'2026-02-16',[2,6]],
- ['Antibiotic combinations for persistent bacteremia: a scoping review',5,'International Journal of Antimicrobial Agents','env',0,'2026-08-17',[0,7]],
- ['Update of PCR accuracy in culture-negative endocarditis',0,'Journal of Infection','rmen',1,'2026-08-18',[0,1,2]],
- ['Sex differences in heart failure outcomes in the Caribbean: a cohort analysis',3,'ESC Heart Failure','publ',1,'2025-09-08',[7,3,8]],
- ['Radiation dose to cardiac substructures: protocol for a systematic review',4,'BMJ Open','publ',0,'2025-10-06',[4,6]],
- ['Left bundle branch pacing versus biventricular pacing: an updated meta-analysis',2,'Heart Rhythm','pares',0,'2026-09-14',[1,6,2]],
- ['Anticoagulation strategies in cancer-associated thrombosis: a systematic review',4,'Thrombosis Research','prep',0,'2026-10-30',[4,9]],
- ['Quality of life after TAVI in low-risk patients: a prospective cohort',2,'Open Heart','borr',0,'2026-09-28',[2,6]],
- ['Epidemiology of Chagas cardiomyopathy in the Dominican Republic: a scoping review',3,'Tropical Medicine & International Health','env',0,'2026-09-02',[7,8,3]]
-];
-const LAGS=[92,118,101,88,126,109,97,134,105,90,77,113,99,121,110,96,132,87,114,103,124];
+/* ===== Datos del repositorio ===== */
+const AU=[];
+const P=[];
+const LINEAS=['Cardiología','Cirugía General','Cirugía Pediátrica','Hematología','Psiquiatría','Traumatología y Ortopedia','Ginecología y Obstetricia','Oncología','Endocrinología','Otorrinolaringología','Nefrología','Infectología','Neurociencias','Pediatría'];
+const projName=a=>P[a.p]?P[a.p][0]:'Sin proyecto';
+const projArea=a=>P[a.p]?P[a.p][1]:'Sin área';
 
-function hist(st,rev,anchor,id){
-  const out=[],put=(s,d,n)=>out.push({s,d,n:n||ST[s].note});
-  if(PROG.includes(st)){
-    if(st==='prep')put('prep',anchor);
-    else if(st==='borr'){put('prep',add(anchor,-24));put('borr',anchor);}
-    else{put('prep',add(anchor,-42));put('borr',add(anchor,-24));put('revint',anchor);}
-    return out;
-  }
-  const sub=anchor,lag=LAGS[id%LAGS.length];
-  put('prep',add(sub,-61));put('borr',add(sub,-39));put('revint',add(sub,-18));put('env',sub);
-  if(st==='env')return out;
-  put('pares',add(sub,22));
-  if(st==='pares')return out;
-  if(st==='rech'){put('rech',add(sub,71),'Decisión editorial: rechazado por alcance de la revista.');return out;}
-  if(st==='ret'){put('ret',add(sub,36),'Retirado por los autores antes de la decisión.');return out;}
-  if(rev===1){put('rmen',add(sub,43));if(st==='rmen')return out;put('reenv',add(sub,57));}
-  else if(rev===2){put('rmay',add(sub,50));if(st==='rmay')return out;put('reenv',add(sub,64));}
-  else{if(st==='rmen'){put('rmen',add(sub,43));return out;}if(st==='rmay'){put('rmay',add(sub,50));return out;}if(st==='reenv'){put('reenv',add(sub,57));return out;}}
-  if(st==='reenv')return out;
-  put('acep',add(sub,lag));if(st==='acep')return out;
-  put('prensa',add(sub,lag+17));if(st==='prensa')return out;
-  put('publ',add(sub,lag+35));return out;
-}
-
-/* ===== Persistencia de la demostración ===== */
+/* ===== Persistencia ===== */
 const KEY='srl_investigacion_v5';
-function seed(){return RAW.map((r,i)=>({id:i,t:r[0],p:r[1],j:r[2],st:r[3],au:r[6].map(k=>AU[k]),doi:['publ','acep','prensa'].includes(r[3])?'10.5555/srl.2026.'+(100+i):'',h:hist(r[3],r[4],r[5],i),x:[]}));}
-function load(){try{const o=JSON.parse(localStorage.getItem(KEY));if(o&&o.v===5&&Array.isArray(o.articles)&&o.articles.length)return o.articles;}catch(e){}return null;}
+function load(){try{const o=JSON.parse(localStorage.getItem(KEY));if(o&&o.v===5&&Array.isArray(o.articles))return o.articles;}catch(e){}return null;}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({v:5,articles:A}));}catch(e){}}
-let A=load()||seed();
+let A=load()||[];
 A.forEach(a=>{if(!Array.isArray(a.au))a.au=[];if(!Array.isArray(a.h))a.h=[];if(!Array.isArray(a.x))a.x=[];if(!a.doi)a.doi='';});
-
-/* ===== Derivados ===== */
-const byId=id=>A.find(a=>a.id===id);
-const dOf=(a,s)=>{for(let i=a.h.length-1;i>=0;i--){if(a.h[i].s===s)return a.h[i].d;}return undefined;};
-const last=a=>a.h[a.h.length-1]||{s:a.st,d:HOY,n:''};
-const doiOf=a=>a.doi||(dOf(a,'acep')?'10.5555/srl.2026.'+(100+a.id):'');
-const yearOf=a=>(dOf(a,'env')||dOf(a,'publ')||last(a).d||HOY).slice(0,4);
-const cnt=ids=>A.filter(a=>ids.includes(a.st)).length;
-const stage=s=>PROG.includes(s)?'Sin enviar':s==='publ'?'Publicado oficialmente':ACC.includes(s)?'Aceptado, aún no publicado':s==='rech'||s==='ret'?'Cerrado':'Enviado, aún no aceptado';
-const sentCount=()=>A.filter(a=>!!dOf(a,'env')).length;
-const activeCount=()=>A.filter(a=>!CLOSED.includes(a.st)).length;
-
-function ensureFiles(a){
-  const names=new Set(a.x.map(f=>f.n));
-  const d=s=>dOf(a,s);
-  const put=(n,type,kb,date)=>{if(!names.has(n)){a.x.push({n,type,kb,date});names.add(n);}};
-  if(d('borr'))put('Manuscrito_v1.docx','DOCX',214+(a.id%5)*17,d('borr'));
-  if(d('revint')){put('Tablas_suplementarias.docx','DOCX',78,d('revint'));put('Figuras_1-4.pdf','PDF',1380,d('revint'));}
-  if(d('env')){put('Manuscrito_v2_enviado.pdf','PDF',642,d('env'));put('Carta_de_presentacion.pdf','PDF',96,d('env'));}
-  const rr=d('rmen')||d('rmay');
-  if(rr)put('Comentarios_de_revisores.pdf','PDF',104,rr);
-  if(d('reenv')){put('Respuesta_a_revisores.docx','DOCX',132,d('reenv'));put('Manuscrito_v3_revisado.pdf','PDF',788,d('reenv'));}
-  if(d('acep'))put('Carta_de_aceptacion.pdf','PDF',88,d('acep'));
-  if(d('prensa'))put('Galeradas.pdf','PDF',910,d('prensa'));
-  if(d('publ'))put('Version_publicada.pdf','PDF',842,d('publ'));
-  if(d('rech'))put('Decision_editorial.pdf','PDF',74,d('rech'));
-  if(d('ret'))put('Carta_de_retiro.docx','DOCX',62,d('ret'));
-}
-A.forEach(ensureFiles);
 
 /* ===== Cuenta, roles y modo de trabajo ===== */
 const ME=SRL.user.nombre; /* nombre y rol reales, leídos de Supabase tras iniciar sesión */
-const ROLES_KEY='srl_roles_v1', MODE_KEY='srl_mode_v1';
-const TEAM=[...AU,'Coordinador Académico','Coordinadora de Finanzas','Coordinador de Documentación y Producción Científica','Coordinadora de Relaciones Públicas'];
-let ROLES=(function(){
-  const base={};
-  TEAM.forEach((n,i)=>{base[n]=i===0?'admin':'member';});
+const MODE_KEY='srl_mode_v1';
+let TEAM=[{id:SRL.user.id,nombre:ME,rol:SRL.user.rol}];
+const roleOf=nombre=>{const t=TEAM.find(x=>x.nombre===nombre);return t&&t.rol==='admin'?'admin':'member';};
+async function loadTeam(){
   try{
-    const o=JSON.parse(localStorage.getItem(ROLES_KEY));
-    if(o&&typeof o==='object')Object.keys(o).forEach(k=>{if(k in base)base[k]=o[k]==='admin'?'admin':'member';});
+    const {data,error}=await SRL.sb.from('profiles').select('id,nombre,rol').order('nombre');
+    if(error||!Array.isArray(data)||!data.length)return;
+    TEAM=data.map(p=>({id:p.id,nombre:p.nombre||p.id.slice(0,8),rol:p.rol==='admin'?'admin':'member'}));
+    if(!TEAM.some(t=>t.id===SRL.user.id))TEAM.unshift({id:SRL.user.id,nombre:ME,rol:SRL.user.rol});
+    render();
   }catch(e){}
-  return base;
-})();
-ROLES[ME]=SRL.user.rol==='admin'?'admin':'member';
-function saveRoles(){try{localStorage.setItem(ROLES_KEY,JSON.stringify(ROLES));}catch(e){}}
-const isAdmin=()=>SRL.user.rol==='admin'; /* el rol ya no puede cambiarse desde el navegador */
+}
+const isAdmin=()=>SRL.user.rol==='admin'; /* el rol se controla en Supabase */
 let MODE=(function(){
   if(!isAdmin())return 'user';
   try{return localStorage.getItem(MODE_KEY)==='user'?'user':'admin';}catch(e){return 'admin';}
@@ -722,16 +631,9 @@ function requireAdmin(msg){if(canAdmin())return true;toast(msg||'Solo administra
 
 /* ===== Calendario propio y alertas ===== */
 const CAL_KEY='srl_cal_v1';
-function seedCal(){
-  return [
-    {id:'c1',d:'2026-11-20',label:'Convocatoria',title:'Cierre de postulaciones · Cohorte 2027',note:'Enviar el formulario a los postulantes',imp:true},
-    {id:'c2',d:'2026-11-27',label:'Reunión de equipo',title:'Revisión mensual de manuscritos',note:'',imp:false},
-    {id:'c3',d:'2026-12-04',label:'Defensa o presentación',title:'Presentación de avances · cohorte 2026',note:'',imp:true}
-  ];
-}
 let CAL=(function(){
   try{const o=JSON.parse(localStorage.getItem(CAL_KEY));if(Array.isArray(o))return o;}catch(e){}
-  return seedCal();
+  return [];
 })();
 function saveCal(){try{localStorage.setItem(CAL_KEY,JSON.stringify(CAL));}catch(e){}}
 function importantEvents(limit){
@@ -781,14 +683,13 @@ function activity(limit){
     a.h.forEach(h=>ev.push({d:h.d,type:'status',s:h.s,text:ST[h.s].n,title:a.t,id:a.id,note:h.n}));
     a.x.filter(f=>f.up).forEach(f=>ev.push({d:f.date,type:'file',text:'Documento añadido: '+f.n,title:a.t,id:a.id,note:''}));
   });
-  ev.push({d:'2026-11-07',type:'status',s:'reenv',text:'Revisión reenviada con respuesta a revisores',title:A.find(a=>a.id===5)?.t||'',id:5,note:'Clinical Infectious Diseases'});
-  ev.push({d:'2026-11-07',type:'file',text:'3 documentos añadidos al repositorio',title:A.find(a=>a.id===4)?.t||'',id:4,note:'Galeradas y figuras'});
-  ev.push({d:'2026-11-06',type:'project',text:'Proyecto actualizado: progreso al 72 %',title:P[0][0],id:null,note:'Nuevo colaborador incorporado'});
   ev.sort((a,b)=>b.d.localeCompare(a.d));
   return ev.slice(0,limit||10);
 }
 function feedHtml(limit){
-  return `<ul class="feed">${activity(limit).map(e=>{
+  const rows=activity(limit);
+  if(!rows.length)return '<p class="mut sm">Aún no hay actividad registrada. Los cambios aparecerán aquí a medida que se actualicen los manuscritos.</p>';
+  return `<ul class="feed">${rows.map(e=>{
     const icon=e.type==='file'?'file':e.type==='project'?'folder':'activity';
     const title=e.id!=null?`<a href="#" data-open="${e.id}">${esc(e.title)}</a>`:esc(e.title);
     return `<li><span class="ficon">${ic(icon)}</span><div><div class="ft"><b>${esc(e.text)}</b></div><div class="fm">${title}${e.note?' · '+esc(e.note):''} · ${rel(e.d)}</div></div></li>`;
@@ -1001,7 +902,7 @@ function vResumen(){
       <p class="note" style="margin-top:16px">${g.pub+g.acc} de ${g.target} ya están aseguradas o publicadas; ${g.rev} manuscritos en revisión sostienen el avance del año.</p>
     </section>
     <section class="panel">
-      <div class="sec-head"><div><p class="eyebrow">Registro</p><h2>Actividad reciente</h2></div><button class="link" type="button" data-open="${A[5].id}">Ver último cambio</button></div>
+      <div class="sec-head"><div><p class="eyebrow">Registro</p><h2>Actividad reciente</h2></div>${A.length?`<button class="link" type="button" data-open="${A[A.length-1].id}">Ver último cambio</button>`:''}</div>
       ${feedHtml(6)}
     </section>
   </div>
@@ -1053,7 +954,7 @@ function articleItem(a){
       <h3>${esc(a.t)}</h3>
       <div class="it-authors">${esc(a.au.join(', '))}</div>
       <div class="it-meta">
-        <span>${ic('folder')}${esc(P[a.p][0])}</span>
+        <span>${ic('folder')}${esc(projName(a))}</span>
         <span>${ic('book')}${esc(a.j||'Revista por definir')}</span>
         ${doiOf(a)?`<span>${ic('tag')}${esc(doiOf(a))}</span>`:''}
       </div>
@@ -1137,7 +1038,7 @@ function vManuscritos(){
       <h3>${esc(a.t)}</h3>
       <div class="it-authors">${esc(a.au.slice(0,4).join(', '))}${a.au.length>4?' y '+(a.au.length-4)+' más':''}</div>
       <div class="it-meta">
-        <span>${ic('folder')}${esc(P[a.p][0])}</span>
+        <span>${ic('folder')}${esc(projName(a))}</span>
         <span>${ic('book')}${esc(a.j||'Revista por definir')}</span>
         <span>${ic('file')}${a.x.length} documentos</span>
       </div>
@@ -1153,14 +1054,14 @@ function vManuscritos(){
 
 /* ===== Vista: proyectos ===== */
 function vProyectos(){
-  const cards=P.map((p,i)=>{
+  const cards=P.length?P.map((p,i)=>{
     const st=projStats(i);
     const recent=st.arts.slice().sort((a,b)=>last(b).d.localeCompare(last(a).d)).slice(0,3);
     return `<article class="proj">
       <div class="proj-top"><span class="tag">${esc(p[1])}</span><span class="team">${new Set([p[2],...p[3]]).size} investigadores</span></div>
       <h3>${esc(p[0])}</h3>
       <div class="proj-meta">
-        <span>Investigador principal: <b>${esc(AU[p[2]])}</b></span>
+        <span>Investigador principal: <b>${esc(p[2]||'Por asignar')}</b></span>
         <span>Etapa actual: <b>${esc(p[4])}</b></span>
       </div>
       <div><div class="proj-l"><span>Avance del proyecto</span><b>${p[5]}%</b></div>${pbar(p[5],'var(--accent)')}</div>
@@ -1172,7 +1073,7 @@ function vProyectos(){
       </div>
       <div class="proj-ms">${recent.length?recent.map(a=>`<a href="#" data-open="${a.id}">${badge(a.st,true)}<span>${esc(short(a.t,62))}</span></a>`).join(''):'<span class="sm mut">Sin manuscritos registrados.</span>'}</div>
     </article>`;
-  }).join('');
+  }).join(''):`<div class="empty" style="grid-column:1/-1"><b>Aún no hay proyectos registrados</b>Cuando se registre el primer proyecto aparecerá aquí con su equipo, su avance y los manuscritos que produce.</div>`;
   return `
   <div class="page-head">
     <p class="eyebrow">Portafolio</p>
@@ -1269,8 +1170,8 @@ function vAnalitica(){
   const dd=A.map(firstDecisionDays).filter(n=>n!=null&&n>=0);
   const pd=A.filter(a=>dOf(a,'env')&&dOf(a,'publ')).map(a=>Math.round((D(dOf(a,'publ'))-D(dOf(a,'env')))/864e5));
   const rows=monthlyRows(12);
-  const areas=[...new Set(A.map(a=>P[a.p][1]))].map((area,i)=>{
-    const arts=A.filter(a=>P[a.p][1]===area);
+  const areas=[...new Set(A.map(projArea))].map((area,i)=>{
+    const arts=A.filter(a=>projArea(a)===area);
     return {l:area,v:arts.length,c:AREA_C[i%AREA_C.length]};
   }).sort((a,b)=>b.v-a.v);
   const projectRows=P.map((p,i)=>({p,i,s:projStats(i)})).sort((a,b)=>b.s.total-a.s.total);
@@ -1281,31 +1182,31 @@ function vAnalitica(){
     <p class="sec-desc">Una lectura cuantitativa de los últimos doce meses: ritmo de envíos, publicaciones, tiempos editoriales y rendimiento por proyecto.</p>
   </div>
   <div class="kpis">
-    <div class="kpi"><b>${A.length}</b><span>Manuscritos registrados</span><em>${P.length} proyectos · ${new Set(A.map(a=>a.au[0])).size} autores líderes</em></div>
+    <div class="kpi"><b>${A.length}</b><span>Manuscritos registrados</span><em>${P.length} proyectos · ${new Set(A.flatMap(a=>a.au).filter(Boolean)).size} autores</em></div>
     <div class="kpi"><b>${sent}</b><span>Envíos acumulados</span><em>${cnt(['env'])} enviados sin respuesta</em></div>
     <div class="kpi"><b>${pubs}</b><span>Publicados</span><em>${A.filter(a=>a.st==='publ'&&(dOf(a,'publ')||'').startsWith('2026')).length} durante 2026</em></div>
     <div class="kpi"><b>${rate}%</b><span>Tasa de aceptación</span><em>${pubs} de ${decisions} decisiones cerradas</em></div>
     <div class="kpi"><b>${avg(dd)} días</b><span>Primera respuesta</span><em>Desde el envío hasta la primera decisión</em></div>
     <div class="kpi"><b>${avg(pd)} días</b><span>Hasta publicación</span><em>Promedio en los trabajos publicados</em></div>
-    <div class="kpi"><b>${totalDocs()}</b><span>Documentos</span><em>${(totalDocs()/A.length).toFixed(1)} por manuscrito</em></div>
+    <div class="kpi"><b>${totalDocs()}</b><span>Documentos</span><em>${A.length?(totalDocs()/A.length).toFixed(1):'0.0'} por manuscrito</em></div>
     <div class="kpi"><b>${activeCount()}</b><span>Manuscritos activos</span><em>${acc} aceptados aún sin publicar</em></div>
   </div>
   <section class="chart-card">
     <div class="sec-head"><div><p class="eyebrow">Ritmo editorial</p><h2>Envíos y publicaciones por mes</h2></div><span class="sm mut">Últimos 12 meses</span></div>
-    ${svgGrouped(rows)}
+    ${A.length?svgGrouped(rows):'<div class="empty"><b>Aún no hay datos</b>Registra el primer manuscrito para ver el ritmo editorial de los últimos doce meses.</div>'}
     <div class="legend"><span><i style="background:#3b5f82"></i>Envíos</span><span><i style="background:#2cb1cc"></i>Publicaciones</span></div>
   </section>
   <div class="two">
     <section class="chart-card">
       <div class="sec-head"><div><p class="eyebrow">Distribución</p><h2>Manuscritos por área</h2></div></div>
-      ${svgHBars(areas)}
+      ${areas.length?svgHBars(areas):'<div class="empty"><b>Sin áreas todavía</b>Las áreas clínicas aparecerán al registrar manuscritos.</div>'}
       <div class="mini-legend">${areas.map(a=>`<span><i style="background:${a.c}"></i>${esc(short(a.l,18))}</span>`).join('')}</div>
     </section>
     <section class="chart-card">
       <div class="sec-head"><div><p class="eyebrow">Producción</p><h2>Rendimiento por proyecto</h2></div></div>
       <div class="table-wrap"><table>
         <thead><tr><th>Proyecto</th><th class="n">Manus.</th><th class="n">Publ.</th><th class="n">Rev.</th><th>Avance</th></tr></thead>
-        <tbody>${projectRows.map(({p,i,s})=>`<tr><td><a href="#" data-open="${s.arts[0]?s.arts[0].id:0}">${esc(short(p[0],42))}</a><div class="it-sub">${esc(p[1])}</div></td><td class="n">${s.total}</td><td class="n">${s.publ}</td><td class="n">${s.sent}</td><td style="min-width:110px">${pbar(p[5],'var(--accent)')}<div class="it-sub">${p[5]}%</div></td></tr>`).join('')}</tbody>
+        <tbody>${projectRows.length?projectRows.map(({p,i,s})=>`<tr><td><a href="#" data-open="${s.arts[0]?s.arts[0].id:0}">${esc(short(p[0],42))}</a><div class="it-sub">${esc(p[1])}</div></td><td class="n">${s.total}</td><td class="n">${s.publ}</td><td class="n">${s.sent}</td><td style="min-width:110px">${pbar(p[5],'var(--accent)')}<div class="it-sub">${p[5]}%</div></td></tr>`).join(''):'<tr><td colspan="5" class="mut sm">Aún no hay proyectos registrados.</td></tr>'}</tbody>
       </table></div>
     </section>
   </div>
@@ -1314,7 +1215,8 @@ function vAnalitica(){
 
 /* ===== Vista: ranking ===== */
 function researcherRows(){
-  return AU.map(name=>{
+  const names=[...new Set(A.flatMap(a=>a.au).filter(Boolean))];
+  return names.map(name=>{
     const arts=A.filter(a=>a.au.includes(name));
     const publ=arts.filter(a=>a.st==='publ').length;
     const acep=arts.filter(a=>ACC.includes(a.st)).length;
@@ -1366,12 +1268,12 @@ function initials(n){
   return n.replace(/^(Dra?\.|Sr?a?\.)\s*/,'').split(' ').filter(w=>/^[A-ZÁÉÍÓÚ]/.test(w)).slice(0,2).map(w=>w[0]).join('')||'SR';
 }
 function vEquipo(){
-  const admins=TEAM.filter(n=>ROLES[n]==='admin').length;
+  const admins=TEAM.filter(t=>t.rol==='admin').length;
   return `
   <div class="page-head">
     <p class="eyebrow">Administración</p>
     <h1>Equipo y permisos</h1>
-    <p class="sec-desc">Solo los administradores pueden entrar a este panel, editar el sitio y borrar manuscritos. Aquí puedes promover o retirar permisos a cualquier miembro del equipo.</p>
+    <p class="sec-desc">Solo los administradores pueden entrar a este panel, editar el sitio y borrar manuscritos. Aquí puedes promover o retirar permisos a cualquier miembro registrado en la liga.</p>
   </div>
   <div class="kpis">
     <div class="kpi"><b>${TEAM.length}</b><span>Personas con acceso</span><em>${admins} administradores · ${TEAM.length-admins} miembros</em></div>
@@ -1379,21 +1281,21 @@ function vEquipo(){
     <div class="kpi"><b>${TEAM.length-admins}</b><span>Miembros</span><em>Acceso de lectura y modo usuario</em></div>
   </div>
   <section class="panel" style="margin-top:22px">
-    <div class="sec-head"><div><p class="eyebrow">Permisos</p><h2>Cuentas del equipo</h2></div><span class="sm mut">Los cambios se guardan en este navegador</span></div>
+    <div class="sec-head"><div><p class="eyebrow">Permisos</p><h2>Cuentas del equipo</h2></div><span class="sm mut">Los cambios se guardan en Supabase</span></div>
     <div class="table-wrap"><table class="role-table">
       <thead><tr><th>Persona</th><th>Rol actual</th><th class="n">Acciones</th></tr></thead>
-      <tbody>${TEAM.map(n=>{
-        const admin=ROLES[n]==='admin';
-        const me=n===ME;
+      <tbody>${TEAM.map(t=>{
+        const admin=t.rol==='admin';
+        const me=t.nombre===ME;
         return `<tr>
-          <td><div class="person-cell"><span class="avatar">${initials(n)}</span><div><b>${esc(n)}</b>${me?' <span class="you-tag">Tú</span>':''}<small>${admin?'Acceso completo al panel':'Miembro · solo lectura'}</small></div></div></td>
+          <td><div class="person-cell"><span class="avatar">${initials(t.nombre)}</span><div><b>${esc(t.nombre)}</b>${me?' <span class="you-tag">Tú</span>':''}<small>${admin?'Acceso completo al panel':'Miembro · solo lectura'}</small></div></div></td>
           <td><span class="role-pill ${admin?'admin':''}">${admin?'Administrador':'Miembro'}</span></td>
-          <td class="n"><div class="role-actions">${me?'<span class="sm mut">No puedes cambiar tu propio rol</span>':admin?`<button class="btn l" type="button" data-role="member" data-user="${esc(n)}">Quitar admin</button>`:`<button class="btn" type="button" data-role="admin" data-user="${esc(n)}">Hacer admin</button>`}</div></td>
+          <td class="n"><div class="role-actions">${me?'<span class="sm mut">No puedes cambiar tu propio rol</span>':admin?`<button class="btn l" type="button" data-role="member" data-user="${esc(t.id)}">Quitar admin</button>`:`<button class="btn" type="button" data-role="admin" data-user="${esc(t.id)}">Hacer admin</button>`}</div></td>
         </tr>`;
       }).join('')}</tbody>
     </table></div>
   </section>
-  <p class="note" style="margin-top:18px">Promover a alguien le da acceso al panel en este navegador. La sesión se simula con el nombre de la cuenta; para producción se conecta a la base de usuarios.</p>`;
+  <p class="note" style="margin-top:18px">Los roles se guardan en la tabla <b>profiles</b> de Supabase y se aplican la próxima vez que la persona inicie sesión. Para que un administrador pueda cambiar el rol de otra cuenta, la tabla debe tener la política de actualización incluida en <b>setup.sql</b>.</p>`;
 }
 
 /* ===== Vista: sitio y formularios ===== */
@@ -1430,11 +1332,88 @@ function vSitio(){
   </section>`;
 }
 
+/* ===== Vista: publicaciones del sitio (datos reales en Supabase) ===== */
+let PUBS=[], pubsLoaded=false, pubEdit=null;
+const PUB_ST={publicado:['Publicado','#0d5c3f'],aceptado:['Aceptado','#2e7d5b'],congreso:['Congreso','#2f6fb0']};
+async function loadPubs(){
+  if(!SRL.sb){pubsLoaded=true;return;}
+  try{
+    const {data,error}=await SRL.sb.from('publicaciones').select('*').order('y',{ascending:false}).order('created_at',{ascending:false});
+    if(!error&&Array.isArray(data))PUBS=data;
+  }catch(e){}
+  pubsLoaded=true;
+  if(currentView()==='publicaciones')render();
+}
+function pubForm(p){
+  const d=p||{t:'',a:'',v:'',y:Number(HOY.slice(0,4)),st:'publicado',line:'',abs:'',doi:''};
+  return `<form id="pubf" class="dr-form">
+    <input type="hidden" name="pubid" value="${esc(p?p.id:'')}">
+    <label class="fld" for="pub-t">Título</label>
+    <input id="pub-t" name="t" type="text" required value="${esc(d.t)}" placeholder="Título completo del trabajo">
+    <label class="fld" for="pub-a">Autores</label>
+    <input id="pub-a" name="a" type="text" value="${esc(d.a)}" placeholder="Apellido A, Apellido B, et al.">
+    <div class="row2">
+      <div><label class="fld" for="pub-v">Revista o congreso</label><input id="pub-v" name="v" type="text" value="${esc(d.v)}" placeholder="Revista · Volumen o congreso"></div>
+      <div><label class="fld" for="pub-y">Año</label><input id="pub-y" name="y" type="number" min="2000" max="2100" value="${esc(d.y)}"></div>
+    </div>
+    <div class="row2">
+      <div><label class="fld" for="pub-st">Estado</label><select id="pub-st" name="st">${opts([['publicado','Publicado'],['aceptado','Aceptado'],['congreso','Presentado en congreso']],d.st)}</select></div>
+      <div><label class="fld" for="pub-line">Línea de investigación</label><select id="pub-line" name="line">${opts(LINEAS.map(l=>[l,l]),d.line)}</select></div>
+    </div>
+    <label class="fld" for="pub-abs">Resumen público</label>
+    <textarea id="pub-abs" name="abs" rows="4" style="width:100%;padding:8px 10px;border:1px solid #9fb0bd;border-radius:4px;font:inherit;background:#fff;color:var(--ink)" placeholder="Resumen visible en el repositorio y el área de miembros">${esc(d.abs)}</textarea>
+    <label class="fld" for="pub-doi">DOI (opcional)</label>
+    <input id="pub-doi" name="doi" type="text" value="${esc(d.doi||'')}" placeholder="10.xxxx/xxxxx">
+    <div class="dlg-foot">
+      ${p?'<button class="btn l" type="button" data-pub-new>Cancelar edición</button>':''}
+      <button class="btn" type="submit">${ic('check')}${p?'Guardar cambios':'Publicar en el sitio'}</button>
+    </div>
+  </form>`;
+}
+function vPublicaciones(){
+  const edit=pubEdit?PUBS.find(x=>x.id===pubEdit):null;
+  const list=!pubsLoaded
+    ? '<p class="sm mut">Cargando publicaciones…</p>'
+    : PUBS.length?PUBS.map(p=>{
+        const s=PUB_ST[p.st]||PUB_ST.publicado;
+        return `<article class="man">
+          <div>
+            <div class="it-top"><span class="badge" style="--c:${s[1]}"><i aria-hidden="true"></i>${s[0]}</span><span class="it-date">${esc(p.y)}</span></div>
+            <h3>${esc(p.t)}</h3>
+            <div class="it-authors">${esc(p.a||'Sin autores')}</div>
+            <div class="it-meta"><span>${ic('book')}${esc(p.v||'Sin medio')}</span><span>${ic('tag')}${esc(p.line||'Sin línea')}</span></div>
+          </div>
+          <div class="man-side">
+            <small>${esc((p.updated_at||'').slice(0,10))}</small>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn l sm" type="button" data-pub-edit="${esc(p.id)}">Editar</button>
+              <button class="btn l sm" type="button" data-pub-del="${esc(p.id)}" style="color:#a92e2e">Quitar</button>
+            </div>
+          </div>
+        </article>`;
+      }).join('')
+    : '<div class="empty"><b>Aún no hay publicaciones.</b>Publica el primer trabajo verificado y aparecerá de inmediato en el repositorio público y en el área de miembros.</div>';
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Contenido público</p>
+    <h1>Publicaciones</h1>
+    <p class="sec-desc">Lo que registres aquí aparece al instante en el repositorio público y en el área de miembros. Solo se admiten trabajos publicados, aceptados o presentados en congreso; los manuscritos en revisión nunca se muestran.</p>
+  </div>
+  <section class="panel">
+    <div class="sec-head"><div><p class="eyebrow">${edit?'Editando':'Nueva entrada'}</p><h2>${edit?'Editar publicación':'Publicar un trabajo'}</h2></div><span class="role-pill admin">Solo admin</span></div>
+    ${pubForm(edit)}
+  </section>
+  <section class="panel" style="margin-top:22px">
+    <div class="sec-head"><div><p class="eyebrow">Repositorio</p><h2>Publicaciones visibles</h2></div><span class="role-pill">${PUBS.length}</span></div>
+    ${list}
+  </section>`;
+}
+
 /* ===== Cajón de detalle ===== */
 let openId=null;
 function docsHtml(a){
   if(!a.x.length)return `<p class="sm mut" style="margin-top:8px">Aún no hay documentos en este manuscrito.</p>`;
-  return `<table class="docs"><tbody>${a.x.map((f,i)=>`<tr><td><div class="fname"><span class="ftype">${esc(f.type||typeOf(f.n))}</span><span>${esc(f.n)}</span></div><div class="it-sub">${kb(f.kb)} · ${fmt(f.date)}${f.up?' · añadido desde el panel':''}</div></td><td class="n" style="white-space:nowrap"><a href="#" data-doc="${esc(f.n)}">Abrir</a> <a href="#" data-rmdoc="${i}" style="color:#a92e2e;margin-left:6px">Quitar</a></td></tr>`).join('')}</tbody></table>`;
+  return `<table class="docs"><tbody>${a.x.map((f,i)=>`<tr><td><div class="fname"><span class="ftype">${esc(f.type||typeOf(f.n))}</span><span>${esc(f.n)}</span></div><div class="it-sub">${kb(f.kb)} · ${fmt(f.date)}${f.up?' · añadido desde el panel':''}</div></td><td class="n" style="white-space:nowrap"><a href="#" data-rmdoc="${i}" style="color:#a92e2e">Quitar</a></td></tr>`).join('')}</tbody></table>`;
 }
 function histHtml(a){
   return `<ol class="hist">${a.h.slice().reverse().map(h=>`<li style="--c:${ST[h.s].c}"><div class="hd">${fmt(h.d)} · ${rel(h.d)}</div><b>${ST[h.s].n}</b>${h.n?`<p>${esc(h.n)}</p>`:''}</li>`).join('')}</ol>`;
@@ -1449,7 +1428,7 @@ function drawerHtml(a){
   <p class="mut sm">${esc(a.au.join(', '))}</p>
   ${tl(a)}
   <dl class="dr-meta">
-    <dt>Proyecto</dt><dd>${esc(P[a.p][0])}</dd>
+    <dt>Proyecto</dt><dd>${esc(projName(a))}</dd>
     <dt>Revista</dt><dd>${esc(a.j||'Por definir')}</dd>
     <dt>Estado</dt><dd>${stage(a.st)}</dd>
     <dt>Fase</dt><dd>${FASES[ST[a.st].ph]} · ${ST[a.st].ph+1} de 7</dd>
@@ -1481,7 +1460,7 @@ function drawerHtml(a){
       <input id="mj" name="j" type="text" value="${esc(a.j||'')}" placeholder="Revista o medio">
       <div class="row2">
         <input name="doi" type="text" value="${esc(doiOf(a))}" placeholder="DOI (opcional)" aria-label="DOI">
-        <select name="p" aria-label="Proyecto">${opts(P.map((p,i)=>[i,p[0]]),a.p)}</select>
+        <select name="p" aria-label="Proyecto">${opts(P.length?P.map((p,i)=>[i,p[0]]):[['-1','Sin proyecto']],P.length?a.p:-1)}</select>
       </div>
       <div><button class="btn l" type="submit">Guardar datos</button></div>
     </form>
@@ -1539,7 +1518,7 @@ function toast(msg){
 }
 function openNew(){
   if(!requireAdmin('Solo administradores pueden registrar manuscritos.'))return;
-  $('#np').innerHTML=opts(P.map((p,i)=>[i,p[0]]),0);
+  $('#np').innerHTML=opts(P.length?P.map((p,i)=>[i,p[0]]):[['-1','Sin proyecto']],P.length?0:-1);
   $('#nst').innerHTML=opts(KEYS.map(k=>[k,ST[k].n]),'prep');
   $('#nt').value='';$('#nau').value='';$('#nj').value='';$('#nfile').value='';$('#nd').value=HOY;
   $('#dlg').showModal();
@@ -1586,23 +1565,42 @@ function deleteArticle(){
   if(!confirm('¿Eliminar definitivamente este manuscrito y sus documentos del repositorio?'))return;
   A=A.filter(x=>x.id!==a.id);save();closeDrawer();render();toast('Manuscrito eliminado del repositorio');
 }
-function setRole(name,role){
+async function deletePub(id){
+  if(!requireAdmin('Solo administradores pueden quitar publicaciones.'))return;
+  const p=PUBS.find(x=>String(x.id)===String(id));if(!p)return;
+  if(!confirm('¿Quitar "'+p.t+'" del repositorio público?'))return;
+  try{
+    const {error}=await SRL.sb.from('publicaciones').delete().eq('id',id);
+    if(error)throw error;
+    pubEdit=null;await loadPubs();render();toast('Publicación eliminada del sitio.');
+  }catch(err){toast('No se pudo eliminar. Revisa los permisos de la tabla publicaciones.');}
+}
+async function setRole(id,role){
   if(!requireAdmin('Solo administradores pueden cambiar roles.'))return;
-  if(name===ME){toast('No puedes cambiar tu propio rol.');return;}
-  if(!(name in ROLES))return;
-  ROLES[name]=role==='admin'?'admin':'member';saveRoles();render();
-  toast(name+' ahora es '+(role==='admin'?'administrador':'miembro'));
+  const t=TEAM.find(x=>x.id===id);
+  if(!t)return;
+  if(t.nombre===ME){toast('No puedes cambiar tu propio rol.');return;}
+  const next=role==='admin'?'admin':'estudiante';
+  try{
+    const {error}=await SRL.sb.from('profiles').update({rol:next}).eq('id',id);
+    if(error)throw error;
+    t.rol=next==='admin'?'admin':'member';
+    render();
+    toast(t.nombre+' ahora es '+(next==='admin'?'administrador':'miembro'));
+  }catch(err){
+    toast('No se pudo guardar el rol. Revisa la política de actualización de profiles.');
+  }
 }
 function launchEditor(file){
   if(!requireAdmin('Solo administradores pueden editar el sitio.'))return;
-  try{localStorage.setItem('srl_edit','1');localStorage.setItem('srl_user','1');}catch(e){}
+  try{localStorage.setItem('srl_edit','1');}catch(e){}
   window.open(file+'?edit=1','_blank','noopener');
   toast('Modo de edición activado en '+file);
 }
 
 /* ===== Enrutado ===== */
-const VIEWS={resumen:vResumen,articulos:vArticulos,manuscritos:vManuscritos,proyectos:vProyectos,calendario:vCalendario,equipo:vEquipo,sitio:vSitio,analitica:vAnalitica,ranking:vRanking};
-const TITLES={resumen:'Resumen',articulos:'Artículos',manuscritos:'Manuscritos',proyectos:'Proyectos',calendario:'Calendario',equipo:'Equipo y permisos',sitio:'Sitio y formularios',analitica:'Analítica',ranking:'Ranking'};
+const VIEWS={resumen:vResumen,articulos:vArticulos,publicaciones:vPublicaciones,manuscritos:vManuscritos,proyectos:vProyectos,calendario:vCalendario,equipo:vEquipo,sitio:vSitio,analitica:vAnalitica,ranking:vRanking};
+const TITLES={resumen:'Resumen',articulos:'Artículos',publicaciones:'Publicaciones',manuscritos:'Manuscritos',proyectos:'Proyectos',calendario:'Calendario',equipo:'Equipo y permisos',sitio:'Sitio y formularios',analitica:'Analítica',ranking:'Ranking'};
 function currentView(){
   const h=location.hash.replace(/^#/,'');
   if(!VIEWS[h])return 'resumen';
@@ -1623,13 +1621,6 @@ function go(hash){
   if(location.hash===hash)render();
   else location.hash=hash;
 }
-function resetDemo(){
-  if(!requireAdmin('Solo administradores pueden restablecer los datos.'))return;
-  if(!confirm('¿Restablecer los datos de demostración? Se perderán los cambios guardados en este navegador.'))return;
-  try{localStorage.removeItem(KEY);}catch(e){}
-  A=seed();A.forEach(ensureFiles);save();
-  closeDrawer();render();toast('Datos de demostración restablecidos');
-}
 
 /* ===== Interacción ===== */
 document.addEventListener('click',e=>{
@@ -1649,6 +1640,12 @@ document.addEventListener('click',e=>{
   if(role){e.preventDefault();setRole(role.dataset.user,role.dataset.role);return;}
   const editSite=e.target.closest('[data-edit-site]');
   if(editSite){e.preventDefault();launchEditor(editSite.dataset.editSite||'index.html');return;}
+  const pubNew=e.target.closest('[data-pub-new]');
+  if(pubNew){e.preventDefault();pubEdit=null;render();return;}
+  const pubEditBtn=e.target.closest('[data-pub-edit]');
+  if(pubEditBtn){e.preventDefault();pubEdit=pubEditBtn.dataset.pubEdit;render();window.scrollTo({top:0,behavior:'smooth'});return;}
+  const pubDel=e.target.closest('[data-pub-del]');
+  if(pubDel){e.preventDefault();deletePub(pubDel.dataset.pubDel);return;}
   const o=e.target.closest('[data-open]');
   if(o){e.preventDefault();openDrawer(+o.dataset.open);return;}
   const x=e.target.closest('[data-close]');
@@ -1656,8 +1653,6 @@ document.addEventListener('click',e=>{
   if(e.target.id==='scrim'){closeDrawer();return;}
   const nw=e.target.closest('[data-new]');
   if(nw){e.preventDefault();openNew();return;}
-  const rs=e.target.closest('[data-reset]');
-  if(rs){e.preventDefault();resetDemo();return;}
   const st=e.target.closest('[data-status]');
   if(st){e.preventDefault();S.st=st.dataset.status;S.phase='';go('#articulos');return;}
   const tab=e.target.closest('[data-tab]');
@@ -1666,8 +1661,6 @@ document.addEventListener('click',e=>{
   if(cal){e.preventDefault();const n=+cal.dataset.cal;if(n===0){S.cal=HOY.slice(0,7);render();}else shiftMonth(n);return;}
   const clr=e.target.closest('[data-clear]');
   if(clr){e.preventDefault();S.q='';S.st='';S.proj='';S.year='';S.phase='';S.order='recent';render();return;}
-  const doc=e.target.closest('[data-doc]');
-  if(doc){e.preventDefault();toast('Documento de demostración: '+doc.dataset.doc);return;}
   const rm=e.target.closest('[data-rmdoc]');
   if(rm){e.preventDefault();removeDoc(+rm.dataset.rmdoc);return;}
 });
@@ -1678,7 +1671,7 @@ document.addEventListener('change',e=>{
   if(e.target.matches('select[data-f]')){S[e.target.dataset.f]=e.target.value;paintArticulos();return;}
   if(e.target.matches('[data-upload]')){uploadFiles(e.target.files);return;}
 });
-document.addEventListener('submit',e=>{
+document.addEventListener('submit',async e=>{
   const form=e.target;
   if(form.id==='calf'){
     e.preventDefault();
@@ -1719,9 +1712,37 @@ document.addEventListener('submit',e=>{
     const fd=new FormData(form);
     a.j=String(fd.get('j')||'').trim()||'Por definir';
     a.doi=String(fd.get('doi')||'').trim();
-    a.p=Math.max(0,Math.min(P.length-1,parseInt(fd.get('p'),10)||0));
+    const pi=parseInt(fd.get('p'),10);
+    a.p=P[pi]?pi:-1;
     save();render();openDrawer(a.id);
     toast('Datos del manuscrito guardados');
+    return;
+  }
+  if(form.id==='pubf'){
+    e.preventDefault();
+    if(!requireAdmin('Solo administradores pueden publicar en el sitio.'))return;
+    const fd=new FormData(form);
+    const t=String(fd.get('t')||'').trim();
+    if(!t){toast('Escribe el título de la publicación.');return;}
+    const row={
+      t,
+      a:String(fd.get('a')||'').trim(),
+      v:String(fd.get('v')||'').trim(),
+      y:parseInt(fd.get('y'),10)||Number(HOY.slice(0,4)),
+      st:String(fd.get('st')||'publicado'),
+      line:String(fd.get('line')||LINEAS[0]),
+      abs:String(fd.get('abs')||'').trim(),
+      doi:String(fd.get('doi')||'').trim(),
+      updated_at:new Date().toISOString()
+    };
+    const id=String(fd.get('pubid')||'').trim();
+    try{
+      const q=id?SRL.sb.from('publicaciones').update(row).eq('id',id):SRL.sb.from('publicaciones').insert(row);
+      const {error}=await q;
+      if(error)throw error;
+      pubEdit=null;await loadPubs();render();
+      toast(id?'Publicación actualizada en el sitio.':'Publicación visible en el repositorio público.');
+    }catch(err){toast('No se pudo guardar. Revisa la tabla publicaciones y sus políticas.');}
     return;
   }
   if(form.id==='nf'){
@@ -1732,11 +1753,12 @@ document.addEventListener('submit',e=>{
     const id=A.length?Math.max(...A.map(x=>x.id))+1:0;
     const st=$('#nst').value||'prep';
     const d=$('#nd').value||HOY;
-    const p=Math.max(0,Math.min(P.length-1,parseInt($('#np').value,10)||0));
+    const pi=parseInt($('#np').value,10);
+    const p=P[pi]?pi:-1;
     const au=$('#nau').value.split(',').map(s=>s.trim()).filter(Boolean);
-    const a={id,t,p,j:$('#nj').value.trim()||'Por definir',st,au:au.length?au:[AU[0]],doi:'',h:[{s:st,d,n:'Artículo registrado en el panel.'}],x:[]};
+    const a={id,t,p,j:$('#nj').value.trim()||'Por definir',st,au:au.length?au:[ME],doi:'',h:[{s:st,d,n:'Artículo registrado en el panel.'}],x:[]};
     [...$('#nfile').files].forEach(f=>a.x.push({n:f.name,type:typeOf(f.name),kb:Math.max(1,Math.round(f.size/1024)),date:HOY,up:true}));
-    A.push(a);ensureFiles(a);save();
+    A.push(a);save();
     $('#dlg').close();render();openDrawer(id);
     toast('Artículo registrado en el repositorio');
     return;
@@ -1757,6 +1779,8 @@ window.addEventListener('hashchange',()=>{
 /* ===== Arranque ===== */
 applyMode();
 render();
+loadTeam();
+loadPubs();
 
 
 </script>

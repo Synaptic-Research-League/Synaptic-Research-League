@@ -27,6 +27,8 @@
       qsa('[data-user-name]').forEach(function(e){e.textContent=nombre;});
       qsa('[data-user-av]').forEach(function(e){e.textContent=ini;});
       qsa('[data-user-role]').forEach(function(e){e.textContent=admin?'Administrador':'Miembro';});
+      qsa('[data-auth-only]').forEach(function(e){e.hidden=false;});
+      qsa('[data-admin-only]').forEach(function(e){e.hidden=!admin;});
       qsa('[data-logout]').forEach(function(b){b.addEventListener('click',function(){SRL.signOut();});});
       var m=document.getElementById('srl-main');
       if(m){ var x=document.createElement('script'); x.textContent=m.textContent; document.body.appendChild(x); }

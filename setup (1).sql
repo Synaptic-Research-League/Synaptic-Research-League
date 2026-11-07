@@ -56,13 +56,68 @@ create policy "articulos propios o admin" on public.articulos
 create policy "admin gestiona articulos" on public.articulos
   for all using (public.is_admin()) with check (public.is_admin());
 
+-- Solo el admin puede promover o retirar permisos a otras cuentas
+drop policy if exists "admin actualiza perfiles" on public.profiles;
+create policy "admin actualiza perfiles" on public.profiles
+  for update using (public.is_admin()) with check (public.is_admin());
+
 -- 5b. Permisos explícitos (necesarios si desactivaste "Automatically expose new tables").
 -- Solo usuarios con sesión iniciada; el visitante anónimo no tiene acceso. Las políticas de arriba filtran las filas.
 grant usage on schema public to authenticated;
-grant select on public.profiles to authenticated;
+grant select, update on public.profiles to authenticated;
 grant select, insert, update, delete on public.articulos to authenticated;
 grant execute on function public.is_admin() to authenticated;
 
 -- 6. Convertirte en administrador (cambia el correo y ejecuta DESPUÉS de crear tu cuenta en la página)
 -- update public.profiles set rol = 'admin'
 --   where id = (select id from auth.users where email = 'TU_CORREO@ejemplo.com');
+
+-- 7. Contenido editable del sitio público (solo lo escribe un admin, lo lee todo el mundo)
+create table if not exists public.site_content (
+  key        text primary key,
+  value      text not null default '',
+  updated_at timestamptz not null default now()
+);
+alter table public.site_content enable row level security;
+
+drop policy if exists "contenido publico" on public.site_content;
+drop policy if exists "admin edita contenido" on public.site_content;
+
+create policy "contenido publico" on public.site_content
+  for select using (true);
+
+create policy "admin edita contenido" on public.site_content
+  for all using (public.is_admin()) with check (public.is_admin());
+
+grant select on public.site_content to anon, authenticated;
+grant insert, update, delete on public.site_content to authenticated;
+
+-- 8. Publicaciones verificadas (las que ven el repositorio y el área de miembros)
+--    Solo se publican trabajos publicados, aceptados o presentados en congreso.
+create table if not exists public.publicaciones (
+  id         uuid primary key default gen_random_uuid(),
+  t          text not null,
+  a          text not null default '',
+  v          text not null default '',
+  y          int  not null default extract(year from now())::int,
+  st         text not null default 'publicado'
+             check (st in ('publicado','aceptado','congreso')),
+  line       text not null default '',
+  abs        text not null default '',
+  doi        text not null default '',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+alter table public.publicaciones enable row level security;
+
+drop policy if exists "publicaciones publicas" on public.publicaciones;
+drop policy if exists "admin gestiona publicaciones" on public.publicaciones;
+
+create policy "publicaciones publicas" on public.publicaciones
+  for select using (true);
+
+create policy "admin gestiona publicaciones" on public.publicaciones
+  for all using (public.is_admin()) with check (public.is_admin());
+
+grant select on public.publicaciones to anon, authenticated;
+grant insert, update, delete on public.publicaciones to authenticated;
