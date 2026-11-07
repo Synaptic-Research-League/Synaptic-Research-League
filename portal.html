@@ -3,399 +3,714 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Seguimiento de artículos</title>
+<title>Área de miembros · Synaptic Research League</title>
+<meta name="description" content="Área de miembros de Synaptic Research League: busca publicaciones verificadas y consulta los proyectos de investigación activos.">
+<meta name="theme-color" content="#f4f8fa">
+<link rel="icon" href="emblema.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,500..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="srl.css">
 <style>
-:root{
-  --paper:#fdf4f3; --grid1:#f7dedf; --grid2:#efc3c6;
-  --ink:#1e1b24; --muted:#6a5f68; --petrol:#0b4f6c; --red:#b3202f; --ok:#1f7a4d; --warn:#8a5a00;
-  --serif:"Literata",Georgia,"Times New Roman",serif;
-  --sans:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  --r:4px;
-}
-*{box-sizing:border-box}
-html,body{min-height:100%}
-body{margin:0;font:17px/1.55 var(--sans);color:var(--ink);background-color:var(--paper);
-  background-image:linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px),
-  linear-gradient(var(--grid1) 1px,transparent 1px),linear-gradient(90deg,var(--grid1) 1px,transparent 1px);
-  background-size:100px 100px,100px 100px,20px 20px,20px 20px}
-[hidden]{display:none!important}
-:focus-visible{outline:3px solid var(--petrol);outline-offset:2px}
-.brand{display:flex;align-items:center;gap:10px;font:600 17px var(--serif);color:var(--ink)}
-.brand svg{width:34px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+/* ===== Área de miembros ===== */
+.member-chip{display:flex;align-items:center;gap:10px;padding:4px 14px 4px 4px;border:1px solid var(--border);border-radius:999px;background:var(--linen)}
+.member-chip .avatar{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--pine);color:var(--oat);font-size:11px;font-weight:700;letter-spacing:.04em;flex:none}
+.member-chip b{display:block;font-size:12.5px;line-height:1.2;color:var(--pine);white-space:nowrap}
+.member-chip small{display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--clay);margin-top:2px}
+.back-btn{display:inline-flex;align-items:center;gap:8px}
+.back-btn svg{width:16px;height:16px;transition:transform .18s var(--ease)}
+.back-btn:hover svg{transform:translateX(-3px)}
 
-/* ---------- Acceso ---------- */
-.auth{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);padding:clamp(20px,4vw,48px) clamp(20px,5vw,72px);align-items:center}
-.hero{display:grid;gap:clamp(24px,4vw,44px);align-content:center}
-.hero h1{font:700 clamp(34px,5vw,62px)/1.08 var(--serif);letter-spacing:-.015em;margin:0;max-width:15ch}
-.hero p{margin:0;max-width:40ch;font-size:19px;color:var(--muted)}
-.etapas{width:100%;max-width:640px}
-.ecg{display:block;width:100%;height:auto;overflow:visible}
-.ecg path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;
-  stroke-dasharray:1;stroke-dashoffset:1;animation:trace 2.8s cubic-bezier(.4,0,.2,1) .3s forwards}
+.member-hero{position:relative;overflow:hidden;background:var(--pine);color:var(--oat);padding-top:calc(var(--head) + 40px)}
+.member-hero .mh-deco{position:absolute;right:-140px;top:-60px;width:520px;height:520px;border:1px solid rgba(251,252,253,.09);border-radius:50%;pointer-events:none}
+.member-hero .mh-deco::after{content:"";position:absolute;inset:64px;border:1px solid rgba(251,252,253,.06);border-radius:50%}
+.mh-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.8fr);gap:clamp(32px,5vw,64px);align-items:end;padding-bottom:34px;position:relative;z-index:1}
+.mh-copy h1{margin-top:16px;font-family:var(--serif);font-weight:600;font-size:clamp(34px,4.4vw,52px);line-height:1.08;letter-spacing:-.025em;color:var(--oat);max-width:18ch}
+.mh-copy h1 .mh-name{display:inline-block;color:#fff;border-bottom:3px solid var(--clay);line-height:1.02;padding-bottom:2px}
+.mh-copy .mh-lead{margin-top:20px;max-width:47ch;font-size:15.5px;line-height:1.8;color:rgba(251,252,253,.7)}
+.mh-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.mh-actions .pill-link{color:var(--oat);border-color:rgba(251,252,253,.34);background:rgba(251,252,253,.04)}
+.mh-actions .pill-link:hover{background:rgba(251,252,253,.12);border-color:rgba(251,252,253,.64)}
+.mh-actions .pill-link svg{width:15px;height:15px}
+.mh-card{padding:24px;border:1px solid rgba(251,252,253,.18);border-radius:22px;background:rgba(251,252,253,.07);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.mh-who{display:flex;align-items:center;gap:13px}
+.mh-who .avatar{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--clay);color:#fff;font-size:14px;font-weight:700;letter-spacing:.04em;flex:none}
+.mh-who b{display:block;font-family:var(--serif);font-size:19px;line-height:1.2;color:#fff}
+.mh-who small{display:block;margin-top:3px;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--clay-soft)}
+.mh-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;padding-top:18px;border-top:1px solid rgba(251,252,253,.16)}
+.mh-stats b{display:block;font-family:var(--serif);font-size:29px;font-weight:500;line-height:1;color:#fff}
+.mh-stats span{display:block;margin-top:4px;font-size:11px;line-height:1.35;color:rgba(251,252,253,.6)}
+.mh-foot{margin-top:18px;font-size:11.5px;line-height:1.55;color:rgba(251,252,253,.55)}
+.mh-foot a{color:rgba(251,252,253,.85);text-underline-offset:3px}
+
+/* EKG */
+.ekg-panel{position:relative;z-index:1;border-top:1px solid rgba(251,252,253,.16);padding:18px 0 24px}
+.ekg-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(251,252,253,.55)}
+.ekg-top span:last-child{display:inline-flex;align-items:center;gap:7px;letter-spacing:.08em;text-transform:none;font-weight:600;font-size:11px}
+.ekg-top .pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--clay);box-shadow:0 0 0 4px rgba(10,123,148,.24)}
+.ecg{display:block;width:100%;height:96px;overflow:visible;margin-top:8px}
+.ecg path{fill:none;stroke:rgba(251,252,253,.72);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;animation:trace 2.8s cubic-bezier(.4,0,.2,1) .3s forwards}
+.ecg .scan{stroke:var(--clay);stroke-width:2.4;stroke-dasharray:58 980;stroke-dashoffset:1038;animation:sweep 7s linear 3.2s infinite}
 @keyframes trace{to{stroke-dashoffset:0}}
-.etapas ol{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);text-align:center}
-.etapas li{font:700 14px/1.25 var(--sans);padding:0 2px;opacity:0;animation:in .4s ease-out forwards;animation-delay:calc(.3s + 2.8s*(var(--i) + .6)/5)}
-.etapas li::before{content:"";display:block;width:2px;height:10px;background:var(--ink);margin:0 auto 6px}
-@keyframes in{to{opacity:1}}
-.card{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:clamp(22px,3vw,34px);width:100%;max-width:430px;justify-self:center}
-.tabs{display:flex;margin:0 0 22px;border-bottom:2px solid var(--ink)}
-.tab{flex:1;background:none;border:0;padding:10px 4px;margin-bottom:-2px;font:700 16px var(--sans);color:var(--muted);cursor:pointer;border-bottom:4px solid transparent}
-.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--petrol)}
-h2{font:700 28px/1.15 var(--serif);margin:0 0 6px}
-.sub{margin:0 0 18px;color:var(--muted)}
-label{display:block;font-weight:700;font-size:15px;margin:16px 0 6px}
-input{width:100%;padding:12px;border:2px solid var(--ink);border-radius:var(--r);font:17px var(--sans);background:#fff;color:var(--ink)}
-input:focus{border-color:var(--petrol)}
-.btn{display:block;width:100%;margin-top:22px;padding:13px 16px;border:2px solid var(--petrol);border-radius:var(--r);background:var(--petrol);color:#fff;font:700 17px var(--sans);cursor:pointer}
-.btn:hover{background:#093f57}
-.btn:disabled{opacity:.6;cursor:wait}
-.btn.ghost{background:none;color:var(--ink);border-color:var(--ink);margin-top:10px}
-.btn.ghost:hover{background:var(--grid1)}
-.link{background:none;border:0;padding:0;color:var(--petrol);font:700 15px var(--sans);text-decoration:underline;cursor:pointer}
-.row{display:flex;justify-content:flex-end;margin-top:10px}
-.msg{margin-top:16px;padding:10px 12px;border-radius:var(--r);font-size:15px;border:2px solid}
-.msg.err{background:#fdecea;border-color:var(--red);color:#7d1520}
-.msg.ok{background:#e7f5ec;border-color:var(--ok);color:#14502f}
-.notice{background:#fff4d6;border:2px solid #d9b34a;color:#5c4000;padding:12px;border-radius:var(--r);font-size:15px;margin-bottom:16px}
-.privacy{margin:22px 0 0;font-size:14px;color:var(--muted)}
+@keyframes sweep{to{stroke-dashoffset:-58}}
+.ekg-labels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+.ekg-labels span{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(251,252,253,.5)}
+.ekg-labels span::before{content:"";width:4px;height:4px;border-radius:50%;background:rgba(251,252,253,.4);flex:none}
+.ekg-labels span:last-child{justify-content:flex-end}
 
-/* ---------- Perfil ---------- */
-async function getPerfil(){
-  const { data:{ user } } = await sb.auth.getUser();
-  const { data } = await sb.from('profiles').select('nombre,rol').eq('id', user.id).maybeSingle();
-  return { user, nombre: (data && data.nombre) || '', rol: (data && data.rol) || 'estudiante' };
+/* Secciones */
+.portal-sec{padding:clamp(56px,7vw,86px) 0}
+.portal-sec.alt{background:var(--linen);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.portal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.portal-head h2{margin-top:10px;font-family:var(--serif);font-size:clamp(28px,3.3vw,40px);font-weight:600;line-height:1.12;letter-spacing:-.02em;max-width:24ch}
+.portal-head .sec-intro{max-width:26rem}
+.portal-head .count{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.portal-head .count b{color:var(--clay-deep)}
+
+/* Herramientas de búsqueda */
+.pub-tools{margin-top:32px;display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:12px 18px;align-items:center}
+.pub-search{display:flex;align-items:center;gap:10px;min-height:54px;padding:0 18px;border:1px solid var(--border-strong);border-radius:999px;background:var(--linen);transition:border-color .16s ease,box-shadow .16s ease}
+.pub-search:focus-within{border-color:var(--clay);box-shadow:0 0 0 3px rgba(10,123,148,.15)}
+.pub-search svg{width:18px;height:18px;color:rgba(14,40,58,.45);flex:none}
+.pub-search input{width:100%;min-height:52px;border:0;outline:0;background:transparent;font-size:15px;color:var(--pine)}
+.pub-search input::placeholder{color:rgba(14,40,58,.4)}
+.status-filter{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.status-pill{min-height:42px;padding:0 15px;border:1px solid var(--border-strong);border-radius:999px;background:transparent;font-size:13px;font-weight:600;color:rgba(14,40,58,.72);cursor:pointer;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+.status-pill:hover{background:var(--oat-deep);border-color:var(--pine);color:var(--pine)}
+.status-pill[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:var(--oat)}
+.pub-filters{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
+.pub-filters label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,40,58,.5)}
+.pub-filters select{min-height:44px;padding:0 34px 0 13px;border:1px solid var(--border-strong);border-radius:10px;background:var(--linen);font-size:13.5px;color:var(--pine);cursor:pointer}
+.pub-filters select:focus{outline:none;border-color:var(--clay);box-shadow:0 0 0 3px rgba(10,123,148,.14)}
+.clear-btn{min-height:44px;padding:0 16px;border:1px solid transparent;border-radius:999px;background:none;font-size:13px;font-weight:600;color:var(--clay-deep);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.clear-btn:hover{color:var(--clay)}
+.pub-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:20px;padding-bottom:10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}
+.pub-summary b{color:var(--pine)}
+.conf-note{display:inline-flex;align-items:center;gap:7px}
+.conf-note svg{width:14px;height:14px;color:var(--clay);flex:none}
+
+/* Resultados */
+.pub-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.pub-card{display:flex;flex-direction:column;padding:24px;border:1px solid var(--border);border-radius:20px;background:var(--linen);transition:transform .2s var(--ease),box-shadow .25s ease,border-color .2s ease;animation:card-in .35s var(--ease)}
+@keyframes card-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pub-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:var(--border-strong)}
+.pc-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pc-year{font-family:var(--serif);font-size:16px;color:rgba(14,40,58,.45)}
+.pub-card h3{margin-top:14px;font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.28;letter-spacing:-.01em;color:var(--pine)}
+.pc-authors{margin-top:9px;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.pc-venue{margin-top:4px;font-size:12.5px;line-height:1.55;color:var(--pine);font-weight:600}
+.pc-abs{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.pc-abs summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer;font-size:12px;font-weight:700;color:var(--clay-deep)}
+.pc-abs summary::-webkit-details-marker{display:none}
+.pc-abs summary::after{content:"+";font-size:15px;line-height:1;color:var(--clay);transition:transform .18s ease}
+.pc-abs[open] summary::after{content:"−"}
+.pc-abs p{margin-top:9px;font-size:13px;line-height:1.7;color:rgba(14,40,58,.74)}
+.pc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:16px}
+.pc-line{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(14,40,58,.45)}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:999px;background:var(--oat);font-size:11.5px;font-weight:700;color:var(--pine);cursor:pointer;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+.copy-btn svg{width:13px;height:13px}
+.copy-btn:hover{background:var(--clay-soft);border-color:rgba(10,123,148,.35);color:var(--clay-deep)}
+.empty-state{grid-column:1/-1;padding:56px 24px;border:1px dashed var(--border-strong);border-radius:20px;background:var(--linen);text-align:center}
+.empty-state b{display:block;font-family:var(--serif);font-size:24px;color:var(--pine);margin-bottom:6px}
+.empty-state p{font-size:14px;color:var(--muted);max-width:44ch;margin:0 auto}
+.empty-state .btn{margin-top:20px}
+
+/* Proyectos */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px;align-items:stretch}
+.proj-card{display:flex;flex-direction:column;padding:24px;border:1px solid var(--border);border-radius:22px;background:var(--linen);transition:transform .2s var(--ease),box-shadow .25s ease,border-color .2s ease}
+.proj-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:var(--border-strong)}
+.proj-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.proj-card h3{margin-top:16px;font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.25;letter-spacing:-.01em;color:var(--pine)}
+.proj-lead{margin-top:9px;font-size:12.5px;color:var(--muted)}
+.proj-lead b{color:var(--pine);font-weight:600}
+.proj-progress{margin-top:20px}
+.pp-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,40,58,.5)}
+.pp-head b{font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:0;color:var(--pine)}
+.bar{height:6px;margin-top:8px;border-radius:999px;background:var(--oat-deep);overflow:hidden}
+.bar span{display:block;height:100%;border-radius:999px;background:var(--clay);transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease) .15s}
+[data-reveal].seen .bar span{transform:scaleX(var(--p,.5))}
+.proj-milestone{display:flex;align-items:flex-start;gap:11px;margin-top:18px;padding:13px 14px;border:1px solid var(--border);border-radius:14px;background:var(--oat)}
+.proj-milestone svg{width:17px;height:17px;color:var(--clay);flex:none;margin-top:2px}
+.proj-milestone small{display:block;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(14,40,58,.45)}
+.proj-milestone b{display:block;margin-top:2px;font-size:12.5px;line-height:1.4;color:var(--pine)}
+.proj-milestone span{display:block;margin-top:2px;font-size:11.5px;color:var(--muted)}
+.proj-team{list-style:none;display:flex;align-items:center;margin:20px 0 0;padding:0}
+.proj-team li{display:grid;place-items:center;width:32px;height:32px;margin-left:-8px;border:2px solid var(--linen);border-radius:50%;background:var(--pine);color:var(--oat);font-size:10px;font-weight:700;letter-spacing:.02em}
+.proj-team li:first-child{margin-left:0}
+.proj-team .more{background:var(--sage-soft);color:var(--pine);font-size:10px}
+.proj-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:16px;font-size:10.5px;color:rgba(14,40,58,.45)}
+.proj-foot .live{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--clay-deep)}
+.proj-foot .live i{width:6px;height:6px;border-radius:50%;background:var(--clay);animation:blip 2.6s ease-out infinite}
+@keyframes blip{0%{box-shadow:0 0 0 0 rgba(10,123,148,.4)}70%{box-shadow:0 0 0 6px rgba(10,123,148,0)}100%{box-shadow:0 0 0 0 rgba(10,123,148,0)}}
+
+/* Pie */
+.portal-foot{background:var(--pine);color:var(--oat);padding:34px 0;margin-top:0}
+.pf-in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.pf-brand{display:flex;align-items:center;gap:12px}
+.pf-brand img{height:34px;width:auto}
+.pf-brand b{display:block;font-family:var(--serif);font-size:18px;line-height:1.1;color:var(--oat)}
+.pf-brand span{display:block;margin-top:2px;font-size:8.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(251,252,253,.55)}
+.pf-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:12.5px}
+.pf-links a{color:rgba(251,252,253,.76);text-decoration:none}
+.pf-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.pf-copy{width:100%;margin-top:22px;padding-top:16px;border-top:1px solid rgba(251,252,253,.15);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;color:rgba(251,252,253,.45)}
+
+/* Toast */
+#toast{position:fixed;left:50%;bottom:22px;z-index:80;transform:translate(-50%,12px);max-width:min(420px,92vw);padding:11px 18px;border-radius:999px;background:var(--pine);color:var(--oat);font-size:12.5px;font-weight:600;box-shadow:0 14px 40px rgba(14,40,58,.35);opacity:0;pointer-events:none;transition:opacity .2s ease,transform .25s var(--ease)}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1120px){
+  .proj-grid{grid-template-columns:1fr 1fr}
 }
-
-/* ---------- Inicio (hub) ----------
-   PARA AGREGAR UNA OPCIÓN NUEVA:
-   1) Añade un objeto a MODULOS (titulo, texto y, si ya funciona, ruta; si no, pronto:true).
-      Usa soloAdmin:true para mostrarla solo a administradores.
-   2) Crea su pantalla: un <main class="panel" id="..."> con un botón <a class="btn ghost" href="#inicio">Inicio</a>.
-   3) Escribe su función (como loadPanel), añade su id a show() y regístrala en VISTAS. */
-const MODULOS = [
-  { ruta:'articulos',
-    titulo: p => p.rol === 'admin' ? 'Todos los artículos' : 'Mis artículos',
-    texto:  p => p.rol === 'admin' ? 'Revisa en qué etapa va el manuscrito de cada estudiante.' : 'Consulta en qué etapa va cada uno de tus manuscritos.' },
-  { titulo: () => 'Calendario de actividades', texto: () => 'Talleres, charlas y fechas límite del programa.', pronto:true },
-  { titulo: () => 'Materiales de estudio', texto: () => 'Guías, plantillas y recursos para tus proyectos.', pronto:true }
-];
-const VISTAS = { articulos: () => loadPanel() };
-
-async function loadHub(){
-  show('hub');
-  const P = await getPerfil(), admin = P.rol === 'admin';
-  const primero = (P.nombre || P.user.email.split('@')[0]).split(' ')[0];
-  $('hubHello').textContent = 'Hola, ' + primero;
-  $('hubRole').textContent = P.user.email + (admin ? ' · Administrador' : '');
-  const ul = $('mods'); ul.replaceChildren();
-  MODULOS.filter(m => !m.soloAdmin || admin).forEach(m => {
-    const li = el('li'), activo = !!m.ruta && !m.pronto;
-    const caja = el(activo ? 'a' : 'div', 'mod');
-    if(activo) caja.href = '#' + m.ruta;
-    const txt = el('div'); txt.append(el('h3', '', m.titulo(P)), el('p', '', m.texto(P)));
-    caja.append(txt, el('span', 'tag ' + (activo ? 'go' : 'soon'), activo ? 'Abrir' : 'Próximamente'));
-    li.append(caja); ul.append(li);
-  });
+@media (max-width:1020px){
+  .portal-nav{display:none}
+  .mh-grid{grid-template-columns:1fr;align-items:start;gap:30px}
+  .mh-card{max-width:460px}
+  .pub-tools{grid-template-columns:1fr}
+  .status-filter{justify-content:flex-start}
+  .pub-grid{grid-template-columns:1fr}
 }
-let activa = false;
-function route(){
-  const h = location.hash.replace('#', '');
-  if(VISTAS[h]) VISTAS[h](); else loadHub();
+@media (max-width:720px){
+  .member-chip{display:none}
+  .proj-grid{grid-template-columns:1fr}
+  .ecg{height:78px}
+  .mh-copy h1{max-width:14ch}
 }
-window.addEventListener('hashchange', () => { if(activa) route(); });
-
-/* ---------- Panel: artículos ---------- */
-.panel{max-width:980px;margin:0 auto;padding:clamp(20px,4vw,40px) 20px 64px}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin:28px 0 24px}
-.top h1{font:700 clamp(30px,4vw,44px)/1.1 var(--serif);letter-spacing:-.01em;margin:0}
-.top small{display:block;margin-top:6px;color:var(--muted);font-size:16px}
-.top .btn{width:auto;margin:0;padding:10px 20px}
-.list{list-style:none;margin:0;padding:0;background:#fff;border:2px solid var(--ink);border-radius:var(--r)}
-.list li{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:12px 32px;align-items:center;padding:18px 22px;border-bottom:1px solid #d8ced2}
-.list li:last-child{border-bottom:0}
-.who{font-size:14px;color:var(--muted)}
-.art{font:600 19px/1.3 var(--serif);margin:0}
-.track{display:flex;align-items:center}
-.st{flex:none;width:14px;height:14px;border-radius:50%;border:2px solid #b8aab0;background:#fff}
-.ln{flex:1;height:2px;background:#d9cdd1}
-.st.on{background:var(--ink);border-color:var(--ink)} .ln.on{background:var(--ink)}
-.st.cur{background:var(--petrol);border-color:var(--petrol);box-shadow:0 0 0 4px rgba(11,79,108,.2)}
-.track.rej .st.cur{background:var(--red);border-color:var(--red);box-shadow:0 0 0 4px rgba(179,32,47,.2)}
-.etapa{margin-top:8px;font-size:15px}
-.etapa b{font-weight:700}
-.etapa span{color:var(--muted)}
-.etapa b.Rechazado{color:var(--red)}
-.empty{padding:40px 22px;text-align:center;color:var(--muted)}
-
-/* ---------- Inicio (hub) ---------- */
-.mods{list-style:none;margin:0;padding:0;background:#fff;border:2px solid var(--ink);border-radius:var(--r)}
-.mods li{border-bottom:1px solid #d8ced2}
-.mods li:last-child{border-bottom:0}
-.mod{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 24px;align-items:center;padding:20px 22px;color:inherit;text-decoration:none;border-left:6px solid #d9cdd1}
-a.mod{border-left-color:var(--petrol)}
-a.mod:hover{background:var(--grid1)}
-.mod h3{font:600 22px/1.25 var(--serif);margin:0}
-.mod p{margin:4px 0 0;color:var(--muted);font-size:16px;max-width:54ch}
-.tag{font-weight:700;font-size:15px;white-space:nowrap}
-.tag.go{color:var(--petrol);text-decoration:underline}
-.tag.soon{color:var(--muted);font-weight:400}
-.top a.btn{text-decoration:none;text-align:center}
-.top .acciones{display:flex;gap:10px}
-@media (max-width:860px){
-  .auth{grid-template-columns:1fr;align-items:start}
-  .list li{grid-template-columns:1fr}
-  .mod{grid-template-columns:1fr}
-  .etapas li{font-size:12.5px}
+@media (max-width:560px){
+  .mh-stats{grid-template-columns:1fr 1fr}
+  .mh-card{padding:20px}
+  .pub-card{padding:20px}
+  .pub-card h3{font-size:19px}
+  .pub-filters{gap:8px}
+  .pub-filters label{width:100%}
+  .pub-filters select{flex:1}
+  .pf-in{align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){
   .ecg path{animation:none;stroke-dashoffset:0}
-  .etapas li{animation:none;opacity:1}
+  .ecg .scan{display:none}
+  .pub-card{animation:none}
+  .proj-foot .live i{animation:none}
 }
 </style>
 </head>
 <body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
 
-<!-- ACCESO -->
-<main class="auth" id="auth" hidden>
-  <section class="hero">
-    <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
-    <h1>Cada artículo, del borrador a la publicación.</h1>
-    <p>Consulta en qué etapa va cada manuscrito y cuándo se actualizó por última vez.</p>
-    <div class="etapas">
-      <svg class="ecg" viewBox="0 0 500 90" aria-hidden="true" preserveAspectRatio="none">
-        <path pathLength="1" d="M0 60 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14"/>
-      </svg>
-      <ol aria-label="Etapas de un artículo">
-        <li style="--i:0">En redacción</li><li style="--i:1">Enviado</li><li style="--i:2">En revisión</li><li style="--i:3">Aceptado</li><li style="--i:4">Publicado</li>
-      </ol>
-    </div>
-  </section>
+<header class="site solid" id="site">
+  <div class="wrap nav-wrap">
+    <a class="brand" href="index.html" aria-label="Synaptic Research League, inicio">
+      <img src="emblema.png" alt="">
+      <span class="brand-text"><b>Synaptic Research League</b></span>
+    </a>
 
-  <section class="card">
-    <div class="notice" id="noconfig" hidden>Falta configurar Supabase. Escribe tu URL y tu clave pública en el archivo, al inicio del script.</div>
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-login" aria-selected="true" type="button">Entrar</button>
-      <button class="tab" role="tab" id="tab-signup" aria-selected="false" type="button">Crear cuenta</button>
+    <nav class="main-nav portal-nav" aria-label="Área de miembros">
+      <a class="nav-link" href="#publicaciones">Publicaciones</a>
+      <a class="nav-link" href="#proyectos">Proyectos activos</a>
+    </nav>
+
+    <div class="head-actions">
+      <span class="member-chip">
+        <span class="avatar" aria-hidden="true">MS</span>
+        <span><b>Dra. Marisol Santana</b><small>Admin</small></span>
+      </span>
+      <a class="btn sm ghost back-btn" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Volver al sitio
+      </a>
     </div>
-    <h2 id="title">Entrar</h2>
-    <p class="sub" id="sub">Usa el correo con el que te registraste.</p>
-    <form id="form" novalidate>
-      <div id="nameField" hidden>
-        <label for="nombre">Nombre completo</label>
-        <input id="nombre" type="text" autocomplete="name" maxlength="120">
+  </div>
+</header>
+
+<main id="contenido">
+  <!-- ===== Cabecera de miembro + EKG ===== -->
+  <section class="member-hero grain dark on-dark" id="top">
+    <div class="mh-deco" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="mh-grid">
+        <div class="mh-copy">
+          <a class="link-arrow" href="index.html" style="margin-bottom:18px;font-size:13px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+            Volver al sitio
+          </a>
+          <span class="eyebrow"><i></i>Área de miembros · Cohorte 2026</span>
+          <h1>Hola, <span class="mh-name">Dra. Marisol Santana</span>.</h1>
+          <p class="mh-lead">Aquí solo está lo que puedes compartir: las publicaciones verificadas de la liga y los proyectos que siguen activos. Los manuscritos en revisión no se muestran por confidencialidad.</p>
+          <div class="mh-actions">
+            <a class="pill-link" href="#publicaciones">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              Buscar publicaciones
+            </a>
+            <a class="pill-link" href="#proyectos">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+              5 proyectos activos
+            </a>
+            <a class="pill-link" href="investigacion.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+              Panel de investigación
+            </a>
+          </div>
+        </div>
+
+        <aside class="mh-card" aria-label="Ficha de la miembro">
+          <div class="mh-who">
+            <span class="avatar" aria-hidden="true">MS</span>
+            <div>
+              <b>Dra. Marisol Santana</b>
+              <small>Presidenta · Administradora</small>
+            </div>
+          </div>
+          <div class="mh-stats">
+            <div><b data-count="8">8</b><span>publicaciones verificadas</span></div>
+            <div><b data-count="5">5</b><span>proyectos activos</span></div>
+            <div><b data-count="12">12</b><span>coautores en la liga</span></div>
+            <div><b>6</b><span>líneas de investigación</span></div>
+          </div>
+
+        </aside>
       </div>
-      <label for="email">Correo electrónico</label>
-      <input id="email" type="email" autocomplete="email" required>
-      <label for="password">Contraseña</label>
-      <input id="password" type="password" autocomplete="current-password" minlength="8" required>
-      <div class="row"><button class="link" type="button" id="forgot">Olvidé mi contraseña</button></div>
-      <button class="btn" type="submit" id="submit">Entrar</button>
-      <button class="btn ghost" type="button" id="magic">Enviarme un enlace de acceso</button>
-    </form>
-    <div id="msg" role="status" aria-live="polite"></div>
-    <p class="privacy">Guardamos tu nombre, tu correo y el estado de tus artículos. Solo tú y los administradores del programa pueden verlos.</p>
+
+      <div class="ekg-panel" aria-hidden="true">
+        <div class="ekg-top">
+          <span>Actividad editorial</span>
+          <span><i class="pulse-dot"></i>Actualizado hoy · 07 nov 2026</span>
+        </div>
+        <svg class="ecg" viewBox="0 0 1000 110" preserveAspectRatio="none">
+          <path pathLength="1" d="M0 62 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18"/>
+          <path class="scan" d="M0 62 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18 h46 q6 -10 12 0 h16 l4 8 l6 -54 l6 62 l4 -16 h12 q9 -18 18 0 h18"/>
+        </svg>
+        <div class="ekg-labels">
+          <span>Publicado</span>
+          <span style="justify-content:center">Aceptado</span>
+          <span>Congreso</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Buscador de publicaciones ===== -->
+  <section class="portal-sec" id="publicaciones">
+    <div class="wrap">
+      <div class="portal-head" data-reveal>
+        <div>
+          <span class="eyebrow">Repositorio verificado</span>
+          <h2>Busca entre las publicaciones de la liga.</h2>
+          <p class="sec-intro">Solo aparecen trabajos publicados, aceptados o presentados en congreso. Filtra por estado, línea o año.</p>
+        </div>
+        <span class="count"><b id="pubcount" aria-live="polite">8 de 8 publicaciones</b></span>
+      </div>
+
+      <div class="pub-tools" data-reveal>
+        <label class="pub-search" for="pubq">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="pubq" type="search" autocomplete="off" placeholder="Buscar por título, autor, revista o congreso" aria-label="Buscar publicaciones">
+        </label>
+        <div class="status-filter" role="group" aria-label="Filtrar por estado">
+          <button class="status-pill" type="button" data-status="todos" aria-pressed="true">Todas</button>
+          <button class="status-pill" type="button" data-status="publicado" aria-pressed="false">Publicado</button>
+          <button class="status-pill" type="button" data-status="aceptado" aria-pressed="false">Aceptado</button>
+          <button class="status-pill" type="button" data-status="congreso" aria-pressed="false">Congreso</button>
+        </div>
+        <div class="pub-filters">
+          <label for="publine">Línea</label>
+          <select id="publine" aria-label="Filtrar por línea de investigación">
+            <option value="">Todas las líneas</option>
+          </select>
+          <label for="pubyear">Año</label>
+          <select id="pubyear" aria-label="Filtrar por año">
+            <option value="">Todos los años</option>
+          </select>
+          <button class="clear-btn" type="button" id="pubclear">Limpiar filtros</button>
+        </div>
+      </div>
+
+      <div class="pub-summary">
+        <span>Ordenadas de la más reciente a la más antigua</span>
+        <span class="conf-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          Sin manuscritos en revisión
+        </span>
+      </div>
+
+      <div class="pub-grid" id="pubresults"></div>
+    </div>
+  </section>
+
+  <!-- ===== Proyectos activos ===== -->
+  <section class="portal-sec alt" id="proyectos">
+    <div class="wrap">
+      <div class="portal-head" data-reveal>
+        <div>
+          <span class="eyebrow">En curso</span>
+          <h2>Proyectos activos de la cohorte.</h2>
+          <p class="sec-intro">Cinco frentes abiertos, cada uno con su mentor, su avance y su próximo hito editorial.</p>
+        </div>
+        <span class="count">Actualizado el <b>07 nov 2026</b></span>
+      </div>
+
+      <div class="proj-grid">
+        <article class="proj-card" data-reveal>
+          <div class="proj-top"><span class="tag sage">Cardiometabólico</span><span class="tag">En curso</span></div>
+          <h3>Registro de insuficiencia cardíaca en República Dominicana</h3>
+          <p class="proj-lead">Lidera <b>Dra. Marisol Santana</b> · 6 investigadores</p>
+          <div class="proj-progress">
+            <div class="pp-head"><span>Avance</span><b>68%</b></div>
+            <div class="bar"><span style="--p:.68"></span></div>
+          </div>
+          <div class="proj-milestone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <div><small>Próximo hito</small><b>Cierre de reclutamiento</b><span>22 nov 2026</span></div>
+          </div>
+          <ul class="proj-team" aria-label="Equipo del proyecto">
+            <li title="Dra. Marisol Santana">MS</li><li title="Lía Reyes">LR</li><li title="José Cabrera">JC</li><li title="Sofía Fermín">SF</li><li class="more">+2</li>
+          </ul>
+          <div class="proj-foot"><span class="live"><i></i>Activo</span><span>Protocolo aprobado</span></div>
+        </article>
+
+        <article class="proj-card" data-reveal style="--delay:70ms">
+          <div class="proj-top"><span class="tag sage">Infectología</span><span class="tag">En curso</span></div>
+          <h3>Endocarditis con hemocultivos negativos: cohorte multicéntrica</h3>
+          <p class="proj-lead">Lidera <b>Dr. Andrés Peña</b> · 4 investigadores</p>
+          <div class="proj-progress">
+            <div class="pp-head"><span>Avance</span><b>45%</b></div>
+            <div class="bar"><span style="--p:.45"></span></div>
+          </div>
+          <div class="proj-milestone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <div><small>Próximo hito</small><b>Análisis microbiológico</b><span>05 dic 2026</span></div>
+          </div>
+          <ul class="proj-team" aria-label="Equipo del proyecto">
+            <li title="Dr. Andrés Peña">AP</li><li title="José Cabrera">JC</li><li title="Daniel Taveras">DT</li><li title="Karla Ureña">KU</li>
+          </ul>
+          <div class="proj-foot"><span class="live"><i></i>Activo</span><span>Datos en recolección</span></div>
+        </article>
+
+        <article class="proj-card" data-reveal style="--delay:140ms">
+          <div class="proj-top"><span class="tag sage">Oncología</span><span class="tag clay">Por enviar</span></div>
+          <h3>Cardiotoxicidad en pacientes con cáncer de mama</h3>
+          <p class="proj-lead">Lidera <b>Luis Emilio Gómez</b> · 5 investigadores</p>
+          <div class="proj-progress">
+            <div class="pp-head"><span>Avance</span><b>82%</b></div>
+            <div class="bar"><span style="--p:.82"></span></div>
+          </div>
+          <div class="proj-milestone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <div><small>Próximo hito</small><b>Envío a revista</b><span>18 nov 2026</span></div>
+          </div>
+          <ul class="proj-team" aria-label="Equipo del proyecto">
+            <li title="Luis Emilio Gómez">LG</li><li title="Dra. Marisol Santana">MS</li><li title="Dra. Elena Vargas">EV</li><li class="more">+2</li>
+          </ul>
+          <div class="proj-foot"><span class="live"><i></i>Activo</span><span>Manuscrito completo</span></div>
+        </article>
+
+        <article class="proj-card" data-reveal>
+          <div class="proj-top"><span class="tag sage">Salud pública</span><span class="tag">En curso</span></div>
+          <h3>Acceso y equidad en salud cardiovascular</h3>
+          <p class="proj-lead">Lidera <b>Dr. Rafael Núñez</b> · 5 investigadores</p>
+          <div class="proj-progress">
+            <div class="pp-head"><span>Avance</span><b>31%</b></div>
+            <div class="bar"><span style="--p:.31"></span></div>
+          </div>
+          <div class="proj-milestone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <div><small>Próximo hito</small><b>Trabajo de campo</b><span>12 ene 2027</span></div>
+          </div>
+          <ul class="proj-team" aria-label="Equipo del proyecto">
+            <li title="Dr. Rafael Núñez">RN</li><li title="Sofía Fermín">SF</li><li title="Luis Emilio Gómez">LG</li><li class="more">+2</li>
+          </ul>
+          <div class="proj-foot"><span class="live"><i></i>Activo</span><span>Instrumento validado</span></div>
+        </article>
+
+        <article class="proj-card" data-reveal style="--delay:70ms">
+          <div class="proj-top"><span class="tag sage">Neurociencias</span><span class="tag">En curso</span></div>
+          <h3>Sueño y cognición en adultos mayores</h3>
+          <p class="proj-lead">Lidera <b>Karla Ureña</b> · 3 investigadores</p>
+          <div class="proj-progress">
+            <div class="pp-head"><span>Avance</span><b>57%</b></div>
+            <div class="bar"><span style="--p:.57"></span></div>
+          </div>
+          <div class="proj-milestone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <div><small>Próximo hito</small><b>Recolección de datos</b><span>03 dic 2026</span></div>
+          </div>
+          <ul class="proj-team" aria-label="Equipo del proyecto">
+            <li title="Karla Ureña">KU</li><li title="Dra. Elena Vargas">EV</li><li title="Daniel Taveras">DT</li>
+          </ul>
+          <div class="proj-foot"><span class="live"><i></i>Activo</span><span>Piloto completado</span></div>
+        </article>
+
+        <article class="proj-card" data-reveal style="--delay:140ms;background:var(--oat);border-style:dashed">
+          <div class="proj-top"><span class="tag">Próxima apertura</span></div>
+          <h3>Vacunación y salud del adolescente</h3>
+          <p class="proj-lead">Lidera <b>Sofía Fermín</b> · convocatoria abierta a la cohorte 2027</p>
+          <p style="margin-top:16px;font-size:13px;line-height:1.7;color:var(--muted)">Un nuevo frente de pediatría entra en preparación. Si te interesa, escríbenos antes del cierre de postulaciones.</p>
+          <div class="proj-milestone" style="background:var(--linen)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div><small>Postulaciones</small><b>Hasta el 15 dic 2026</b><span>Cohorte 2027</span></div>
+          </div>
+          <div class="proj-foot"><span class="live" style="color:var(--muted)"><i style="background:var(--sage)"></i>En preparación</span><a class="link-arrow" href="index.html#contacto" style="font-size:11.5px">Postular</a></div>
+        </article>
+      </div>
+    </div>
   </section>
 </main>
 
-<!-- NUEVA CONTRASEÑA -->
-<main class="auth" id="recovery" hidden>
-  <section class="hero">
-    <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
-    <h1>Crea una contraseña nueva.</h1>
-    <p>Elige una de al menos 8 caracteres.</p>
-  </section>
-  <section class="card">
-    <h2>Contraseña nueva</h2>
-    <form id="recForm" novalidate>
-      <label for="newpass">Contraseña nueva</label>
-      <input id="newpass" type="password" autocomplete="new-password" minlength="8" required>
-      <button class="btn" type="submit">Guardar contraseña</button>
-    </form>
-    <div id="recMsg" role="status" aria-live="polite"></div>
-  </section>
-</main>
-
-<!-- INICIO (HUB) -->
-<main class="panel" id="hub" hidden>
-  <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
-  <header class="top">
-    <div>
-      <h1 id="hubHello">Inicio</h1>
-      <small id="hubRole"></small>
+<footer class="portal-foot">
+  <div class="wrap">
+    <div class="pf-in">
+      <div class="pf-brand">
+        <img class="logo-tile" src="emblema.png" alt="">
+        <div><b>Synaptic Research League</b><span>Research League</span></div>
+      </div>
+      <nav class="pf-links" aria-label="Pie del portal">
+        <a href="#publicaciones">Publicaciones</a>
+        <a href="#proyectos">Proyectos activos</a>
+        <a href="investigacion.html">Panel de investigación</a>
+        <a href="index.html">Volver al sitio</a>
+      </nav>
     </div>
-    <button class="btn ghost" type="button" id="logout2">Salir</button>
-  </header>
-  <ol class="mods" id="mods"></ol>
-</main>
-
-<!-- PANEL: ARTÍCULOS -->
-<main class="panel" id="panel" hidden>
-  <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
-  <header class="top">
-    <div>
-      <h1 id="hello">Mis artículos</h1>
-      <small id="role"></small>
+    <div class="pf-copy">
+      <span>© <span id="year">2026</span> Synaptic Research League. Área de miembros.</span>
+      <span>Los manuscritos en revisión no se muestran por confidencialidad.</span>
     </div>
-    <div class="acciones">
-      <a class="btn ghost" href="#inicio">Inicio</a>
-      <button class="btn ghost" type="button" id="logout">Salir</button>
-    </div>
-  </header>
-  <ol class="list" id="list"></ol>
-  <div class="empty" id="empty" hidden>Aún no tienes artículos registrados. Cuando tu coordinador añada uno, aparecerá aquí con su estado.</div>
-</main>
+  </div>
+</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<div id="toast" role="status" aria-live="polite"></div>
+
 <script>
-/* ====== CONFIGURA AQUÍ (la clave pública "publishable" es segura de publicar; la "secret" NUNCA) ====== */
-const SUPABASE_URL = 'https://ncikqsyqyivdmtvtpidn.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_Esscr4NHrxRf1Hq0vulvzw_7VoVd5AV';
-/* ========================================================================================================= */
+(function(){
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const $ = id => document.getElementById(id);
-const configured = !SUPABASE_URL.includes('TU-PROYECTO') && !SUPABASE_ANON_KEY.includes('TU_CLAVE');
-const sb = configured ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-const back = location.origin + location.pathname;
-const ETAPAS = ['En redacción','Enviado','En revisión','Aceptado','Publicado'];
-let mode = 'login';
+  /* Cabecera */
+  var site = document.getElementById('site');
+  function onScroll(){ site.classList.toggle('scrolled', window.scrollY > 8); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
 
-function show(view){ ['auth','recovery','hub','panel'].forEach(v => $(v).hidden = v !== view); }
-function say(el, text, type){
-  el.replaceChildren();
-  if(!text) return;
-  const d = document.createElement('div'); d.className = 'msg ' + type; d.textContent = text; el.append(d);
-}
-function friendly(err){
-  const m = (err && err.message || '').toLowerCase();
-  if(m.includes('invalid login')) return 'El correo o la contraseña no son correctos.';
-  if(m.includes('not confirmed')) return 'Confirma tu correo antes de entrar. Revisa tu bandeja de entrada.';
-  if(m.includes('already registered')) return 'Ese correo ya tiene una cuenta. Usa “Entrar”.';
-  if(m.includes('password')) return 'La contraseña debe tener al menos 8 caracteres.';
-  if(m.includes('rate') || m.includes('seconds')) return 'Espera un momento antes de intentarlo de nuevo.';
-  return 'No pudimos completar la acción. Inténtalo de nuevo.';
-}
-function busy(on){ document.querySelectorAll('#form .btn, #recForm .btn').forEach(b => b.disabled = on); }
-
-/* ---------- Pestañas ---------- */
-function setMode(m){
-  mode = m;
-  const signup = m === 'signup';
-  $('tab-login').setAttribute('aria-selected', String(!signup));
-  $('tab-signup').setAttribute('aria-selected', String(signup));
-  $('nameField').hidden = !signup;
-  $('title').textContent = signup ? 'Crear cuenta' : 'Entrar';
-  $('sub').textContent = signup ? 'Te enviaremos un correo para confirmar tu cuenta.' : 'Usa el correo con el que te registraste.';
-  $('submit').textContent = signup ? 'Crear cuenta' : 'Entrar';
-  $('password').autocomplete = signup ? 'new-password' : 'current-password';
-  $('forgot').hidden = signup; $('magic').hidden = signup;
-  say($('msg'), '');
-}
-$('tab-login').onclick = () => setMode('login');
-$('tab-signup').onclick = () => setMode('signup');
-
-/* ---------- Acciones ---------- */
-$('form').addEventListener('submit', async e => {
-  e.preventDefault(); if(!sb) return;
-  const email = $('email').value.trim(), password = $('password').value;
-  if(!email || password.length < 8){ say($('msg'), 'Escribe tu correo y una contraseña de al menos 8 caracteres.', 'err'); return; }
-  busy(true); say($('msg'), '');
-  try{
-    if(mode === 'signup'){
-      const nombre = $('nombre').value.trim();
-      if(!nombre){ say($('msg'), 'Escribe tu nombre completo.', 'err'); return; }
-      const { error } = await sb.auth.signUp({ email, password, options:{ data:{ nombre }, emailRedirectTo: back } });
-      if(error) throw error;
-      say($('msg'), 'Cuenta creada. Revisa tu correo y confirma para poder entrar.', 'ok');
-    } else {
-      const { error } = await sb.auth.signInWithPassword({ email, password });
-      if(error) throw error;
+  /* Datos: solo publicado, aceptado o congreso */
+  var PUBS = [
+    {
+      t:'Detección molecular en endocarditis con hemocultivos negativos',
+      a:'Santana M, Peña A, Cabrera J, et al.',
+      v:'Journal of Cardiovascular Infection · Vol. 12',
+      y:2026, st:'publicado', line:'Infectología cardiovascular',
+      abs:'Evaluación de PCR y secuenciación metagenómica en una cohorte de pacientes con sospecha de endocarditis y hemocultivos negativos. El trabajo describe el rendimiento diagnóstico y propone un algoritmo de uso racional.'
+    },
+    {
+      t:'Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar',
+      a:'Santana M, Reyes L, et al.',
+      v:'Congreso Nacional de Cardiología · Presentación oral',
+      y:2026, st:'congreso', line:'Cardiometabólico',
+      abs:'Resultados preliminares de una revisión sistemática sobre dispositivos de shunt interatrial en pacientes con insuficiencia cardíaca y hipertensión pulmonar. Presentado en la sesión de insuficiencia cardíaca avanzada.'
+    },
+    {
+      t:'Insuficiencia cardíaca en América Latina y el Caribe',
+      a:'Núñez R, Fermín S, et al.',
+      v:'Pan American Health · Vol. 8',
+      y:2025, st:'publicado', line:'Salud pública',
+      abs:'Análisis de la carga epidemiológica de la insuficiencia cardíaca en la región, con énfasis en acceso a diagnóstico, heterogeneidad de registros y determinantes sociales.'
+    },
+    {
+      t:'Estimulación del área de la rama izquierda tras TAVI',
+      a:'Peña A, Taveras D, et al.',
+      v:'EP Journal · Aceptado',
+      y:2025, st:'aceptado', line:'Cardiometabólico',
+      abs:'Revisión sistemática sobre estimulación fisiológica del sistema de conducción después de implante valvular aórtico transcatéter, con comparación de desenlaces electrocardiográficos y clínicos.'
+    },
+    {
+      t:'Asma y obesidad infantil en escolares del Distrito Nacional',
+      a:'Fermín S, Ureña K, et al.',
+      v:'Revista Pediátrica Dominicana · Vol. 4',
+      y:2025, st:'publicado', line:'Pediatría',
+      abs:'Estudio transversal en centros escolares que explora la asociación entre obesidad, actividad física y control del asma en niños de 6 a 12 años.'
+    },
+    {
+      t:'Determinantes sociales del acceso a la salud cardiovascular',
+      a:'Núñez R, Gómez L, et al.',
+      v:'Caribbean Public Health · Aceptado',
+      y:2026, st:'aceptado', line:'Salud pública',
+      abs:'Análisis de encuestas poblacionales sobre barreras de acceso a control de hipertensión y diabetes en comunidades urbanas y rurales del Caribe.'
+    },
+    {
+      t:'Deterioro cognitivo y sueño en adultos mayores',
+      a:'Ureña K, Vargas E, et al.',
+      v:'Congreso de Neurociencias · Póster',
+      y:2025, st:'congreso', line:'Neurociencias',
+      abs:'Hallazgos preliminares de una cohorte clínica que evalúa la relación entre calidad del sueño, fragilidad y desempeño cognitivo en adultos mayores de 65 años.'
+    },
+    {
+      t:'Cardiotoxicidad en pacientes con cáncer de mama',
+      a:'Santana M, Gómez L, et al.',
+      v:'Cardio-Oncology Today · Vol. 6',
+      y:2024, st:'publicado', line:'Oncología',
+      abs:'Cohorte retrospectiva de pacientes tratadas con antraciclinas y trastuzumab. El estudio describe la incidencia de disfunción ventricular y los factores asociados al seguimiento cardiológico.'
     }
-  }catch(err){ say($('msg'), friendly(err), 'err'); }
-  finally{ busy(false); }
-});
+  ];
 
-$('magic').onclick = async () => {
-  if(!sb) return;
-  const email = $('email').value.trim();
-  if(!email){ say($('msg'), 'Escribe tu correo para enviarte el enlace.', 'err'); return; }
-  busy(true);
-  const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: back, shouldCreateUser:false } });
-  busy(false);
-  say($('msg'), error ? friendly(error) : 'Listo. Abre el enlace que te enviamos al correo.', error ? 'err' : 'ok');
-};
+  var STATUS = {
+    publicado:{label:'Publicado', cls:'tag sage'},
+    aceptado:{label:'Aceptado', cls:'tag'},
+    congreso:{label:'Congreso', cls:'tag clay'}
+  };
+  var state = { q:'', st:'todos', line:'', year:'' };
 
-$('forgot').onclick = async () => {
-  if(!sb) return;
-  const email = $('email').value.trim();
-  if(!email){ say($('msg'), 'Escribe tu correo y vuelve a pulsar “Olvidé mi contraseña”.', 'err'); return; }
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: back });
-  say($('msg'), error ? friendly(error) : 'Si el correo existe, recibirás un enlace para crear una contraseña nueva.', error ? 'err' : 'ok');
-};
+  var results = document.getElementById('pubresults');
+  var count = document.getElementById('pubcount');
+  var qInput = document.getElementById('pubq');
+  var lineSel = document.getElementById('publine');
+  var yearSel = document.getElementById('pubyear');
+  var pills = [].slice.call(document.querySelectorAll('.status-pill'));
 
-$('recForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  const p = $('newpass').value;
-  if(p.length < 8){ say($('recMsg'), 'La contraseña debe tener al menos 8 caracteres.', 'err'); return; }
-  const { error } = await sb.auth.updateUser({ password: p });
-  if(error){ say($('recMsg'), friendly(error), 'err'); return; }
-  say($('recMsg'), 'Contraseña actualizada.', 'ok');
-  setTimeout(route, 900);
-});
+  function norm(s){
+    return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
 
-$('logout').onclick = $('logout2').onclick = async () => { await sb.auth.signOut(); };
-
-/* ---------- Panel ---------- */
-function el(tag, cls, text){ const n = document.createElement(tag); if(cls) n.className = cls; if(text !== undefined) n.textContent = text; return n; }
-function track(estado){
-  const idx = ETAPAS.indexOf(estado), rej = idx < 0;
-  const t = el('div', 'track' + (rej ? ' rej' : ''));
-  t.setAttribute('role', 'img');
-  t.setAttribute('aria-label', rej ? estado : 'Etapa ' + (idx + 1) + ' de 5: ' + estado);
-  ETAPAS.forEach((_, i) => {
-    const on = !rej && i <= idx;
-    t.append(el('span', 'st' + (on ? ' on' : '') + ((rej ? i === 0 : i === idx) ? ' cur' : '')));
-    if(i < 4) t.append(el('span', 'ln' + (!rej && i < idx ? ' on' : '')));
+  /* Opciones de filtros */
+  var lines = [];
+  PUBS.forEach(function(p){ if(lines.indexOf(p.line) < 0) lines.push(p.line); });
+  lines.sort(function(a,b){ return a.localeCompare(b,'es'); });
+  lines.forEach(function(l){
+    var o = document.createElement('option'); o.value = l; o.textContent = l; lineSel.appendChild(o);
   });
-  return t;
-}
-async function loadPanel(){
-  show('panel');
-  const P = await getPerfil(), user = P.user, perfil = { nombre: P.nombre, rol: P.rol };
-  const admin = perfil && perfil.rol === 'admin';
-  $('hello').textContent = admin ? 'Todos los artículos' : 'Mis artículos';
-  $('role').textContent = (perfil && perfil.nombre ? perfil.nombre + ' · ' : '') + user.email + (admin ? ' · Administrador' : '');
-
-  const { data, error } = await sb.from('articulos').select('titulo,estado,updated_at,profiles(nombre)').order('updated_at', { ascending:false });
-  const list = $('list'); list.replaceChildren();
-  $('list').hidden = false;
-  $('empty').hidden = !!(data && data.length);
-  if(error){ $('empty').hidden = false; $('empty').textContent = 'No pudimos cargar los artículos. Recarga la página.'; return; }
-  if(!data || !data.length){ $('list').hidden = true; $('empty').textContent = 'Aún no tienes artículos registrados. Cuando tu coordinador añada uno, aparecerá aquí con su estado.'; }
-  (data || []).forEach(a => {
-    const li = el('li'), left = el('div'), right = el('div');
-    if(admin) left.append(el('div', 'who', a.profiles && a.profiles.nombre || 'Sin nombre'));
-    left.append(el('h3', 'art', a.titulo));
-    right.append(track(a.estado));
-    const info = el('div', 'etapa');
-    const b = el('b', a.estado === 'Rechazado' ? 'Rechazado' : '', a.estado);
-    info.append(b, el('span', '', ' · actualizado el ' + new Date(a.updated_at).toLocaleDateString('es-DO', { day:'numeric', month:'short', year:'numeric' })));
-    right.append(info);
-    li.append(left, right); list.append(li);
+  var years = [];
+  PUBS.forEach(function(p){ if(years.indexOf(p.y) < 0) years.push(p.y); });
+  years.sort(function(a,b){ return b - a; });
+  years.forEach(function(y){
+    var o = document.createElement('option'); o.value = String(y); o.textContent = String(y); yearSel.appendChild(o);
   });
-}
 
-/* ---------- Arranque ---------- */
-if(!sb){ $('noconfig').hidden = false; show('auth'); setMode('login'); }
-else{
-  setMode('login');
-  sb.auth.onAuthStateChange((event, session) => {
-    if(event === 'PASSWORD_RECOVERY'){ show('recovery'); return; }
-    if(session){ activa = true; setTimeout(route, 0); } else { activa = false; show('auth'); }
+  function filtered(){
+    var q = norm(state.q.trim());
+    return PUBS.filter(function(p){
+      if(state.st !== 'todos' && p.st !== state.st) return false;
+      if(state.line && p.line !== state.line) return false;
+      if(state.year && String(p.y) !== state.year) return false;
+      if(q){
+        var hay = norm([p.t,p.a,p.v,p.line,p.y].join(' '));
+        if(hay.indexOf(q) < 0) return false;
+      }
+      return true;
+    }).sort(function(a,b){ return b.y - a.y; });
+  }
+
+  function card(p){
+    var s = STATUS[p.st];
+    return '<article class="pub-card">' +
+      '<div class="pc-top"><span class="' + s.cls + '">' + s.label + '</span><span class="pc-year">' + p.y + '</span></div>' +
+      '<h3>' + esc(p.t) + '</h3>' +
+      '<p class="pc-authors">' + esc(p.a) + '</p>' +
+      '<p class="pc-venue">' + esc(p.v) + '</p>' +
+      '<details class="pc-abs"><summary>Ver resumen</summary><p>' + esc(p.abs) + '</p></details>' +
+      '<div class="pc-foot">' +
+        '<span class="pc-line">' + esc(p.line) + '</span>' +
+        '<button class="copy-btn" type="button" data-cite="' + esc(p.a + ' (' + p.y + '). ' + p.t + '. ' + p.v + '.') + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+          'Copiar cita' +
+        '</button>' +
+      '</div>' +
+    '</article>';
+  }
+
+  function render(){
+    var list = filtered();
+    count.innerHTML = '<b>' + list.length + '</b> de ' + PUBS.length + ' publicaciones';
+    if(!list.length){
+      results.innerHTML = '<div class="empty-state"><b>Sin resultados.</b><p>No hay publicaciones que coincidan con «' + esc(state.q.trim()) + '» y los filtros elegidos. Prueba con otro término o límpialos.</p><button class="btn sm" type="button" id="emptyReset">Limpiar filtros</button></div>';
+      var er = document.getElementById('emptyReset');
+      if(er) er.addEventListener('click', reset);
+      return;
+    }
+    results.innerHTML = list.map(card).join('');
+  }
+
+  function reset(){
+    state = { q:'', st:'todos', line:'', year:'' };
+    qInput.value = '';
+    lineSel.value = '';
+    yearSel.value = '';
+    pills.forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-status') === 'todos')); });
+    render();
+  }
+
+  qInput.addEventListener('input', function(){ state.q = qInput.value; render(); });
+  lineSel.addEventListener('change', function(){ state.line = lineSel.value; render(); });
+  yearSel.addEventListener('change', function(){ state.year = yearSel.value; render(); });
+  pills.forEach(function(b){
+    b.addEventListener('click', function(){
+      state.st = b.getAttribute('data-status');
+      pills.forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+      render();
+    });
   });
-}
+  document.getElementById('pubclear').addEventListener('click', reset);
+
+  /* Copiar cita */
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function say(msg){
+    toast.textContent = msg;
+    toast.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('on'); }, 2400);
+  }
+  results.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-cite]');
+    if(!btn) return;
+    var text = btn.getAttribute('data-cite');
+    function ok(){ say('Cita copiada al portapapeles.'); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly','');
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(err){ say('No se pudo copiar la cita.'); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else fallback();
+  });
+
+  /* Revelados */
+  var revealEls = [].slice.call(document.querySelectorAll('[data-reveal]'));
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ entry.target.classList.add('seen'); io.unobserve(entry.target); }
+      });
+    }, { rootMargin:'-70px 0px -60px 0px', threshold:0.08 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('seen'); });
+  }
+
+  /* Contadores */
+  function countUp(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    if(reduce){ el.textContent = String(target); return; }
+    var start = null, dur = 900;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  [].slice.call(document.querySelectorAll('.mh-stats [data-count]')).forEach(countUp);
+
+  /* Año */
+  document.getElementById('year').textContent = String(new Date().getFullYear());
+
+  render();
+})();
 </script>
 </body>
 </html>
