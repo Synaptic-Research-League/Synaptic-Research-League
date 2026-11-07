@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestión de investigación · Synaptic Research League</title>
+<link rel="icon" href="img/emblema.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0e283a;--blue:#3b5f82;--cyan:#2cb1cc;--act:#0a7b94;--actd:#08677c;--ink:#10222f;--mut:#4a5d6b;--line:#d3dce3;--soft:#f1f5f8;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 var(--sans);color:var(--ink);background:#fff}
+a{color:inherit}:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}[hidden]{display:none!important}
+.bar{border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:10}
+.bar .in{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;color:var(--navy);line-height:1.1}.logo img{height:38px}.logo small{display:block;font-weight:500;font-size:12px;color:var(--mut)}
+nav{display:flex;flex:1;flex-wrap:wrap}nav a{padding:21px 13px 18px;text-decoration:none;font-weight:500;border-bottom:4px solid transparent}
+nav a:hover{color:var(--act)}nav a.on{border-bottom-color:var(--cyan);color:var(--navy)}
+.out{font-weight:600;font-size:14px;color:var(--act)}
+.demo{background:var(--soft);border-bottom:1px solid var(--line);font-size:13.5px;color:var(--mut);text-align:center;padding:6px 12px}
+main{max-width:1240px;margin:0 auto;padding:28px 20px 64px}
+h1{font:600 clamp(26px,3.2vw,36px)/1.15 var(--sans);letter-spacing:-.01em;margin:0 0 6px;color:var(--navy)}
+h2{font:600 20px/1.25 var(--sans);margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);color:var(--navy)}
+h3{font:600 16px var(--sans);margin:0}.mut{color:var(--mut)}.sm{font-size:13.5px}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;border:1px solid var(--line);margin-bottom:8px}
+.hero .tx{padding:28px 30px}.hero .ph{background:#cbd7df;position:relative;min-height:220px}.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);margin-top:22px;border-top:1px solid var(--line)}
+.kpis div{padding:14px 12px 0 0}.kpis div+div{padding-left:14px;border-left:1px solid var(--line)}.kpis b{display:block;font-size:30px;font-weight:600;line-height:1.1;color:var(--navy)}.kpis span{font-size:13px;color:var(--mut)}
+.grid{display:grid;gap:0;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
+.cell{padding:18px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -1px -1px 0}
+.cell b{display:block;font-size:28px;font-weight:600;color:var(--navy);line-height:1.15}.cell span{font-weight:500}.cell em{display:block;font-style:normal;font-size:13px;color:var(--mut)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;white-space:nowrap}.st i{width:11px;height:11px;display:inline-block;flex:none}
+.trk{display:grid;grid-template-columns:230px 36px 1fr;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #e8eef2;cursor:pointer;background:none;border-width:0 0 1px;width:100%;font:inherit;text-align:left;color:inherit}
+.trk:hover{background:var(--soft)}.trk .bb{height:10px;background:var(--soft)}.trk .bb i{display:block;height:100%}
+.btn{display:inline-block;padding:9px 16px;border:2px solid var(--act);background:var(--act);color:#fff;font:600 14.5px var(--sans);cursor:pointer;text-decoration:none;border-radius:0}.btn:hover{background:var(--actd)}.btn.l{background:#fff;color:var(--navy);border-color:var(--navy)}.btn.l:hover{background:var(--soft)}
+input,select{font:inherit;padding:8px 10px;border:1px solid #9fb0bd;border-radius:0;background:#fff;color:var(--ink);max-width:100%}
+.fl{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}.fl input[type=search]{flex:1;min-width:220px}
+.gh{font-weight:600;background:var(--soft);padding:8px 14px;border:1px solid var(--line);border-bottom:0;margin-top:14px;color:var(--navy)}
+.it{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:14px;border:1px solid var(--line);margin-top:-1px;cursor:pointer;background:#fff;width:100%;text-align:left;font:inherit;color:inherit}.it:hover{background:var(--soft)}
+.it h3{font-weight:600;font-size:15.5px}.it .m{font-size:13.5px;color:var(--mut)}
+.tl{display:flex;align-items:center;margin:8px 0 2px}.tl i{width:14px;height:14px;border:2px solid #aab8c3;background:#fff;flex:none}.tl i.d{background:var(--navy);border-color:var(--navy)}.tl i.c{background:var(--act);border-color:var(--act);outline:3px solid #bfe3ea}.tl u{flex:1;height:2px;background:#d5dde3}.tl u.d{background:var(--navy)}
+.tlb{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mut)}
+.pc{border:1px solid var(--line);padding:18px;margin:0 -1px -1px 0}.pgrid{display:grid;grid-template-columns:repeat(3,1fr)}
+.pb{height:8px;background:var(--soft);margin:10px 0 4px}.pb i{display:block;height:100%;background:var(--act)}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}th{background:var(--soft);color:var(--navy);font-weight:600}td.n,th.n{text-align:right}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid var(--line);border-top:1px solid var(--line)}.cal>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:92px;padding:4px 5px;font-size:12px}
+.cal .h{min-height:0;background:var(--soft);font-weight:600;text-align:center;padding:6px}.cal .o{background:#fafbfc;color:#9aa8b4}.cal .t{background:#e8f6f9}.cal div b{font-size:12.5px}
+.ev{display:block;margin-top:3px;line-height:1.25;padding-left:6px;border-left:4px solid}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin:10px 0}.lg i{display:inline-block;width:11px;height:11px;margin-right:6px}
+.feed{list-style:none;margin:0;padding:0}.feed li{padding:10px 0;border-bottom:1px solid #e8eef2;font-size:14px}.feed small{display:block;color:var(--mut)}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:#fff;border-left:2px solid var(--navy);overflow:auto;padding:22px 24px 40px;z-index:30}
+#drawer dl{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;margin:14px 0;font-size:14px}#drawer dt{color:var(--mut)}#drawer dd{margin:0}
+.x{float:right;background:none;border:1px solid var(--navy);padding:4px 10px;cursor:pointer;font:600 14px var(--sans)}
+.hist{list-style:none;margin:0;padding:0 0 0 16px;border-left:2px solid var(--line)}.hist li{position:relative;padding:0 0 14px 6px;font-size:14px}.hist li::before{content:"";position:absolute;left:-23px;top:6px;width:10px;height:10px;background:var(--navy)}
+dialog{border:2px solid var(--navy);border-radius:0;padding:24px;width:min(520px,94vw)}dialog::backdrop{background:rgba(14,40,58,.45)}dialog label{display:block;font-weight:600;margin:12px 0 4px}dialog input,dialog select{width:100%}
+@media(max-width:900px){.hero,.two{grid-template-columns:1fr}.grid,.pgrid{grid-template-columns:1fr 1fr}.trk{grid-template-columns:1fr 30px}.trk .bb{display:none}nav a{padding:12px 10px}.kpis{grid-template-columns:1fr 1fr}.cal>div{min-height:60px}}
+@media(max-width:560px){.grid,.pgrid{grid-template-columns:1fr}.cal .ev{font-size:0;height:6px;padding:0}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="in">
+  <a class="logo" href="portal.html"><img src="img/emblema.png" alt=""><span>Synaptic<small>Gestión de investigación</small></span></a>
+  <nav id="nav" aria-label="Secciones">
+    <a href="#resumen">Resumen</a><a href="#articulos">Artículos</a><a href="#manuscritos">Manuscritos</a><a href="#proyectos">Proyectos</a><a href="#calendario">Calendario</a><a href="#analitica">Analítica</a>
+  </nav>
+  <a class="out" href="portal.html">Volver al hub</a>
+</div></header>
+<div class="demo">Datos de ejemplo: los cambios que hagas aquí no se guardan al recargar la página.</div>
+<main id="app"></main>
+<aside id="drawer" hidden aria-label="Detalle del manuscrito"></aside>
+<dialog id="dlg"><form method="dialog" id="nf">
+  <h3>Subir artículo</h3>
+  <label for="nt">Título del manuscrito</label><input id="nt" required>
+  <label for="np">Proyecto</label><select id="np"></select>
+  <label for="nj">Revista (si ya la elegiste)</label><input id="nj">
+  <label for="nfile">Archivo (PDF o DOCX)</label><input id="nfile" type="file" accept=".pdf,.doc,.docx">
+  <div class="fl" style="margin-top:18px"><button class="btn" type="submit">Guardar artículo</button><button class="btn l" type="button" id="nc">Cancelar</button></div>
+</form></dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script>
+/* Acceso: solo miembros con sesión iniciada (los datos de abajo son de ejemplo) */
+try{ if(window.supabase){ supabase.createClient('https://ncikqsyqyivdmtvtpidn.supabase.co','sb_publishable_Esscr4NHrxRf1Hq0vulvzw_7VoVd5AV').auth.getSession().then(r=>{ if(!r.data.session) location.replace('portal.html'); }); } }catch(e){}
+
+/* ===== Datos de ejemplo ===== */
+const HOY='2026-11-06', $=s=>document.querySelector(s);
+const D=s=>new Date(s+'T12:00:00'), iso=d=>d.toISOString().slice(0,10), add=(s,n)=>iso(new Date(D(s).getTime()+n*864e5));
+const fmt=s=>D(s).toLocaleDateString('es-DO',{day:'numeric',month:'short',year:'numeric'});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST={prep:['En preparación','#9aa8b4',0,'Manuscrito iniciado.'],borr:['Borrador completado','#7d8fa0',1,'Primer borrador completo.'],revint:['En revisión interna','#5f86b8',2,'Revisión por coautores y mentor.'],env:['Enviado','#2f6fb0',3,'Manuscrito enviado a la revista.'],pares:['En revisión por pares','#1f4f8f',4,'Asignado a revisores.'],rmen:['Revisión solicitada (menor)','#d4a017',4,'Los revisores piden cambios menores.'],rmay:['Revisión solicitada (mayor)','#c8641a',4,'Los revisores piden cambios importantes, incluido un análisis adicional.'],reenv:['Reenviado','#8f7a1c',4,'Versión revisada reenviada con respuesta a revisores.'],acep:['Aceptado','#2e8b57',5,'Decisión editorial: aceptado.'],prensa:['En prensa','#1f7a6b',5,'Galeradas aprobadas.'],publ:['Publicado','#0e5e3f',6,'Publicado en línea.'],rech:['Rechazado','#b3261e',4,'Decisión editorial: rechazado por alcance de la revista.'],ret:['Retirado','#5b6068',3,'Retirado por los autores.']};
+const SENT=['env','pares','rmen','rmay','reenv'],PROG=['prep','borr','revint'],ACC=['acep','prensa'];
+const FASES=['Preparación','Borrador','Rev. interna','Enviado','Pares','Aceptado','Publicado'];
+const AU=['Dra. M. Santana','Dr. A. Peña','L. Reyes','J. Cabrera','R. Núñez','S. Fermín','D. Taveras','K. Ureña'];
+const EQ=['Cardiología clínica','Infectología cardiovascular','Cardio-oncología','Epidemiología'];
+const P=[['Detección molecular en endocarditis con hemocultivos negativos','Infectología cardiovascular',0,[1,2,3],'Análisis de datos',72,1],
+['Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar','Insuficiencia cardíaca',1,[4,5],'Redacción',85,0],
+['Estimulación del área de la rama izquierda tras TAVI','Electrofisiología',1,[2,6],'Redacción',90,0],
+['Insuficiencia cardíaca en América Latina y el Caribe','Epidemiología cardiovascular',7,[3,5],'Extracción de datos',55,3],
+['Dosis de radiación en subestructuras cardíacas','Cardio-oncología',4,[6,0],'Análisis de datos',64,2],
+['Bacteriemia enterocócica persistente','Infectología',0,[2,7],'Redacción',78,1]];
+const RAW=[['Diagnostic accuracy of PCR versus mNGS in blood culture-negative infective endocarditis: a systematic review',0,'Clinical Microbiology and Infection','publ',1,'2025-11-04',24,[0,1,2]],
+['Interatrial shunt devices in HFpEF with pulmonary hypertension due to left heart disease: a systematic review',1,'JACC: Heart Failure','prensa',1,'2025-11-18',26,[1,4,5]],
+['Left bundle branch area pacing after transcatheter aortic valve implantation: a systematic review',2,'Europace','acep',1,'2026-02-10',27,[1,2,6]],
+['Heart failure epidemiology in Latin America and the Caribbean: a systematic review',3,'The Lancet Regional Health – Americas','pares',0,'2026-06-15',20,[7,3,5]],
+['Cardiac substructure radiation dose and cardiovascular outcomes in cancer survivors',4,'JACC: CardioOncology','rmay',0,'2026-06-08',22,[4,6,0]],
+['Treatment strategies for persistent enterococcal bacteremia: a systematic review',5,'Clinical Infectious Diseases','reenv',0,'2026-05-18',24,[0,2,7]],
+['Persistent enterococcal bacteremia: protocol and rationale of a systematic review',5,'Systematic Reviews','publ',0,'2025-11-12',18,[0,2]],
+['Interatrial shunts in HFpEF: protocol of a systematic review and meta-analysis',1,'BMJ Open','publ',0,'2025-12-01',16,[1,4]],
+['Predictors of conduction disturbances after TAVI: a narrative overview',2,'Revista Española de Cardiología','rech',0,'2026-03-02',25,[2,6]],
+['Mortality in heart failure registries of the Caribbean: data harmonization',3,'BMC Cardiovascular Disorders','revint',0,'2026-09-01',18,[7,3]],
+['Turnaround time and cost of mNGS in endocarditis diagnosis',0,'Journal of Clinical Microbiology','borr',0,'2026-09-20',15,[1,3]],
+['Mean heart dose thresholds in thoracic radiotherapy: a methods paper',4,'Radiotherapy and Oncology','prep',0,'2026-10-28',0,[4]],
+['Pacing strategies after TAVI: conference abstract',2,'Congreso regional de cardiología','ret',0,'2026-02-16',21,[2,6]],
+['Antibiotic combinations for persistent bacteremia: a scoping review',5,'International Journal of Antimicrobial Agents','env',0,'2026-08-17',19,[0,7]],
+['Update of PCR accuracy in culture-negative endocarditis',0,'Journal of Infection','rmen',1,'2026-03-16',22,[0,1,2]]];
+const BASE=['prep','borr','revint','env','pares'];
+function path(s,rev){ if(s==='rech')return[...BASE,'rech']; if(s==='ret')return[...BASE.slice(0,4),'ret'];
+ if(['acep','prensa','publ'].includes(s))return[...BASE,...(rev?['rmen','reenv']:[]),'acep',...(s!=='acep'?['prensa']:[]),...(s==='publ'?['publ']:[])];
+ if(s==='rmen'||s==='rmay')return[...BASE,s]; if(s==='reenv')return[...BASE,'rmay','reenv']; return BASE.slice(0,BASE.indexOf(s)+1); }
+const A=RAW.map((r,i)=>{const h=path(r[3],r[4]).map((s,k)=>{const d=add(r[5],r[6]*k);return{s,d:d>HOY?HOY:d,n:ST[s][3]}});
+ return{id:i,t:r[0],p:r[1],j:r[2],st:r[3],au:r[7],h,x:[]};});
+const dOf=(a,s)=>{const e=a.h.find(x=>x.s===s);return e&&e.d};
+const doi=a=>(dOf(a,'acep')?'10.5555/srh.2026.'+(100+a.id):'');
+function files(a){const f=[],d=s=>dOf(a,s);
+ if(d('borr'))f.push(['Manuscrito_v1.docx','DOCX',210+a.id*9,d('borr')]);
+ if(d('revint'))f.push(['Tablas_suplementarias.docx','DOCX',74,d('revint')],['Figuras_1-4.pdf','PDF',1380,d('revint')]);
+ if(d('env'))f.push(['Manuscrito_v2_enviado.pdf','PDF',640,d('env')]);
+ const r=d('rmen')||d('rmay'); if(r)f.push(['Comentarios_de_revisores.pdf','PDF',96,r]);
+ if(d('reenv'))f.push(['Respuesta_a_revisores.docx','DOCX',128,d('reenv')]);
+ if(d('publ'))f.push(['Version_publicada.pdf','PDF',820,d('publ')]);
+ return f;}
+A.forEach(a=>a.x=files(a));
+const S={f:{q:'',e:'',p:'',j:'',y:''},g:'p',cal:[2026,10]};
+const badge=s=>`<span class="st"><i style="background:${ST[s][1]}"></i>${ST[s][0]}</span>`;
+const last=a=>a.h[a.h.length-1];
+const authors=a=>a.au.map(i=>AU[i]).join(', ');
+const stage=s=>PROG.includes(s)?'Sin enviar':SENT.includes(s)?'Enviado (aún no aceptado)':ACC.includes(s)?'Aceptado (aún no publicado)':s==='publ'?'Publicado oficialmente':'Cerrado';
+const ev=(a,s)=>a.h.filter(x=>x.s===s);
+const cnt=ids=>A.filter(a=>ids.includes(a.st)).length;
+
+/* ===== Vistas ===== */
+function vResumen(){
+ const sent=cnt(SENT),acc=cnt(ACC),pub=cnt(['publ']),prog=cnt(PROG),act=A.filter(a=>!['publ','rech','ret'].includes(a.st)).length,ever=A.filter(a=>dOf(a,'env')).length;
+ const goalT=12,done=A.filter(a=>(dOf(a,'publ')||'').startsWith('2026')).length,rest=Math.max(0,goalT-done-acc-sent);
+ const cells=[[P.length,'Proyectos de investigación','todos en curso'],[act,'Manuscritos activos','sin publicar ni cerrar'],[ever,'Artículos enviados','alguna vez a una revista'],[prog,'Publicaciones en progreso','preparación, borrador o revisión interna'],[acc,'Artículos aceptados','incluye los que están en prensa'],[pub,'Artículos publicados','oficialmente en línea']];
+ const ev2=[];A.forEach(a=>{a.h.forEach(h=>ev2.push({d:h.d,t:`${ST[h.s][0]}`,s:h.s,a:a.t,k:'estado'}));a.x.forEach(f=>ev2.push({d:f[3],t:'Archivo subido: '+f[0],a:a.t,k:'archivo'}))});
+ ev2.push({d:'2026-10-30',t:'Proyecto actualizado: progreso al 72 %',a:P[0][0],k:'proyecto'},{d:'2026-10-22',t:'Proyecto actualizado: nuevo colaborador',a:P[4][0],k:'proyecto'});
+ ev2.sort((x,y)=>y.d.localeCompare(x.d));
+ return `<section class="hero"><div class="tx"><h1>Panel de investigación</h1><p class="mut" style="margin:0">${D(HOY).toLocaleDateString('es-DO',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}. ${sent} manuscritos están con revistas y ${acc} esperan su publicación.</p>
+ <div class="kpis"><div><b>${P.length}</b><span>Proyectos activos</span></div><div><b>${sent}</b><span>En revisión</span></div><div><b>${acc}</b><span>Aceptados</span></div><div><b>${pub}</b><span>Publicados</span></div></div></div>
+ <div class="ph"><img src="img/hero.jpg" alt="Estudiantes de medicina revisando datos de investigación" onerror="this.remove()"></div></section>
+ <h2>Resumen de investigación</h2><div class="grid">${cells.map(c=>`<div class="cell"><b>${c[0]}</b><span>${c[1]}</span><em>${c[2]}</em></div>`).join('')}</div>
+ <p class="sm mut">Enviado, aceptado y publicado son etapas distintas: un artículo solo cuenta como publicado cuando aparece oficialmente en la revista.</p>
+ <h2>Estado de publicación</h2><div>${Object.keys(ST).map(k=>{const n=cnt([k]);return `<button class="trk" data-est="${k}">${badge(k)}<b>${n}</b><span class="bb"><i style="width:${n*100/Math.max(1,A.length)*3}%;background:${ST[k][1]}"></i></span></button>`}).join('')}</div>
+ <div class="two"><div><h2>Meta anual 2026</h2><div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">${ring([{v:done,c:'#0e5e3f'},{v:acc,c:'#7fc7a0'},{v:sent,c:'#2f6fb0'}],goalT)}
+ <ul class="feed" style="flex:1;min-width:200px"><li><i class="st"><i style="background:#0e5e3f"></i></i>Publicados: <b>${done}</b></li><li><i class="st"><i style="background:#7fc7a0"></i></i>Aceptados o en prensa: <b>${acc}</b></li><li><i class="st"><i style="background:#2f6fb0"></i></i>En revisión: <b>${sent}</b></li><li><i class="st"><i style="background:#e3e9ee"></i></i>Faltan por encaminar: <b>${rest}</b> de ${goalT}</li></ul></div></div>
+ <div><h2>Actividad reciente</h2><ul class="feed">${ev2.slice(0,8).map(e=>`<li>${e.s?badge(e.s):`<b>${e.t}</b>`}<small>${esc(e.s?'':'')}${esc(e.a.slice(0,80))} · ${fmt(e.d)}</small></li>`).join('')}</ul></div></div>`;}
+function ring(parts,T){const R=70,C=2*Math.PI*R;let o=0,s=`<svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Avance de la meta anual de publicaciones"><circle cx="90" cy="90" r="${R}" fill="none" stroke="#e3e9ee" stroke-width="18"/>`;
+ parts.forEach(p=>{const l=C*p.v/T;s+=`<circle cx="90" cy="90" r="${R}" fill="none" stroke="${p.c}" stroke-width="18" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 90 90)"/>`;o+=l});
+ return s+`<text x="90" y="92" text-anchor="middle" font-size="30" font-weight="700" fill="#0e283a">${parts[0].v}/${T}</text><text x="90" y="112" text-anchor="middle" font-size="12" fill="#4a5d6b">publicados</text></svg>`;}
+
+function filtrados(){const f=S.f,q=f.q.toLowerCase();
+ return A.filter(a=>(!f.e||a.st===f.e)&&(f.p===''||a.p==f.p)&&(!f.j||a.j===f.j)&&(!f.y||last(a).d.startsWith(f.y))&&(!q||(a.t+authors(a)+a.j+doi(a)+P[a.p][0]+a.x.map(x=>x[0]).join(' ')).toLowerCase().includes(q)));}
+function vArticulos(){const js=[...new Set(A.map(a=>a.j))].sort();
+ return `<h1>Base de artículos</h1><p class="mut">Busca, filtra y abre cualquier manuscrito para ver sus documentos e historial.</p>
+ <div class="fl"><input type="search" id="q" placeholder="Buscar por título, autor, revista, DOI o archivo" value="${esc(S.f.q)}" aria-label="Buscar">
+ <select id="fe" aria-label="Estado"><option value="">Todos los estados</option>${Object.keys(ST).map(k=>`<option value="${k}"${S.f.e===k?' selected':''}>${ST[k][0]}</option>`).join('')}</select>
+ <select id="fp" aria-label="Proyecto"><option value="">Todos los proyectos</option>${P.map((p,i)=>`<option value="${i}"${S.f.p!==''&&S.f.p==i?' selected':''}>${esc(p[0].slice(0,48))}</option>`).join('')}</select>
+ <select id="fj" aria-label="Revista"><option value="">Todas las revistas</option>${js.map(j=>`<option${S.f.j===j?' selected':''}>${esc(j)}</option>`).join('')}</select>
+ <select id="fy" aria-label="Año"><option value="">Todos los años</option><option${S.f.y==='2026'?' selected':''}>2026</option><option${S.f.y==='2025'?' selected':''}>2025</option></select>
+ <select id="fg" aria-label="Agrupar por"><option value="p">Agrupar por proyecto</option><option value="e"${S.g==='e'?' selected':''}>Agrupar por estado</option><option value="j"${S.g==='j'?' selected':''}>Agrupar por revista</option><option value="y"${S.g==='y'?' selected':''}>Agrupar por año</option></select>
+ <button class="btn" id="up">Subir artículo</button></div><div id="lista"></div>`;}
+function lista(){const L=filtrados(),key={p:a=>P[a.p][0],e:a=>ST[a.st][0],j:a=>a.j,y:a=>last(a).d.slice(0,4)}[S.g],G={};
+ L.forEach(a=>(G[key(a)]=G[key(a)]||[]).push(a));
+ $('#lista').innerHTML=L.length?Object.keys(G).sort().map(k=>`<div class="gh">${esc(k)} · ${G[k].length}</div>`+G[k].map(a=>`<button class="it" data-id="${a.id}"><div><h3>${esc(a.t)}</h3><div class="m">${esc(authors(a))}</div><div class="m">${esc(P[a.p][0])} · ${esc(a.j)}${doi(a)?' · DOI '+doi(a):''}</div><div class="m">${dOf(a,'env')?'Enviado '+fmt(dOf(a,'env')):'Sin enviar'}${dOf(a,'publ')?' · Publicado '+fmt(dOf(a,'publ')):''} · ${a.x.length} archivos</div></div><div>${badge(a.st)}</div></button>`).join('')).join(''):'<p class="mut">No hay manuscritos con esos filtros. Quita alguno para ver más resultados.</p>';}
+function tl(a){const ph=ST[a.st][2],stop=['rech','ret'].includes(a.st);return `<div class="tl" role="img" aria-label="Fase ${ph+1} de 7">${FASES.map((_,i)=>`<i class="${i<ph?'d':i===ph?(stop?'':'c'):''}"${stop&&i===ph?' style="background:'+ST[a.st][1]+';border-color:'+ST[a.st][1]+'"':''}></i>${i<6?`<u class="${i<ph?'d':''}"></u>`:''}`).join('')}</div><div class="tlb">${FASES.map(f=>`<span>${f}</span>`).join('')}</div>`;}
+function vManus(){const act=A.filter(a=>a.st!=='publ');
+ const dec=[];A.forEach(a=>a.h.forEach(h=>{if(['rmen','rmay','acep','rech'].includes(h.s))dec.push([h.d,a,h])}));dec.sort((x,y)=>y[0].localeCompare(x[0]));
+ return `<h1>Manuscritos en curso</h1><p class="mut">Sigue cada manuscrito desde el primer borrador hasta la publicación. Ábrelo para subir versiones o cambiar su estado.</p>
+ ${act.map(a=>`<button class="it" data-id="${a.id}"><div><h3>${esc(a.t)}</h3><div class="m">${esc(P[a.p][0])} · ${esc(a.j)} · ${a.x.length} archivos · última novedad ${fmt(last(a).d)}</div>${tl(a)}<div class="m">${esc(last(a).n)}</div></div><div>${badge(a.st)}</div></button>`).join('')}
+ <h2>Decisiones editoriales y comentarios de revisores</h2><table><tr><th>Fecha</th><th>Manuscrito</th><th>Decisión</th><th>Detalle</th></tr>${dec.map(d=>`<tr><td>${fmt(d[0])}</td><td>${esc(d[1].t.slice(0,70))}…</td><td>${badge(d[2].s)}</td><td>${esc(d[2].n)}</td></tr>`).join('')}</table>`;}
+function vProy(){return `<h1>Proyectos de investigación</h1><p class="mut">Estado de cada línea de trabajo y los manuscritos que han salido de ella.</p><div class="pgrid" style="border-top:1px solid var(--line);border-left:1px solid var(--line)">${P.map((p,i)=>{const ms=A.filter(a=>a.p===i);return `<div class="pc"><h3>${esc(p[0])}</h3><div class="mut sm">${esc(p[1])}</div>
+ <p class="sm" style="margin:10px 0 2px"><b>Investigador principal:</b> ${AU[p[2]]}<br><b>Colaboradores:</b> ${p[3].map(k=>AU[k]).join(', ')}<br><b>Etapa:</b> ${p[4]}</p>
+ <div class="pb"><i style="width:${p[5]}%"></i></div><div class="sm mut">${p[5]} % completado</div>
+ <div class="sm" style="margin-top:10px"><b>${ms.length} manuscritos</b></div>${ms.map(a=>`<div class="sm" style="margin-top:4px">${badge(a.st)} <a href="#" data-id="${a.id}">${esc(a.t.slice(0,52))}…</a></div>`).join('')}</div>`}).join('')}</div>`;}
+function evs(){const e=[];A.forEach(a=>{const l=last(a),n=a.t.slice(0,34);
+ if(a.st==='pares')e.push([add(l.d,70),'Decisión esperada: '+n,'#1f4f8f']);if(a.st==='env')e.push([add(l.d,50),'Decisión esperada: '+n,'#1f4f8f']);if(a.st==='reenv')e.push([add(l.d,45),'Decisión esperada: '+n,'#1f4f8f']);
+ if(a.st==='rmay')e.push([add(l.d,42),'Plazo de revisión: '+n,'#c8641a']);if(a.st==='rmen')e.push([add(l.d,21),'Plazo de revisión: '+n,'#c8641a']);
+ if(a.st==='revint')e.push([add(l.d,25),'Plazo de envío: '+n,'#2f6fb0']);if(a.st==='borr')e.push([add(l.d,30),'Plazo de envío: '+n,'#2f6fb0']);
+ if(a.st==='prensa')e.push([add(l.d,40),'Publicación prevista: '+n,'#0e5e3f']);if(dOf(a,'publ'))e.push([dOf(a,'publ'),'Publicado: '+n,'#0e5e3f']);});
+ e.push(['2026-11-18','Taller de revisiones sistemáticas','#6b4c9a'],['2026-11-27','Presentación de póster en congreso','#6b4c9a'],['2026-12-09','Congreso regional de cardiología','#6b4c9a']);return e;}
+function vCal(){const [y,m]=S.cal,first=new Date(y,m,1),off=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate(),E=evs(),pre=`${y}-${String(m+1).padStart(2,'0')}-`;
+ let c=['L','M','X','J','V','S','D'].map(d=>`<div class="h">${d}</div>`).join('');for(let i=0;i<off;i++)c+='<div class="o"></div>';
+ for(let d=1;d<=days;d++){const k=pre+String(d).padStart(2,'0');c+=`<div class="${k===HOY?'t':''}"><b>${d}</b>${E.filter(e=>e[0]===k).map(e=>`<span class="ev" style="border-color:${e[2]}">${esc(e[1])}</span>`).join('')}</div>`;}
+ return `<h1>Calendario de publicaciones</h1><div class="fl"><button class="btn l" data-m="-1">Mes anterior</button><b style="min-width:150px;text-align:center">${first.toLocaleDateString('es-DO',{month:'long',year:'numeric'})}</b><button class="btn l" data-m="1">Mes siguiente</button></div>
+ <div class="lg"><span><i style="background:#2f6fb0"></i>Plazo de envío</span><span><i style="background:#1f4f8f"></i>Decisión esperada</span><span><i style="background:#c8641a"></i>Plazo de revisión</span><span><i style="background:#6b4c9a"></i>Congresos y talleres</span><span><i style="background:#0e5e3f"></i>Publicación</span></div><div class="cal">${c}</div>`;}
+function bars(data,cols){const W=720,H=220,L=26,B=28,T=10,n=data.length,gw=(W-L)/n,m=Math.max(3,...data.flatMap(d=>d.v));let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="Gráfico mensual">`;
+ for(let k=0;k<=m;k++){const y=T+(H-T-B)*(1-k/m);s+=`<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" stroke="#e3e9ee"/><text x="0" y="${y+4}" font-size="11" fill="#4a5d6b">${k}</text>`}
+ data.forEach((d,i)=>{const bw=(gw-10)/d.v.length;d.v.forEach((v,j)=>{const h=(H-T-B)*v/m;s+=`<rect x="${L+i*gw+5+j*bw}" y="${H-B-h}" width="${bw-2}" height="${h}" fill="${cols[j]}"/>`});s+=`<text x="${L+i*gw+gw/2}" y="${H-9}" font-size="11" text-anchor="middle" fill="#4a5d6b">${d.l}</text>`});return s+'</svg>';}
+function rank(rows,h){rows.sort((a,b)=>b[1]-a[1]||b[2]-a[2]||b[3]-a[3]);return `<table><tr><th>${h}</th><th class="n">Publicados</th><th class="n">Aceptados</th><th class="n">Enviados</th></tr>${rows.map((r,i)=>`<tr><td>${i+1}. ${esc(r[0])}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td></tr>`).join('')}</table>`;}
+function vAna(){const meses=[];for(let i=0;i<12;i++){const d=new Date(2025,10+i,1);meses.push({k:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),l:d.toLocaleDateString('es-DO',{month:'short'}).replace('.','')})}
+ const c=s=>m=>A.reduce((n,a)=>n+ev(a,s).filter(x=>x.d.startsWith(m.k)).length,0);
+ const sub=meses.map(c('env')),acc=meses.map(c('acep')),pub=meses.map(c('publ'));let acu=0;
+ const tiempos=A.filter(a=>dOf(a,'env')&&dOf(a,'acep')).map(a=>(D(dOf(a,'acep'))-D(dOf(a,'env')))/864e5),med=tiempos.length?Math.round(tiempos.reduce((x,y)=>x+y,0)/tiempos.length):0;
+ const nAc=A.filter(a=>dOf(a,'acep')).length,nRe=cnt(['rech']),tasa=nAc+nRe?Math.round(nRe*100/(nAc+nRe)):0,nEnv=A.filter(a=>dOf(a,'env')).length,nPub=cnt(['publ']);
+ const row=(f,keyf)=>{const o={};A.forEach(a=>{const k=keyf(a);o[k]=o[k]||[k,0,0,0];if(a.st==='publ')o[k][1]++;if(ACC.includes(a.st))o[k][2]++;if(dOf(a,'env'))o[k][3]++});return Object.values(o)};
+ return `<h1>Analítica de investigación</h1><p class="mut">Tendencias de los últimos 12 meses (noviembre de 2025 a octubre de 2026).</p>
+ <div class="grid" style="margin:18px 0"><div class="cell"><b>${tasa} %</b><span>Tasa de rechazo</span><em>${nRe} rechazado de ${nAc+nRe} con decisión</em></div><div class="cell"><b>${med} días</b><span>De envío a aceptación</span><em>promedio de ${tiempos.length} manuscritos</em></div><div class="cell"><b>${nPub}</b><span>Producción publicada</span><em>${nEnv} enviados en total</em></div></div>
+ <h2>Manuscritos enviados y aceptados por mes</h2>${bars(meses.map((m,i)=>({l:m.l,v:[sub[i],acc[i]]})),['#2f6fb0','#2e8b57'])}<div class="lg"><span><i style="background:#2f6fb0"></i>Enviados</span><span><i style="background:#2e8b57"></i>Aceptados</span></div>
+ <h2>Publicaciones acumuladas</h2>${bars(meses.map((m,i)=>({l:m.l,v:[acu+=pub[i]]})),['#0e5e3f'])}
+ <h2>Tendencia anual</h2><table><tr><th>Año</th><th class="n">Enviados</th><th class="n">Aceptados</th><th class="n">Publicados</th><th class="n">Rechazo</th><th class="n">Días a aceptación</th></tr><tr><td>2024</td><td class="n">6</td><td class="n">3</td><td class="n">2</td><td class="n">25 %</td><td class="n">118</td></tr><tr><td>2025</td><td class="n">11</td><td class="n">7</td><td class="n">5</td><td class="n">22 %</td><td class="n">104</td></tr><tr><td>2026 (hasta hoy)</td><td class="n">${nEnv}</td><td class="n">${nAc}</td><td class="n">${nPub}</td><td class="n">${tasa} %</td><td class="n">${med}</td></tr></table>
+ <h2>Ranking de publicaciones</h2><div class="two"><div>${rank(row(0,a=>P[a.p][0].slice(0,46)),'Proyectos')}</div><div>${rank(row(0,a=>EQ[P[a.p][6]]),'Equipos')}<div style="height:18px"></div>${rank(row(0,a=>a.j.slice(0,40)),'Revistas')}</div></div>`;}
+
+/* ===== Detalle del manuscrito ===== */
+function openD(id){const a=A[id],d=$('#drawer');
+ d.innerHTML=`<button class="x" id="xd">Cerrar</button><h2 style="border:0;margin:0 0 10px;font-size:19px">${esc(a.t)}</h2>${badge(a.st)} <span class="sm mut">· ${stage(a.st)}</span>${tl(a)}
+ <dl><dt>Autores</dt><dd>${esc(authors(a))}</dd><dt>Proyecto</dt><dd>${esc(P[a.p][0])}</dd><dt>Revista</dt><dd>${esc(a.j)}</dd><dt>DOI</dt><dd>${doi(a)||'Aún sin asignar'}</dd><dt>Envío</dt><dd>${dOf(a,'env')?fmt(dOf(a,'env')):'Sin enviar'}</dd><dt>Publicación</dt><dd>${dOf(a,'publ')?fmt(dOf(a,'publ')):'Sin publicar'}</dd></dl>
+ <h3>Actualizar estado</h3><div class="fl" style="margin-top:8px"><select id="ns">${Object.keys(ST).map(k=>`<option value="${k}"${k===a.st?' selected':''}>${ST[k][0]}</option>`).join('')}</select><input id="nn" placeholder="Nota o comentario del revisor" style="flex:1;min-width:160px"><button class="btn" id="su" data-id="${id}">Guardar estado</button></div>
+ <h3 style="margin-top:20px">Documentos (${a.x.length})</h3><table>${a.x.map(f=>`<tr><td>${esc(f[0])}</td><td>${f[1]}</td><td class="n">${f[2]>1024?(f[2]/1024).toFixed(1)+' MB':f[2]+' KB'}</td><td>${fmt(f[3])}</td></tr>`).join('')}</table>
+ <div class="fl" style="margin-top:10px"><input type="file" id="uf" multiple accept=".pdf,.doc,.docx,.xlsx,.zip,.png,.jpg"><span class="sm mut">En esta versión de ejemplo el archivo solo se registra en la lista.</span></div>
+ <h3 style="margin:20px 0 10px">Historial de estados</h3><ul class="hist">${[...a.h].reverse().map(h=>`<li>${badge(h.s)} <span class="sm mut">${fmt(h.d)}</span><br>${esc(h.n)}</li>`).join('')}</ul>`;
+ d.hidden=false;d.dataset.id=id;d.scrollTop=0;$('#xd').focus();}
+
+/* ===== Navegación y eventos ===== */
+const V={resumen:vResumen,articulos:vArticulos,manuscritos:vManus,proyectos:vProy,calendario:vCal,analitica:vAna};
+function render(){const v=V[location.hash.slice(1)]?location.hash.slice(1):'resumen';$('#app').innerHTML=V[v]();
+ document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.hash==='#'+v));if(v==='articulos')lista();}
+window.addEventListener('hashchange',()=>{$('#drawer').hidden=true;render();scrollTo(0,0)});
+document.addEventListener('click',e=>{const t=e.target;
+ const it=t.closest('[data-id]');if(it&&!t.closest('#drawer')){e.preventDefault();openD(+it.dataset.id);return}
+ if(t.closest('[data-est]')){S.f={q:'',e:t.closest('[data-est]').dataset.est,p:'',j:'',y:''};location.hash='articulos';return}
+ if(t.dataset.m){S.cal[1]+=+t.dataset.m;if(S.cal[1]<0){S.cal[1]=11;S.cal[0]--}if(S.cal[1]>11){S.cal[1]=0;S.cal[0]++}render();return}
+ if(t.id==='xd'){$('#drawer').hidden=true;return}
+ if(t.id==='up'){$('#np').innerHTML=P.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join('');$('#dlg').showModal();return}
+ if(t.id==='nc'){$('#dlg').close();return}
+ if(t.id==='su'){const a=A[+t.dataset.id],s=$('#ns').value;if(s!==a.st||$('#nn').value.trim()){a.st=s;a.h.push({s,d:HOY,n:$('#nn').value.trim()||ST[s][3]});if(s==='env'||s==='revint'||s==='publ')a.x=files(a);render();openD(a.id)}}});
+document.addEventListener('input',e=>{const t=e.target,f=S.f;
+ if(t.id==='q')f.q=t.value;else if(t.id==='fe')f.e=t.value;else if(t.id==='fp')f.p=t.value;else if(t.id==='fj')f.j=t.value;else if(t.id==='fy')f.y=t.value;else if(t.id==='fg')S.g=t.value;else return;lista();});
+document.addEventListener('change',e=>{if(e.target.id==='uf'){const a=A[+$('#drawer').dataset.id];[...e.target.files].forEach(f=>{a.x.push([f.name,(f.name.split('.').pop()||'').toUpperCase(),Math.max(1,Math.round(f.size/1024)),HOY])});a.h.push({s:a.st,d:HOY,n:'Documento añadido: '+[...e.target.files].map(f=>f.name).join(', ')});openD(a.id);render()}});
+$('#nf').addEventListener('submit',()=>{const t=$('#nt').value.trim();if(!t)return;const f=$('#nfile').files[0],id=A.length;
+ A.push({id,t,p:+$('#np').value,j:$('#nj').value.trim()||'Por definir',st:'prep',au:[P[+$('#np').value][2]],h:[{s:'prep',d:HOY,n:'Manuscrito registrado.'}],x:f?[[f.name,f.name.split('.').pop().toUpperCase(),Math.max(1,Math.round(f.size/1024)),HOY]]:[]});
+ $('#nf').reset();S.f={q:'',e:'',p:'',j:'',y:''};location.hash='articulos';render();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#drawer').hidden=true});
+render();
+</script>
+</body>
+</html>
