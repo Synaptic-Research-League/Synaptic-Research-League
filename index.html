@@ -3,202 +3,1297 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Synaptic Research League</title>
-<meta name="description" content="Liga de investigación para estudiantes de medicina: talleres, mentoría y proyectos de revisión sistemática.">
-<link rel="icon" href="img/emblema.png">
+<title>Synaptic Research League · De la pregunta a la publicación</title>
+<meta name="description" content="Liga de investigación para estudiantes de medicina: mentoría 1:1, proyectos reales y acompañamiento editorial hasta tu primera publicación.">
+<meta name="theme-color" content="#f4f8fa">
+<meta property="og:title" content="Synaptic Research League · De la pregunta a la publicación">
+<meta property="og:description" content="Mentoría, proyectos reales y acompañamiento editorial para estudiantes de medicina que quieren publicar investigación.">
+<meta property="og:type" content="website">
+<link rel="icon" href="emblema.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="srl.css">
 <style>
-:root{
-  --navy:#0e283a; --cyan:#2cb1cc; --action:#0a7b94; --action-dk:#08677c;
-  --ink:#10222f; --muted:#3f5463; --line:#d3dce3; --soft:#f1f6f9;
-  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  --bar:36px; --head:80px;
-}
-*{box-sizing:border-box}
-body{margin:0;font:16px/1.55 var(--sans);color:var(--ink);background:#fff}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
-.skip{position:absolute;left:-999px;top:0;background:#fff;color:var(--navy);padding:10px 14px;z-index:99}
-.skip:focus{left:0}
-
-/* ---------- Barra superior ---------- */
-.utility{background:var(--navy);color:#e4edf2;font-size:13.5px}
-.utility .in{max-width:1280px;margin:0 auto;padding:0 24px;height:var(--bar);display:flex;justify-content:flex-end;align-items:stretch}
-.utility a{display:flex;align-items:center;padding:0 16px;text-decoration:none;border-left:1px solid rgba(255,255,255,.22)}
-.utility a:last-child{padding-right:0}
-.utility a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
-
-/* ---------- Menú principal ---------- */
-.site{background:#fff;border-bottom:1px solid var(--line);position:relative;z-index:20}
-.site .in{max-width:1280px;margin:0 auto;padding:0 24px;height:var(--head);display:flex;align-items:center;gap:32px}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
-.logo img{height:54px;width:auto;display:block}
-.logo b{display:block;font-size:22px;line-height:1.1;font-weight:700;color:var(--navy);letter-spacing:-.01em}
-.logo span{display:block;font-size:13px;line-height:1.2;font-weight:500;color:var(--muted);letter-spacing:.02em}
-nav{flex:1;height:100%}
-nav>ul{list-style:none;margin:0;padding:0;display:flex;height:100%}
-nav>ul>li{position:relative;display:flex}
-.top{display:flex;align-items:center;gap:8px;padding:0 16px;background:none;border:0;font:500 16px var(--sans);color:var(--ink);text-decoration:none;cursor:pointer;border-bottom:4px solid transparent;margin-bottom:-1px}
-.top:hover,.top[aria-expanded="true"]{border-bottom-color:var(--cyan);color:var(--navy)}
-.chev{width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .15s}
-.top[aria-expanded="true"] .chev{transform:rotate(-135deg) translateY(-1px)}
-.menu{display:none;position:absolute;left:0;top:100%;min-width:280px;margin:0;padding:0;list-style:none;background:#fff;border:1px solid #c3cfd8;border-top:3px solid var(--cyan)}
-.menu.open{display:block}
-.menu li+li{border-top:1px solid #e3e9ee}
-.menu a{display:block;padding:13px 20px;text-decoration:none;font-size:15.5px}
-.menu a:hover{background:var(--soft);color:var(--action-dk)}
-.btn{display:inline-block;padding:13px 24px;border:2px solid var(--action);background:var(--action);color:#fff;font:600 16px var(--sans);text-decoration:none;cursor:pointer;border-radius:0}
-.btn:hover{background:var(--action-dk);border-color:var(--action-dk)}
-.btn.line{background:#fff;color:var(--navy);border-color:var(--navy)}
-.btn.line:hover{background:var(--soft)}
-.cta{flex:none}
-.burger{display:none;margin-left:auto;background:#fff;border:2px solid var(--navy);color:var(--navy);padding:8px 14px;font:600 15px var(--sans);cursor:pointer;border-radius:0}
-
-/* ---------- Portada ---------- */
-.hero{display:grid;background:#cbd7df;border-bottom:1px solid var(--line)}
-.media{grid-area:1/1;position:relative;min-height:clamp(440px,66vh,680px)}
-.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.media .falta{display:none;position:absolute;inset:0;align-items:center;justify-content:center;padding:24px 24px 150px;text-align:center;color:var(--muted);font-size:15px}
-.hero.sinfoto .falta{display:flex}
-.intro{grid-area:1/1;align-self:end;justify-self:start;position:relative;background:#fff;border-top:4px solid var(--cyan);
-  padding:36px 40px 40px;max-width:600px;margin-left:max(24px,calc((100vw - 1280px)/2 + 24px))}
-.intro h1{font:600 clamp(30px,3.8vw,46px)/1.12 var(--sans);letter-spacing:-.015em;margin:0 0 14px;color:var(--navy);max-width:17ch}
-.intro p{margin:0 0 26px;font-size:18px;color:var(--muted);max-width:46ch}
-.acciones{display:flex;flex-wrap:wrap;gap:12px}
-
-@media (max-width:980px){
-  :root{--head:68px}
-  .logo img{height:46px}
-  .logo b{font-size:20px}
-  .burger{display:block}
-  .cta{display:none}
-  nav{display:none;position:absolute;left:0;right:0;top:100%;height:auto;background:#fff;border-bottom:1px solid var(--line)}
-  nav.open{display:block}
-  nav>ul{flex-direction:column;height:auto}
-  nav>ul>li{display:block;border-top:1px solid var(--line)}
-  .top{width:100%;justify-content:space-between;padding:15px 24px;border-bottom:0;margin:0}
-  .top:hover,.top[aria-expanded="true"]{background:var(--soft)}
-  .menu{position:static;border:0;border-top:1px solid var(--line);min-width:0;background:var(--soft)}
-  .menu a{padding:13px 24px 13px 40px}
-  .menu li+li{border-top-color:#dbe4ea}
-  .navcta{display:block!important;padding:16px 24px}
-  .navcta .btn{display:block;text-align:center}
-  .media{min-height:260px}
-  .media .falta{padding-bottom:24px}
-  .intro{grid-area:2/1;max-width:none;margin:0;padding:28px 24px 32px;justify-self:stretch;border-top-width:4px}
+/* ===== Portada ===== */
+.hero{padding-top:var(--head);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;min-height:calc(100svh - var(--head));padding-top:36px;padding-bottom:48px}
+.hero-copy{grid-column:1/span 6;position:relative;z-index:2}
+.hero h1{margin-top:24px;font-family:var(--serif);font-weight:600;font-size:clamp(40px,5.1vw,64px);line-height:1.07;letter-spacing:-.025em;color:var(--pine);max-width:13ch}
+.hero h1 .nowrap{white-space:nowrap}
+.hero h1 .mark{position:relative;display:inline-block;color:var(--clay);white-space:nowrap}
+.hero h1 .mark svg{position:absolute;left:0;bottom:-.16em;width:100%;height:.34em;overflow:visible;pointer-events:none}
+.hero-lead{margin-top:26px;max-width:31rem;font-size:17px;line-height:1.85;color:rgba(14,40,58,.76)}
+.hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:18px 26px;margin-top:34px}
+.hero-secondary{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:15px;font-weight:600;color:var(--pine);text-decoration:none;border-bottom:2px solid rgba(10,123,148,.4);transition:color .18s ease,border-color .18s ease}
+.hero-secondary svg{width:16px;height:16px;transition:transform .18s var(--ease)}
+.hero-secondary:hover{color:var(--clay-deep);border-color:var(--clay)}
+.hero-secondary:hover svg{transform:translateX(4px)}
+.hero-trust{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin-top:32px;font-size:13.5px;color:rgba(14,40,58,.64)}
+.hero-trust svg{width:20px;height:20px;color:var(--sage);flex:none}
+.hero-trust span{width:3px;height:3px;border-radius:50%;background:rgba(14,40,58,.3)}
+.hero-media{grid-column:7/span 6;position:relative;margin-right:calc(-1 * (max(20px,50vw - 640px + 40px) + clamp(160px,22vw,340px)));transform:translateX(clamp(10px,2vw,40px));padding-bottom:22px}
+.hero-frame{position:relative;aspect-ratio:5/4;overflow:hidden;border-radius:28px 0 0 48px;background:linear-gradient(150deg,var(--oat-deep),var(--sage-soft) 60%,#cfdde4)}
+.hero-frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.hero-frame:hover img{transform:scale(1.025)}
+.hero-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(35deg,rgba(14,40,58,.22),transparent 55%);pointer-events:none}
+.hero-card{position:absolute;left:24px;bottom:52px;z-index:2;width:min(348px,calc(100% - 48px));padding:20px 22px;border:1px solid rgba(211,220,227,.8);border-radius:18px;background:rgba(251,252,253,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 20px 50px -20px rgba(14,40,58,.45)}
+.hero-card .hc-label{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(14,40,58,.5)}
+.hero-card .hc-big{margin-top:3px;font-family:var(--serif);font-size:36px;font-weight:500;line-height:1.1;color:var(--pine)}
+.hero-card .hc-big span{margin-left:6px;font-family:var(--sans);font-size:13px;font-weight:600;color:rgba(14,40,58,.58)}
+.hero-card .hc-sub{margin-top:5px;font-size:13px;line-height:1.5;color:rgba(14,40,58,.7)}
+.hero-arc{position:absolute;top:-18px;right:32px;width:150px;color:rgba(251,252,253,.8);pointer-events:none;z-index:2}
+.journey-wrap{border-top:1px solid rgba(211,220,227,.8);border-bottom:1px solid rgba(211,220,227,.8);background:rgba(251,252,253,.55)}
+.journey{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);margin:0;padding:26px 0;gap:20px 28px}
+.journey li{display:flex;align-items:flex-start;gap:14px;min-width:0}
+.journey .jn{font-family:var(--serif);font-size:24px;line-height:1;color:var(--clay);flex:none;margin-top:2px}
+.journey b{display:block;font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.25;color:var(--pine)}
+.journey small{display:block;margin-top:4px;font-size:13.5px;line-height:1.45;color:rgba(14,40,58,.62)}
+@media (max-width:1020px){
+  .hero-grid{grid-template-columns:1fr;gap:34px;padding-top:22px;padding-bottom:0}
+  .hero-copy{grid-column:1}
+  .hero h1{max-width:15ch}
+  .hero-media{grid-column:1;margin-right:0;padding-bottom:0;transform:none}
+  .hero-frame{aspect-ratio:16/10;border-radius:24px}
+  .hero-card{left:16px;bottom:16px}
+  .hero-arc{display:none}
+  .journey{grid-template-columns:repeat(2,1fr);padding:22px 0}
 }
 @media (max-width:620px){
-  .utility .in{padding:0 12px;justify-content:space-between}
-  .utility a{padding:0 10px;font-size:13px}
-  .utility .opc{display:none}
+  .hero h1{font-size:clamp(38px,11vw,50px);max-width:11ch}
+  .hero-lead{font-size:16px}
+  .hero-actions{gap:14px}
+  .hero-actions .btn{width:100%}
+  .hero-secondary{min-height:38px}
+  .hero-trust{font-size:12.5px;gap:7px}
+  .hero-frame{aspect-ratio:4/3;border-radius:20px}
+  .hero-card{padding:16px 18px;bottom:12px;left:12px;width:calc(100% - 24px)}
+  .hero-card .hc-big{font-size:30px}
+  .journey{gap:18px}
+  .journey li{gap:10px}
+  .journey b{font-size:16.5px}
 }
-.navcta{display:none}
+
+/* ===== Sección de líneas (oscura) ===== */
+.lines{background:var(--pine);color:var(--oat);padding:clamp(72px,9vw,118px) 0;overflow:hidden}
+.lines .deco-ring{position:absolute;left:-180px;top:60px;width:520px;height:520px;border:1px solid rgba(251,252,253,.1);border-radius:50%;pointer-events:none}
+.lines .deco-ring::after{content:"";position:absolute;inset:54px;border:1px solid rgba(251,252,253,.07);border-radius:50%}
+.lines .sec-head h2{color:var(--oat);max-width:20ch}
+.line-tabs{display:flex;gap:8px;overflow-x:auto;padding:26px 0 4px;margin-top:34px;scrollbar-width:none}
+.line-tabs::-webkit-scrollbar{display:none}
+.line-tab{flex:none;min-height:40px;padding:0 16px;border:1px solid rgba(251,252,253,.22);border-radius:999px;background:transparent;color:rgba(251,252,253,.76);font-size:13.5px;font-weight:600;cursor:pointer;transition:background-color .18s ease,border-color .18s ease,color .18s ease}
+.line-tab:hover{border-color:rgba(251,252,253,.52);color:var(--oat)}
+.line-tab[aria-selected="true"]{background:var(--clay);border-color:var(--clay);color:#ffffff}
+.line-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(24px,5vw,64px);align-items:center;margin-top:26px}
+.map{position:relative;width:100%;max-width:460px;margin:0 auto;aspect-ratio:1/1.04}
+.map .orbit{fill:none;stroke:rgba(251,252,253,.12);stroke-width:.4;stroke-dasharray:1.5 3}
+.map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.map .orbit{fill:none;stroke:rgba(251,252,253,.12);stroke-width:.4;stroke-dasharray:1.5 3}
+.map .link-line{fill:none;stroke:rgba(251,252,253,.32);stroke-width:.42;stroke-dasharray:3 5;animation:flow 14s linear infinite;vector-effect:non-scaling-stroke}
+.map .link-line.hot{stroke:rgba(10,123,148,.9);stroke-width:.7}
+@keyframes flow{to{stroke-dashoffset:-160}}
+.map .hub{fill:var(--pine-soft);stroke:rgba(251,252,253,.28);stroke-width:.5}
+.hub-node{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:rgba(251,252,253,.06);border:1px solid rgba(251,252,253,.22);font-family:var(--serif);font-size:15px;letter-spacing:.06em;color:rgba(251,252,253,.9);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);pointer-events:none}
+.node{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 12px;border:1px solid rgba(251,252,253,.22);border-radius:999px;background:rgba(14,40,58,.72);color:rgba(251,252,253,.78);font-size:12.5px;font-weight:600;white-space:nowrap;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .18s var(--ease)}
+.node::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--clay-soft);flex:none;box-shadow:0 0 0 0 rgba(217,236,241,.35);animation:node-pulse 2.8s ease-out infinite}
+.node:hover{border-color:rgba(251,252,253,.6);color:#fff;transform:translate(-50%,-50%) translateY(-1px)}
+.node[aria-pressed="true"]{background:var(--clay);border-color:var(--clay);color:#ffffff}
+.node[aria-pressed="true"]::before{background:#fff}
+.map .node{min-height:30px;padding:0 9px;font-size:11px;gap:5px}
+.map .node::before{width:6px;height:6px}
+@keyframes node-pulse{0%{box-shadow:0 0 0 0 rgba(217,236,241,.35)}70%{box-shadow:0 0 0 7px rgba(217,236,241,0)}100%{box-shadow:0 0 0 0 rgba(217,236,241,0)}}
+.line-card{background:var(--linen);color:var(--pine);border-radius:26px;padding:clamp(24px,3.4vw,38px);box-shadow:0 30px 80px -40px rgba(0,0,0,.6);min-height:430px}
+.line-card.swap{animation:card-in .38s var(--ease)}
+@keyframes card-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.lc-top h3{margin-top:12px;font-family:var(--serif);font-size:clamp(28px,3vw,36px);font-weight:600;line-height:1.1;letter-spacing:-.02em}
+.lc-top>p{margin-top:10px;font-size:14.5px;line-height:1.65;color:var(--muted);max-width:46ch}
+.lc-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:26px;padding-top:24px;border-top:1px solid var(--border)}
+.lc-cols h4,.lc-route h4{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--clay)}
+.lc-cols ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.lc-cols li{position:relative;padding-left:14px;font-size:13.5px;line-height:1.5;color:rgba(14,40,58,.78)}
+.lc-cols li::before{content:"";position:absolute;left:0;top:.58em;width:5px;height:5px;border-radius:50%;background:var(--sage)}
+.lc-route{margin-top:22px;padding-top:22px;border-top:1px solid var(--border)}
+.lc-route ol{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.lc-route li{min-width:0}
+.lc-route .rn{font-family:var(--serif);font-size:18px;color:var(--clay)}
+.lc-route b{display:block;margin-top:2px;font-size:13.5px;font-weight:700}
+.lc-route small{display:block;margin-top:3px;font-size:12px;line-height:1.45;color:var(--muted)}
+.lc-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:26px;padding-top:22px;border-top:1px solid var(--border)}
+.lc-foot .mentor{font-size:12px;line-height:1.5;color:var(--muted)}
+.lc-foot .mentor span{display:block;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,40,58,.42);margin-bottom:2px}
+@media (max-width:1020px){
+  .line-grid{grid-template-columns:1fr;gap:30px}
+  .map{display:none}
+  .line-card{min-height:0}
+}
+@media (max-width:560px){
+  .lc-cols{grid-template-columns:1fr;gap:18px}
+  .lc-route ol{grid-template-columns:1fr;gap:10px}
+  .lc-foot .btn{width:100%}
+}
+
+/* ===== Equipo ===== */
+.team{padding:clamp(72px,9vw,118px) 0}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px}
+.person{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:20px;background:var(--linen);overflow:hidden;transition:transform .2s var(--ease),box-shadow .25s ease,border-color .2s ease}
+.person:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:var(--border-strong)}
+.person-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(150deg,var(--oat-deep),var(--sage-soft))}
+.person-photo .initials{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-size:36px;color:rgba(14,40,58,.38)}
+.person-photo img{position:relative;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+.person:hover .person-photo img{transform:scale(1.03)}
+.person-badge{position:absolute;left:10px;top:10px;z-index:2;display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;background:rgba(251,252,253,.92);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay-deep);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.person-body{display:flex;flex-direction:column;flex:1;padding:16px 16px 18px}
+.person blockquote{margin:0;font-family:var(--serif);font-size:14.5px;line-height:1.4;color:var(--pine)}
+.person h3{margin-top:0;font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.person-role{margin-top:4px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay)}
+.person-bio{margin-top:9px;font-size:12px;line-height:1.55;color:var(--muted)}
+.person-tags{list-style:none;display:flex;flex-wrap:wrap;gap:5px;margin:12px 0 0;padding:0}
+.person-tags li{display:inline-flex;align-items:center;min-height:21px;padding:0 7px;border:1px solid var(--border);border-radius:999px;background:var(--oat);font-size:9.5px;font-weight:600;color:rgba(14,40,58,.7)}
+.person-cred{margin-top:10px;font-size:11px;line-height:1.5;color:rgba(14,40,58,.55)}
+.person .link-arrow{margin-top:auto;padding-top:14px;font-size:12px;width:fit-content}
+.person.slot{border-style:dashed;background:rgba(251,252,253,.55)}
+.founders{margin-top:34px;padding-top:26px;border-top:1px solid var(--border)}
+.founders-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.founders-head p{margin:0;font-size:12.5px;color:var(--muted)}
+.founder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:16px}
+.founder{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:24px;border:1px dashed var(--border-strong);border-radius:18px;background:rgba(251,252,253,.55);min-height:148px}
+.founder .f-av{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--oat-deep);font-family:var(--serif);font-size:18px;color:rgba(14,40,58,.45);flex:none}
+.founder b{display:block;font-family:var(--serif);font-size:19px;font-weight:600;color:var(--pine)}
+.founder small{display:block;margin-top:3px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(14,40,58,.45)}
+@media (max-width:1020px){
+  .team-grid{grid-template-columns:1fr 1fr}
+  .founder-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:680px){
+  .team-grid{grid-template-columns:1fr;gap:16px}
+  .person-photo{aspect-ratio:16/9}
+  .founder-grid{grid-template-columns:1fr}
+}
+
+/* ===== Rutas ===== */
+.routes{background:var(--linen);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:clamp(72px,9vw,118px) 0}
+.route-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:46px;align-items:stretch}
+.route{position:relative;display:flex;flex-direction:column;padding:clamp(24px,2.8vw,32px);border:1px solid var(--border);border-radius:24px;background:var(--oat);transition:transform .2s var(--ease),box-shadow .25s ease}
+.route:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.route.featured{background:var(--linen);border:2px solid var(--clay);box-shadow:0 24px 60px -34px rgba(10,123,148,.45)}
+.route-flag{position:absolute;left:24px;top:-14px;display:inline-flex;align-items:center;min-height:27px;padding:0 12px;border-radius:999px;background:var(--clay);color:#ffffff;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.route-kicker{font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(14,40,58,.48)}
+.route-dur{margin-top:12px;font-family:var(--serif);font-size:44px;font-weight:500;line-height:1;letter-spacing:-.02em;color:var(--pine)}
+.route-dur span{margin-left:6px;font-family:var(--sans);font-size:13px;font-weight:600;color:rgba(14,40,58,.55);letter-spacing:0}
+.route h3{margin-top:12px;font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.15}
+.route>p{margin-top:9px;font-size:13.5px;line-height:1.65;color:var(--muted)}
+.route ul{list-style:none;margin:20px 0 0;padding:18px 0 0;border-top:1px solid var(--border);display:grid;gap:9px}
+.route li{display:flex;align-items:flex-start;gap:9px;font-size:13px;line-height:1.5;color:rgba(14,40,58,.78)}
+.route li svg{width:15px;height:15px;flex:none;margin-top:2px;color:var(--sage)}
+.route .btn{margin-top:24px;width:100%}
+.route-note{margin-top:26px;font-size:12.5px;line-height:1.7;color:rgba(14,40,58,.55);text-align:center}
+@media (max-width:1020px){
+  .route-grid{grid-template-columns:1fr;max-width:560px;margin-left:auto;margin-right:auto;gap:26px}
+  .route.featured{order:-1}
+}
+
+/* ===== Resultados y publicaciones ===== */
+.results{padding:clamp(72px,9vw,118px) 0}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:46px}
+.result{display:flex;flex-direction:column;padding:26px;border:1px solid var(--border);border-radius:22px;background:var(--linen);transition:transform .2s var(--ease),box-shadow .25s ease}
+.result:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.result-kicker{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--clay)}
+.result h3{margin-top:10px;font-family:var(--serif);font-size:23px;font-weight:600;line-height:1.2}
+.result-who{margin-top:8px;font-size:12.5px;color:var(--muted)}
+.metric{display:flex;align-items:baseline;gap:10px;margin-top:22px;font-family:var(--serif);font-size:42px;font-weight:500;line-height:1;letter-spacing:-.02em}
+.metric .from{color:rgba(14,40,58,.32);font-size:30px}
+.metric .arrow{font-family:var(--sans);font-size:18px;color:var(--clay);font-weight:600}
+.metric .to{color:var(--clay-deep)}
+.metric-label{margin-top:6px;font-size:12px;color:var(--muted)}
+.progress{height:5px;margin-top:18px;border-radius:999px;background:var(--oat-deep);overflow:hidden}
+.progress span{display:block;height:100%;border-radius:999px;background:var(--clay);transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease) .18s}
+[data-reveal].seen .progress span{transform:scaleX(var(--p,.8))}
+.result-foot{margin-top:auto;padding-top:18px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted)}
+.result-foot b{font-weight:700;color:var(--pine)}
+.demo-note{margin-top:22px;font-size:11.5px;color:rgba(14,40,58,.48)}
+
+.pub-block{margin-top:56px;padding-top:42px;border-top:1px solid var(--border)}
+.pub-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.pub-head h3{font-family:var(--serif);font-size:clamp(26px,2.8vw,34px);font-weight:600;letter-spacing:-.02em}
+.pub-list{list-style:none;margin:22px 0 0;padding:0;border-top:1px solid var(--border)}
+.pub-list li{border-bottom:1px solid var(--border)}
+.pub-row{display:grid;grid-template-columns:minmax(0,1fr) 190px 110px 28px;gap:20px;align-items:center;padding:18px 6px;text-decoration:none;transition:background-color .16s ease,padding .16s ease}
+.pub-row:hover{background:rgba(251,252,253,.85);padding-left:12px;padding-right:12px}
+.pub-title{min-width:0}
+.pub-title b{display:block;font-family:var(--serif);font-size:18px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+.pub-title small{display:block;margin-top:5px;font-size:12px;color:var(--muted)}
+.pub-journal{font-size:12px;line-height:1.45;color:var(--muted)}
+.pub-row .tag{justify-self:start}
+.pub-row svg{width:16px;height:16px;color:rgba(14,40,58,.4);transition:transform .18s var(--ease),color .18s ease}
+.pub-row:hover svg{transform:translateX(3px);color:var(--clay)}
+@media (max-width:1020px){
+  .result-grid{grid-template-columns:1fr;max-width:620px}
+  .pub-row{grid-template-columns:minmax(0,1fr) 110px 28px}
+  .pub-journal{display:none}
+}
+@media (max-width:560px){
+  .pub-row{grid-template-columns:minmax(0,1fr) 28px;gap:12px;padding:16px 2px}
+  .pub-row .tag{display:none}
+  .pub-title b{font-size:16px}
+}
+
+/* ===== Contacto ===== */
+.contact-sec{background:var(--oat-deep);border-top:1px solid var(--border);padding:clamp(72px,9vw,118px) 0}
+.contact-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(36px,6vw,72px);align-items:start}
+.contact-copy h2{margin-top:14px;font-family:var(--serif);font-size:clamp(30px,3.6vw,44px);font-weight:600;line-height:1.1;letter-spacing:-.025em;max-width:17ch}
+.contact-copy .lead{margin-top:16px;font-size:15px;line-height:1.75;color:rgba(14,40,58,.7);max-width:42ch}
+.contact-list{list-style:none;margin:32px 0 0;padding:0;display:grid;border-top:1px solid rgba(14,40,58,.14)}
+.contact-list li{display:flex;align-items:flex-start;gap:14px;padding:15px 0;border-bottom:1px solid rgba(14,40,58,.14)}
+.contact-list .ci{display:grid;place-items:center;width:36px;height:36px;border:1px solid rgba(14,40,58,.18);border-radius:10px;background:rgba(251,252,253,.5);color:var(--clay);flex:none}
+.contact-list .ci svg{width:17px;height:17px}
+.contact-list small{display:block;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(14,40,58,.45);margin-bottom:2px}
+.contact-list a,.contact-list address{font-style:normal;font-size:14.5px;font-weight:600;color:var(--pine);text-decoration:none;line-height:1.5}
+.contact-list a:hover{color:var(--clay-deep);text-decoration:underline;text-underline-offset:3px}
+.contact-list p{font-size:14.5px;font-weight:600;color:var(--pine);line-height:1.5}
+.contact-note{margin-top:22px;font-size:12.5px;line-height:1.7;color:rgba(14,40,58,.6)}
+.contact-note a{color:var(--clay-deep);font-weight:600;text-underline-offset:3px}
+.contact-form{padding:clamp(24px,3.4vw,36px);border:1px solid rgba(14,40,58,.12);border-radius:26px;background:var(--linen);box-shadow:0 30px 70px -40px rgba(14,40,58,.35)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{font-size:12.5px;font-weight:700;color:rgba(14,40,58,.78)}
+.field input,.field select,.field textarea{width:100%;min-height:52px;padding:12px 14px;border:1px solid var(--border-strong);border-radius:12px;background:#ffffff;font-size:15px;color:var(--pine);transition:border-color .16s ease,box-shadow .16s ease}
+.field textarea{min-height:118px;resize:vertical;line-height:1.6}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--clay);box-shadow:0 0 0 3px rgba(10,123,148,.14)}
+.field input::placeholder,.field textarea::placeholder{color:rgba(14,40,58,.38)}
+.form-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px}
+.form-foot .btn{min-width:230px}
+.form-note{font-size:11.5px;line-height:1.55;color:rgba(14,40,58,.5);max-width:30ch}
+.form-status{margin-top:16px;padding:12px 14px;border-radius:10px;border:1px solid var(--sage);background:var(--sage-soft);font-size:13px;line-height:1.55;color:#143a52}
+.form-status.err{border-color:#c2621e;background:#fbe9dc;color:#7d3a12}
+@media (max-width:1020px){
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+  .contact-copy h2{max-width:24ch}
+}
+@media (max-width:560px){
+  .form-grid{grid-template-columns:1fr}
+  .form-foot .btn{width:100%}
+  .form-note{max-width:none}
+}
 </style>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
 
-<div class="utility">
-  <div class="in">
-    <a href="portal.html">Portal de miembros</a>
-    <a href="#soporte">Soporte</a>
-    <a class="opc" href="#oportunidades">Oportunidades</a>
-    <a href="tel:+18090000000">+1 (809) 000-0000</a>
-  </div>
-</div>
-
-<header class="site">
-  <div class="in">
-    <a class="logo" href="index.html" aria-label="Synaptic Research League, inicio">
-      <img src="img/emblema.png" alt="">
-      <div><b>Synaptic</b><span>Research League</span></div>
+<header class="site" id="site">
+  <div class="wrap nav-wrap">
+    <a class="brand" href="index.html" aria-label="Synaptic Research League, inicio">
+      <img src="emblema.png" alt="">
+      <span class="brand-text"><b>Synaptic Research League</b></span>
     </a>
-    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="nav">Menú</button>
-    <nav id="nav" aria-label="Principal">
-      <ul>
-        <li>
-          <button class="top" type="button" aria-expanded="false" aria-controls="m1">Investigación <span class="chev"></span></button>
-          <ul class="menu" id="m1">
-            <li><a href="#lineas">Líneas de investigación</a></li>
-            <li><a href="#proyectos">Proyectos activos</a></li>
-            <li><a href="#publicaciones">Publicaciones</a></li>
-            <li><a href="#protocolos">Protocolos y guías</a></li>
-          </ul>
-        </li>
-        <li>
-          <button class="top" type="button" aria-expanded="false" aria-controls="m2">Formación <span class="chev"></span></button>
-          <ul class="menu" id="m2">
-            <li><a href="#talleres">Talleres y charlas</a></li>
-            <li><a href="#mentoria">Programa de mentoría</a></li>
-            <li><a href="#materiales">Materiales de estudio</a></li>
-            <li><a href="#calendario">Calendario de actividades</a></li>
-          </ul>
-        </li>
-        <li>
-          <button class="top" type="button" aria-expanded="false" aria-controls="m3">La liga <span class="chev"></span></button>
-          <ul class="menu" id="m3">
-            <li><a href="#nosotros">Quiénes somos</a></li>
-            <li><a href="#equipo">Equipo</a></li>
-            <li><a href="#alianzas">Alianzas</a></li>
-            <li><a href="#noticias">Noticias</a></li>
-          </ul>
-        </li>
-        <li><a class="top" href="#contacto">Contacto</a></li>
-        <li class="navcta"><a class="btn" href="portal.html">Únete a la liga</a></li>
-      </ul>
+
+    <nav class="main-nav" aria-label="Principal">
+      <div class="nav-item">
+        <button class="nav-btn" type="button" aria-expanded="false" aria-controls="dd-inv">Investigación <span class="nav-chev" aria-hidden="true"></span></button>
+        <div class="dd" id="dd-inv">
+          <span class="dd-label">Secciones</span>
+          <a href="#lineas"><span>Líneas de investigación<em>14 líneas con proyecto activo</em></span><small>01</small></a>
+          <a href="#publicaciones"><span>Publicaciones recientes<em>Solo publicadas, aceptadas o en congreso</em></span><small>04</small></a>
+          <span class="dd-label">Producción</span>
+          <a href="#resultados"><span>Resultados de la cohorte<em>Métricas de la cohorte 2025–2026</em></span><small>04</small></a>
+          <a href="#equipo"><span>Equipo investigador<em>Mentores y coordinación editorial</em></span><small>02</small></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-btn" type="button" aria-expanded="false" aria-controls="dd-form">Formación <span class="nav-chev" aria-hidden="true"></span></button>
+        <div class="dd" id="dd-form">
+          <span class="dd-label">Aprender haciendo</span>
+          <a href="#rutas"><span>Rutas y cohortes<em>3 rutas, de 8 semanas a 6 meses</em></span><small>03</small></a>
+          <a href="#equipo"><span>Mentoría 1:1<em>Un mentor asignado por proyecto</em></span><small>02</small></a>
+          <a href="#contacto"><span>Postular<em>Cohorte 2027 · respuesta en 2 días</em></span><small>→</small></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <button class="nav-btn" type="button" aria-expanded="false" aria-controls="dd-liga">La liga <span class="nav-chev" aria-hidden="true"></span></button>
+        <div class="dd" id="dd-liga">
+          <span class="dd-label">Quiénes somos</span>
+          <a href="#nosotros"><span>Nuestra forma de trabajar<em>De la pregunta al último revisor</em></span><small>02</small></a>
+          <a href="#equipo"><span>Equipo<em>Dirección, mentoría y coordinación</em></span><small>02</small></a>
+          <a href="#contacto"><span>Contacto<em>Postulaciones y prensa</em></span><small>→</small></a>
+        </div>
+      </div>
+      <a class="nav-link" href="#contacto">Contacto</a>
     </nav>
-    <a class="btn cta" href="portal.html">Únete a la liga</a>
+
+    <div class="head-actions">
+      <div class="profile" id="profile" hidden>
+        <button class="profile-btn" type="button" aria-expanded="false" aria-controls="profileMenu">
+          <span class="profile-av" aria-hidden="true">MS</span>
+          <span class="profile-tx"><b>Dra. Marisol Santana</b><small>Miembro de la liga</small></span>
+          <span class="nav-chev" aria-hidden="true"></span>
+        </button>
+        <div class="dd profile-dd" id="profileMenu">
+          <span class="dd-label">Mi cuenta</span>
+          <a href="portal.html"><span>Área de miembros<em>Publicaciones y proyectos activos</em></span><small>Abrir</small></a>
+          <a href="investigacion.html"><span>Panel de investigación<em>Acceso de administración</em></span><small>Admin</small></a>
+          <a href="#contacto"><span>Mi postulación<em>Cohorte 2027 · en revisión</em></span><small>→</small></a>
+          <button class="dd-signout" type="button" data-signout>Cerrar sesión</button>
+        </div>
+      </div>
+      <a class="btn sm" href="portal.html" data-join>Unirse a la Liga
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mmenu">
+        <span class="bars" aria-hidden="true"><span></span><span></span></span>
+        Menú
+      </button>
+    </div>
   </div>
 </header>
 
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <ul>
+    <li><a href="#lineas">Líneas de investigación <span>01</span></a></li>
+    <li><a href="#nosotros">La liga <span>02</span></a></li>
+    <li><a href="#rutas">Rutas de formación <span>03</span></a></li>
+    <li><a href="#resultados">Resultados <span>04</span></a></li>
+    <li class="m-account"><a href="portal.html">Mi área de miembros <span>Abrir</span></a></li>
+    <li class="m-account"><a href="investigacion.html">Panel de investigación <span>Admin</span></a></li>
+    <li><a href="#contacto">Contacto <span>→</span></a></li>
+  </ul>
+  <div class="mcta">
+    <a class="btn" href="portal.html" data-join>Unirse a la Liga
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </a>
+    <a class="btn ghost" href="#contacto">Enviar tu idea</a>
+  </div>
+  <p class="meta">Santo Domingo, República Dominicana<br>hola@synapticresearchleague.org</p>
+</div>
+
 <main id="contenido">
-  <section class="hero" id="hero">
-    <div class="media">
-      <!-- Coloca tu fotografía en img/hero.jpg (mínimo 2000 px de ancho, horizontal). -->
-      <img src="img/hero.jpg" alt="Estudiantes de medicina trabajando juntos en un laboratorio" onerror="this.remove();document.getElementById('hero').classList.add('sinfoto')">
-      <div class="falta">Aquí va la fotografía de portada: guárdala como img/hero.jpg</div>
-    </div>
-    <div class="intro">
-      <h1>Investigación médica hecha por estudiantes.</h1>
-      <p>Talleres, mentoría y proyectos de revisión sistemática para que tu primer artículo llegue a publicarse.</p>
-      <div class="acciones">
-        <a class="btn" href="portal.html">Únete a la liga</a>
-        <a class="btn line" href="#proyectos">Ver proyectos activos</a>
+  <!-- ===== Portada ===== -->
+  <section class="hero grain" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow" data-enter style="--d:.05s"><i></i>Investigación médica · Formación · Publicación</span>
+        <h1 data-enter style="--d:.13s">De la pregunta<br><span class="nowrap">a la <span class="mark">publicación<svg viewBox="0 0 120 12" fill="none" aria-hidden="true"><path class="arc-draw" d="M2 9 C 30 2, 80 2, 118 8" stroke="#0a7b94" stroke-width="2.5" stroke-linecap="round"/></svg></span>.</span></h1>
+        <p class="hero-lead" data-enter style="--d:.21s">Una liga para estudiantes de medicina que quieren investigar de verdad: mentoría 1:1, proyectos clínicos reales y acompañamiento editorial hasta que tu primer artículo se publique.</p>
+        <div class="hero-actions" data-enter style="--d:.29s">
+          <a class="btn" href="portal.html" data-join>Unirse a la Liga
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a class="hero-secondary" href="#lineas">Explorar líneas de investigación
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <p class="hero-trust" data-enter style="--d:.4s">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+          Mentoría 1:1 <span aria-hidden="true"></span> Sin experiencia previa <span aria-hidden="true"></span> Proyectos reales
+        </p>
       </div>
+
+      <div class="hero-media" data-enter style="--d:.15s">
+        <div class="hero-frame">
+          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=1400&q=80" alt="Investigadora trabajando con muestras en un laboratorio" loading="eager" onerror="this.remove()">
+        </div>
+        <div class="hero-card">
+          <p class="hc-label">Ruta Publicación</p>
+          <p class="hc-big">12 <span>semanas</span></p>
+          <p class="hc-sub">Del protocolo al primer envío editorial, con un mentor asignado.</p>
+        </div>
+        <svg class="hero-arc" viewBox="0 0 220 120" fill="none" aria-hidden="true">
+          <path d="M10 110 A100 100 0 0 1 210 110" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round" opacity=".6"/>
+          <path d="M10 110 A100 100 0 0 1 160 23" stroke="#0a7b94" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="160" cy="23" r="4.5" fill="#0a7b94"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="journey-wrap">
+      <div class="wrap">
+        <ol class="journey" aria-label="Cómo se trabaja en la liga">
+          <li><span class="jn">01</span><span><b>Pregunta</b><small>Elige un vacío clínico real y súbelo a alguna convocatoria cuando esté abierta.</small></span></li>
+          <li><span class="jn">02</span><span><b>Protocolo</b><small>Método, ética y plan de análisis antes de escribir.</small></span></li>
+          <li><span class="jn">03</span><span><b>Análisis</b><small>Datos, figuras y revisión interna con el equipo.</small></span></li>
+          <li><span class="jn">04</span><span><b>Publicación</b><small>Elección de revista, envío y respuesta a revisores.</small></span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 01 · Líneas ===== -->
+  <section class="lines dark on-dark" id="lineas">
+    <div class="deco-ring" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-head-left">
+          <span class="ghost-num" aria-hidden="true">01</span>
+          <div>
+            <span class="eyebrow">Líneas de investigación</span>
+            <h2>¿Qué te interesa investigar? Elige una línea y mira cómo se trabaja.</h2>
+          </div>
+        </div>
+        <p class="sec-intro">Cada línea tiene un mentor, un proyecto en curso y un camino editorial claro. Toca un nodo del mapa o una etiqueta para ver los temas, el método y las fases.</p>
+      </div>
+
+      <div class="line-tabs" role="tablist" aria-label="Líneas de investigación">
+        <button class="line-tab" type="button" role="tab" aria-selected="true" data-line="cardio">Cardiología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="cirugia">Cirugía General</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="cirped">Cirugía Pediátrica</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="hema">Hematología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="psiquiatria">Psiquiatría</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="trauma">Traumatología y Ortopedia</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="gineco">Ginecología y Obstetricia</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="onco">Oncología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="endo">Endocrinología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="orl">Otorrinolaringología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="nefro">Nefrología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="infecto">Infectología</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="neuro">Neurociencias</button>
+        <button class="line-tab" type="button" role="tab" aria-selected="false" data-line="pediatria">Pediatría</button>
+      </div>
+
+      <div class="line-grid">
+        <div class="map" data-reveal>
+          <svg viewBox="0 0 100 100" role="presentation">
+            <circle class="orbit" cx="50" cy="50" r="43"/>
+            <circle class="orbit" cx="50" cy="50" r="27"/>
+            <circle class="orbit" cx="50" cy="50" r="34"/>
+            <path class="link-line" pathLength="1" d="M50 50 C 50 34, 50 24, 50 6"/>
+            <path class="link-line" pathLength="1" d="M50 50 C 64 40, 76 34, 86 28"/>
+            <path class="link-line" pathLength="1" d="M50 50 C 66 58, 76 64, 84 72"/>
+            <path class="link-line" pathLength="1" d="M50 50 C 50 66, 50 80, 50 94"/>
+            <path class="link-line" pathLength="1" d="M50 50 C 34 58, 26 64, 16 72"/>
+            <path class="link-line" pathLength="1" d="M50 50 C 36 40, 26 34, 14 28"/>
+            <circle class="hub" cx="50" cy="50" r="9.5"/>
+          </svg>
+          <span class="hub-node">SRL</span>
+        </div>
+
+        <article class="line-card" id="lineDetail" aria-live="polite" data-reveal></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 02 · Equipo ===== -->
+  <section class="team" id="nosotros">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-head-left">
+          <span class="ghost-num" aria-hidden="true">02</span>
+          <div>
+            <span class="eyebrow">Quiénes somos</span>
+            <h2>Un equipo pequeño, presente de la primera pregunta al último revisor.</h2>
+          </div>
+        </div>
+        <p class="sec-intro">No delegamos tu proyecto. La misma persona que te ayuda a acotar la pregunta revisa el borrador, elige la revista contigo y te acompaña en la respuesta a los pares.</p>
+      </div>
+
+      <div class="team-grid" id="equipo">
+        <article class="person" data-reveal>
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">MS</span>
+            <span class="person-badge">Dirección</span>
+            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80" alt="Retrato de la Dra. Marisol Santana" loading="lazy" onerror="this.remove()">
+          </div>
+          <div class="person-body">
+            <h3>Dra. Marisol Santana</h3>
+            <p class="person-role">Directora científica</p>
+            <p class="person-bio">Diseña el método de cada proyecto y acompaña las decisiones editoriales de la liga.</p>
+            <ul class="person-tags"><li>Cardiología</li><li>Método</li><li>Editorial</li></ul>
+            <a class="link-arrow" href="#lineas">Su línea <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="person" data-reveal style="--delay:60ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">AP</span>
+            <span class="person-badge">Mentoría</span>
+            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80" alt="Retrato del Dr. Andrés Peña" loading="lazy" onerror="this.remove()">
+          </div>
+          <div class="person-body">
+            <h3>Dr. Andrés Peña</h3>
+            <p class="person-role">Mentor clínico</p>
+            <p class="person-bio">Dirige la línea de endocarditis y bacteriemia persistente del equipo.</p>
+            <ul class="person-tags"><li>Infectología</li><li>Cohortes</li><li>Revisión</li></ul>
+            <a class="link-arrow" href="#lineas">Su línea <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="person" data-reveal style="--delay:120ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">LR</span>
+            <span class="person-badge">Coordinación</span>
+            <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80" alt="Retrato de Lía Reyes" loading="lazy" onerror="this.remove()">
+          </div>
+          <div class="person-body">
+            <h3>Lía Reyes</h3>
+            <p class="person-role">Coordinadora Ejecutiva</p>
+            <p class="person-bio">Mantiene el calendario editorial y traduce las cartas de los revisores en pasos concretos.</p>
+            <ul class="person-tags"><li>Envíos</li><li>Pares</li><li>Procesos</li></ul>
+            <a class="link-arrow" href="#rutas">Ver rutas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          </div>
+        </article>
+
+        <article class="person slot" data-reveal style="--delay:180ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">CA</span>
+            <span class="person-badge">Por asignar</span>
+          </div>
+          <div class="person-body">
+            <h3>Coordinador Académico</h3>
+            <p class="person-role">Formación y cohortes</p>
+            <p class="person-bio">Diseña el plan formativo y supervisa el avance de cada cohorte.</p>
+            <ul class="person-tags"><li>Formación</li><li>Mentoría</li><li>Evaluación</li></ul>
+          </div>
+        </article>
+
+        <article class="person slot" data-reveal style="--delay:240ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">CF</span>
+            <span class="person-badge">Por asignar</span>
+          </div>
+          <div class="person-body">
+            <h3>Coordinadora de Finanzas</h3>
+            <p class="person-role">Presupuesto y becas</p>
+            <p class="person-bio">Gestiona el presupuesto, las becas y los costos de publicación.</p>
+            <ul class="person-tags"><li>Becas</li><li>Convenios</li><li>Costos APC</li></ul>
+          </div>
+        </article>
+
+        <article class="person slot" data-reveal style="--delay:300ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">DP</span>
+            <span class="person-badge">Por asignar</span>
+          </div>
+          <div class="person-body">
+            <h3>Coordinador de Documentación y Producción Científica</h3>
+            <p class="person-role">Archivo y manuscritos</p>
+            <p class="person-bio">Cuida el archivo, las referencias y el formato de cada manuscrito.</p>
+            <ul class="person-tags"><li>Referencias</li><li>Formato</li><li>Archivo</li></ul>
+          </div>
+        </article>
+
+        <article class="person slot" data-reveal style="--delay:360ms">
+          <div class="person-photo">
+            <span class="initials" aria-hidden="true">RP</span>
+            <span class="person-badge">Por asignar</span>
+          </div>
+          <div class="person-body">
+            <h3>Coordinadora de Relaciones Públicas</h3>
+            <p class="person-role">Alianzas y comunicación</p>
+            <p class="person-bio">Conecta la liga con hospitales, universidades y medios.</p>
+            <ul class="person-tags"><li>Alianzas</li><li>Prensa</li><li>Difusión</li></ul>
+          </div>
+        </article>
+      </div>
+
+      <div class="founders" data-reveal>
+        <div class="founders-head">
+          <span class="eyebrow">Fundadores</span>
+          <p>Los cuatro lugares que sostienen la liga desde su primera cohorte.</p>
+        </div>
+        <div class="founder-grid">
+          <article class="founder">
+            <span class="f-av" aria-hidden="true">01</span>
+            <div><b>Fundador/a 01</b><small>Por anunciar</small></div>
+          </article>
+          <article class="founder">
+            <span class="f-av" aria-hidden="true">02</span>
+            <div><b>Fundador/a 02</b><small>Por anunciar</small></div>
+          </article>
+          <article class="founder">
+            <span class="f-av" aria-hidden="true">03</span>
+            <div><b>Fundador/a 03</b><small>Por anunciar</small></div>
+          </article>
+          <article class="founder">
+            <span class="f-av" aria-hidden="true">04</span>
+            <div><b>Fundador/a 04</b><small>Por anunciar</small></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 03 · Rutas ===== -->
+  <section class="routes" id="rutas">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-head-left">
+          <span class="ghost-num" aria-hidden="true">03</span>
+          <div>
+            <span class="eyebrow">Rutas de formación</span>
+            <h2>Tres formas de entrar. Una sola salida: tu manuscrito.</h2>
+          </div>
+        </div>
+        <p class="sec-intro">Elige según tu tiempo y tu punto de partida. Todas las rutas incluyen mentoría, revisión interna y acceso a los talleres de la cohorte.</p>
+      </div>
+
+      <div class="route-grid">
+        <article class="route" data-reveal>
+          <p class="route-kicker">Para empezar</p>
+          <p class="route-dur">8 <span>semanas</span></p>
+          <h3>Ruta Observador</h3>
+          <p>Entra a un proyecto en curso y aprende el método desde dentro, sin la presión de un manuscrito propio.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Talleres de método y lectura crítica</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Club de lectura quincenal</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Participación en un proyecto real</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Certificado de participación</li>
+          </ul>
+          <a class="btn ghost" href="#contacto">Postular a Observador
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </article>
+
+        <article class="route featured" data-reveal style="--delay:80ms">
+          <span class="route-flag">Más elegida</span>
+          <p class="route-kicker">Tu primer manuscrito</p>
+          <p class="route-dur">16 <span>semanas</span></p>
+          <h3>Revisión sistemática</h3>
+          <p>El camino completo: pregunta, protocolo, búsqueda, extracción, análisis y primer borrador con mentoría 1:1.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Protocolo y registro del estudio</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Búsqueda en PubMed, Embase y Cochrane</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Extracción de datos y análisis</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Revisión interna y primer borrador</li>
+          </ul>
+          <a class="btn" href="#contacto">Postular a Revisión
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </article>
+
+        <article class="route" data-reveal style="--delay:160ms">
+          <p class="route-kicker">Para cerrar el ciclo</p>
+          <p class="route-dur">6 <span>meses</span></p>
+          <h3>Ruta Publicación</h3>
+          <p>Ya tienes un borrador. Ahora toca elegir la revista, preparar el envío y responder a los revisores sin perder el rumbo.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Selección de revista y alcance</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Carta de presentación y formato</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Respuesta punto por punto a revisores</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Seguimiento hasta la decisión editorial</li>
+          </ul>
+          <a class="btn ghost" href="#contacto">Postular a Publicación
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </article>
+      </div>
+      <p class="route-note">Cupos limitados por cohorte · La postulación no tiene costo · Se prioriza a estudiantes de medicina activos.</p>
+    </div>
+  </section>
+
+  <!-- ===== 04 · Resultados ===== -->
+  <section class="results" id="resultados">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-head-left">
+          <span class="ghost-num" aria-hidden="true">04</span>
+          <div>
+            <span class="eyebrow">Resultados de la cohorte</span>
+            <h2>No es “sentirse listo”. Es un manuscrito enviado.</h2>
+          </div>
+        </div>
+        <p class="sec-intro">Medimos lo que se puede verificar: borradores que llegan a envío, revisiones que se responden y trabajos que encuentran revista.</p>
+      </div>
+
+      <div class="result-grid">
+        <article class="result" data-reveal>
+          <p class="result-kicker">Revisión sistemática</p>
+          <h3>De la pregunta al primer envío</h3>
+          <p class="result-who">Lía Reyes · cohorte 2026</p>
+          <div class="metric"><span class="from">0</span><span class="arrow">→</span><span class="to" data-count="1">1</span></div>
+          <p class="metric-label">manuscrito enviado a revisión por pares</p>
+          <div class="progress" aria-hidden="true"><span style="--p:.92"></span></div>
+          <p class="result-foot"><span>16 semanas</span><b>Completada</b></p>
+        </article>
+
+        <article class="result" data-reveal style="--delay:80ms">
+          <p class="result-kicker">Pediatría</p>
+          <h3>Menos tiempo hasta el envío</h3>
+          <p class="result-who">Sofía Fermín · cohorte 2026</p>
+          <div class="metric"><span class="from">14</span><span class="arrow">→</span><span class="to" data-count="9">9</span></div>
+          <p class="metric-label">meses desde el protocolo hasta el envío</p>
+          <div class="progress" aria-hidden="true"><span style="--p:.64"></span></div>
+          <p class="result-foot"><span>9 meses</span><b>−5 meses</b></p>
+        </article>
+
+        <article class="result" data-reveal style="--delay:160ms">
+          <p class="result-kicker">Cohorte completa</p>
+          <h3>Publicaciones que encuentran revista</h3>
+          <p class="result-who">12 estudiantes · 5 líneas activas</p>
+          <div class="metric"><span class="from">0</span><span class="arrow">→</span><span class="to" data-count="7">7</span></div>
+          <p class="metric-label">manuscritos publicados en 5 revistas indexadas</p>
+          <div class="progress" aria-hidden="true"><span style="--p:.78"></span></div>
+          <p class="result-foot"><span>2025–2026</span><b>En curso</b></p>
+        </article>
+      </div>
+      <p class="demo-note">Cifras de demostración de la cohorte 2025–2026.</p>
+
+      <div class="pub-block" id="publicaciones" data-reveal>
+        <div class="pub-head">
+          <h3>Publicaciones recientes</h3>
+          <a class="link-arrow" href="repositorio.html">Buscar en el repositorio
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+        <ul class="pub-list">
+          <li>
+            <a class="pub-row" href="portal.html">
+              <span class="pub-title"><b>Detección molecular en endocarditis con hemocultivos negativos</b><small>Santana M, Peña A, Cabrera J, et al.</small></span>
+              <span class="pub-journal">Journal of Cardiovascular Infection<br>2026 · Vol. 12</span>
+              <span class="tag sage"><span class="dot-live" style="background:#143a52"></span>Publicado</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+          <li>
+            <a class="pub-row" href="portal.html">
+              <span class="pub-title"><b>Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar</b><small>Santana M, Reyes L, et al.</small></span>
+              <span class="pub-journal">Congreso Nacional de Cardiología<br>2026 · Presentación oral</span>
+              <span class="tag clay">Congreso</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+          <li>
+            <a class="pub-row" href="portal.html">
+              <span class="pub-title"><b>Insuficiencia cardíaca en América Latina y el Caribe</b><small>Núñez R, Fermín S, et al.</small></span>
+              <span class="pub-journal">Pan American Health<br>2025 · Vol. 8</span>
+              <span class="tag sage">Publicado</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+          <li>
+            <a class="pub-row" href="portal.html">
+              <span class="pub-title"><b>Estimulación del área de la rama izquierda tras TAVI</b><small>Peña A, Taveras D, et al.</small></span>
+              <span class="pub-journal">EP Journal<br>2025 · Aceptado</span>
+              <span class="tag">Aceptado</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 05 · Contacto ===== -->
+  <section class="contact-sec" id="contacto">
+    <div class="wrap contact-grid">
+      <div class="contact-copy" data-reveal>
+        <span class="eyebrow">Envíanos tu idea</span>
+        <h2>Cuéntanos qué te interesa investigar. Te respondemos en 2 días hábiles.</h2>
+        <p class="lead">No necesitas un protocolo ni experiencia previa. Cuéntanos en qué etapa estás y qué te gustaría aprender; nosotros te orientamos hacia la ruta que mejor encaje.</p>
+
+        <ul class="contact-list">
+          <li>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+            <span><small>Correo</small><a href="mailto:hola@synapticresearchleague.org">hola@synapticresearchleague.org</a></span>
+          </li>
+          <li>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1Z"/></svg></span>
+            <span><small>Teléfono</small><a href="tel:+18090000000">+1 (809) 000-0000</a></span>
+          </li>
+          <li>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span><small>Oficina</small><address>Santo Domingo, República Dominicana</address></span>
+          </li>
+          <li>
+            <span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span><small>Horario</small><p>Lunes a viernes · 8:00–18:00 (AST)</p></span>
+          </li>
+        </ul>
+        <p class="contact-note">¿Ya eres miembro? Entra al <a href="portal.html">área de miembros</a> para buscar publicaciones y seguir los proyectos activos.</p>
+      </div>
+
+      <form class="contact-form" id="applyForm" data-reveal novalidate>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="f-name">Nombre completo</label>
+            <input id="f-name" name="nombre" type="text" autocomplete="name" placeholder="Dra. Ana Martínez" required>
+          </div>
+          <div class="field">
+            <label for="f-email">Correo electrónico</label>
+            <input id="f-email" name="correo" type="email" autocomplete="email" placeholder="ana@correo.com" required>
+          </div>
+          <div class="field">
+            <label for="f-stage">Etapa</label>
+            <select id="f-stage" name="etapa">
+              <option>Estudiante de medicina</option>
+              <option>Interno/a</option>
+              <option>Egresado/a</option>
+              <option>Otra</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="f-line">Línea de interés</label>
+            <select id="f-line" name="linea">
+              <option>Aún no lo sé</option>
+              <option>Cardiología</option>
+              <option>Cirugía General</option>
+              <option>Cirugía Pediátrica</option>
+              <option>Hematología</option>
+              <option>Psiquiatría</option>
+              <option>Traumatología y Ortopedia</option>
+              <option>Ginecología y Obstetricia</option>
+              <option>Oncología</option>
+              <option>Endocrinología</option>
+              <option>Otorrinolaringología</option>
+              <option>Nefrología</option>
+              <option>Infectología</option>
+              <option>Neurociencias</option>
+              <option>Pediatría</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="f-msg">¿Qué te gustaría investigar? <span style="font-weight:500;color:var(--muted)">(opcional)</span></label>
+            <textarea id="f-msg" name="mensaje" placeholder="Una pregunta clínica que te ronde la cabeza, un tema que hayas visto en tu rotación..."></textarea>
+          </div>
+        </div>
+        <div class="form-foot">
+          <button class="btn" type="submit">Enviar postulación
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <p class="form-note">Al enviar, se abrirá tu cliente de correo con la postulación lista. También puedes escribirnos directo.</p>
+        </div>
+        <div id="formStatus" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </section>
 </main>
 
+<footer class="site-foot">
+  <div class="wrap foot-main">
+    <svg class="foot-arc" viewBox="0 0 220 120" fill="none" aria-hidden="true">
+      <path d="M10 110 A100 100 0 0 1 210 110" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round" opacity=".6"/>
+      <path d="M10 110 A100 100 0 0 1 160 23" stroke="#0a7b94" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="160" cy="23" r="5" fill="#0a7b94"/>
+    </svg>
+    <div class="foot-statement">
+      <p>Primero la pregunta.<br>Después el <em>método</em>.</p>
+      <a class="btn" href="#contacto">Enviar tu idea
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html" aria-label="Synaptic Research League, inicio">
+          <img class="logo-tile" src="emblema.png" alt="">
+          <span class="brand-text"><b>Synaptic Research League</b></span>
+        </a>
+        <p>Una liga de investigación para estudiantes de medicina. Mentoría, proyectos reales y acompañamiento editorial hasta la publicación.</p>
+        <p class="small" style="margin-top:12px;color:rgba(251,252,253,.5)">Sitio de demostración · Datos de ejemplo</p>
+      </div>
+      <div class="foot-col">
+        <h3>Explorar</h3>
+        <ul>
+          <li><a href="#lineas">Líneas de investigación</a></li>
+          <li><a href="#rutas">Rutas de formación</a></li>
+          <li><a href="#resultados">Resultados</a></li>
+          <li><a href="#publicaciones">Publicaciones</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Contacto</h3>
+        <ul>
+          <li><a href="mailto:hola@synapticresearchleague.org">hola@synapticresearchleague.org</a></li>
+          <li><a href="tel:+18090000000">+1 (809) 000-0000</a></li>
+          <li><address>Santo Domingo,<br>República Dominicana</address></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h3>Accesos</h3>
+        <ul>
+          <li><a href="portal.html">Área de miembros</a></li>
+          <li><a href="investigacion.html">Panel de investigación</a></li>
+          <li><a href="#contacto">Postular</a></li>
+          <li><span class="small">Lun–Vie · 8:00–18:00 (AST)</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-legal">
+      <span>© <span id="year">2026</span> Synaptic Research League. Todos los derechos reservados.</span>
+      <span>Contenido educativo; no sustituye asesoría médica. Cifras de demostración.</span>
+    </div>
+  </div>
+</footer>
+
 <script>
 (function(){
-  var burger=document.getElementById('burger'), nav=document.getElementById('nav');
-  var tops=[].slice.call(document.querySelectorAll('button.top'));
-  function closeAll(except){
-    tops.forEach(function(b){
-      if(b===except) return;
-      b.setAttribute('aria-expanded','false');
-      document.getElementById(b.getAttribute('aria-controls')).classList.remove('open');
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Cabecera con fondo al hacer scroll */
+  var site = document.getElementById('site');
+  function onScroll(){ site.classList.toggle('scrolled', window.scrollY > 24); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+
+  /* Desplegables de escritorio */
+  var navItems = [].slice.call(document.querySelectorAll('.nav-item'));
+  function closeMenus(except){
+    navItems.forEach(function(item){
+      if(item === except) return;
+      item.classList.remove('open');
+      var b = item.querySelector('.nav-btn');
+      if(b) b.setAttribute('aria-expanded','false');
+    });
+    var prof = document.getElementById('profile');
+    if(prof){
+      prof.classList.remove('open');
+      var pbtn = prof.querySelector('.profile-btn');
+      if(pbtn) pbtn.setAttribute('aria-expanded','false');
+    }
+  }
+  navItems.forEach(function(item){
+    var btn = item.querySelector('.nav-btn');
+    if(!btn) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = item.classList.contains('open');
+      closeMenus();
+      if(!open){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+    item.addEventListener('pointerenter', function(){ if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return; closeMenus(item); item.classList.add('open'); btn.setAttribute('aria-expanded','true'); });
+    item.addEventListener('pointerleave', function(){ if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return; item.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+    item.querySelectorAll('.dd a').forEach(function(a){ a.addEventListener('click', function(){ closeMenus(); }); });
+  });
+  document.addEventListener('click', function(e){ if(!e.target.closest('.nav-item')) closeMenus(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ closeMenus(); closeMobile(); }
+  });
+
+  /* Perfil de miembro (aparece tras unirse a la liga) */
+  var MEMBER_KEY = 'srl_user';
+  var profile = document.getElementById('profile');
+  function isMember(){ try{ return localStorage.getItem(MEMBER_KEY) === '1'; }catch(e){ return false; } }
+  function setMember(on){ try{ if(on) localStorage.setItem(MEMBER_KEY,'1'); else localStorage.removeItem(MEMBER_KEY); }catch(e){} }
+  function paintMember(){
+    var on = isMember();
+    if(profile) profile.hidden = !on;
+    document.body.classList.toggle('has-member', on);
+  }
+  paintMember();
+  [].slice.call(document.querySelectorAll('[data-join]')).forEach(function(a){
+    a.addEventListener('click', function(){ setMember(true); });
+  });
+  if(profile){
+    var profileBtn = profile.querySelector('.profile-btn');
+    profileBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      var open = profile.classList.contains('open');
+      closeMenus();
+      profile.classList.toggle('open', !open);
+      profileBtn.setAttribute('aria-expanded', String(!open));
+    });
+    profile.querySelectorAll('.dd a').forEach(function(a){
+      a.addEventListener('click', function(){ profile.classList.remove('open'); profileBtn.setAttribute('aria-expanded','false'); });
+    });
+    document.addEventListener('click', function(e){
+      if(!e.target.closest('#profile')){ profile.classList.remove('open'); profileBtn.setAttribute('aria-expanded','false'); }
     });
   }
-  tops.forEach(function(b){
-    b.addEventListener('click',function(){
-      var open=b.getAttribute('aria-expanded')==='true';
-      closeAll(b);
-      b.setAttribute('aria-expanded',String(!open));
-      document.getElementById(b.getAttribute('aria-controls')).classList.toggle('open',!open);
+  var signout = document.querySelector('[data-signout]');
+  if(signout) signout.addEventListener('click', function(e){
+    e.preventDefault(); setMember(false); paintMember();
+    if(profile){ profile.classList.remove('open'); profile.querySelector('.profile-btn').setAttribute('aria-expanded','false'); }
+  });
+
+  /* Menú móvil */
+  var menuBtn = document.getElementById('menuBtn');
+  var mmenu = document.getElementById('mmenu');
+  function closeMobile(){
+    if(!mmenu.classList.contains('open')) return;
+    mmenu.classList.remove('open');
+    mmenu.setAttribute('aria-hidden','true');
+    menuBtn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('locked');
+  }
+  menuBtn.addEventListener('click', function(){
+    var open = !mmenu.classList.contains('open');
+    mmenu.classList.toggle('open', open);
+    mmenu.setAttribute('aria-hidden', String(!open));
+    menuBtn.setAttribute('aria-expanded', String(open));
+    document.body.classList.toggle('locked', open);
+  });
+  mmenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMobile); });
+  window.addEventListener('resize', function(){ if(window.innerWidth > 1020) closeMobile(); });
+
+  /* Revelado al entrar en pantalla */
+  var revealEls = [].slice.call(document.querySelectorAll('[data-reveal]'));
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('seen');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin:'-70px 0px -60px 0px', threshold:0.06 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('seen'); });
+  }
+
+  /* Contadores */
+  function countUp(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    if(reduce){ el.textContent = String(target); return; }
+    var start = null, dur = 900;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = String(Math.round(target * eased));
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = [].slice.call(document.querySelectorAll('[data-count]'));
+  if('IntersectionObserver' in window){
+    var cio = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ countUp(entry.target); cio.unobserve(entry.target); }
+      });
+    }, { threshold:0.7 });
+    counters.forEach(function(el){ cio.observe(el); });
+  } else {
+    counters.forEach(countUp);
+  }
+
+  /* Mapa de líneas */
+  var LINES = {
+    cardio: {
+      name:'Cardiología',
+      tag:'4 proyectos activos',
+      summary:'Insuficiencia cardíaca, prevención y riesgo cardiovascular en poblaciones latinas.',
+      topics:['Insuficiencia cardíaca','Hipertensión pulmonar','Cardio-oncología','Prevención secundaria'],
+      method:['Revisión sistemática y metaanálisis','Análisis de cohortes clínicas','Registro prospectivo de datos'],
+      phases:[['Exploración','Pregunta clínica y revisión de alcance'],['Desarrollo','Protocolo, datos y primer borrador'],['Publicación','Envío, pares y difusión']],
+      mentor:'Dra. Marisol Santana · Directora científica'
+    },
+    infecto: {
+      name:'Infectología cardiovascular',
+      tag:'3 proyectos activos',
+      summary:'Endocarditis, bacteriemia persistente e infecciones asociadas a dispositivos cardiovasculares.',
+      topics:['Endocarditis con hemocultivos negativos','Bacteriemia enterocócica persistente','Infecciones de dispositivos','Uso racional de antimicrobianos'],
+      method:['Series de casos y cohortes','Cultivos y biología molecular','Revisión de guías y stewardship'],
+      phases:[['Exploración','Del caso clínico a la pregunta'],['Desarrollo','Recolección y análisis microbiológico'],['Publicación','Manuscrito y revisión por pares']],
+      mentor:'Dr. Andrés Peña · Mentor de infectología'
+    },
+    onco: {
+      name:'Oncología',
+      tag:'2 proyectos activos',
+      summary:'Cardio-oncología, toxicidad cardiovascular y supervivencia en pacientes oncológicos.',
+      topics:['Cardio-oncología','Toxicidad cardiovascular','Tamizaje y seguimiento','Supervivencia y calidad de vida'],
+      method:['Cohortes retrospectivas','Revisión sistemática de ensayos','Análisis de supervivencia'],
+      phases:[['Exploración','Pregunta y revisión de literatura'],['Desarrollo','Datos, sesgo y análisis'],['Publicación','Revista, envío y difusión']],
+      mentor:'Luis Emilio Gómez · Mentor de oncología'
+    },
+    cirugia: {
+      name:'Cirugía General',
+      tag:'2 proyectos activos',
+      summary:'Desenlaces perioperatorios, infección de sitio quirúrgico y recuperación en cirugía abdominal.',
+      topics:['Infección de sitio quirúrgico','Recuperación acelerada','Complicaciones perioperatorias','Cirugía de mínima invasión'],
+      method:['Cohortes quirúrgicas','Auditoría de historias clínicas','Revisión sistemática'],
+      phases:[['Exploración','Problema quirúrgico y pregunta'],['Desarrollo','Datos perioperatorios y análisis'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dr. Daniel Taveras · Mentor de cirugía'
+    },
+    cirped: {
+      name:'Cirugía Pediátrica',
+      tag:'1 proyecto activo',
+      summary:'Malformaciones congénitas, cirugía neonatal y seguimiento del paciente pediátrico operado.',
+      topics:['Malformaciones congénitas','Cirugía neonatal','Seguimiento posoperatorio','Anestesia pediátrica'],
+      method:['Series de casos pediátricos','Registros quirúrgicos','Revisión de guías'],
+      phases:[['Exploración','Necesidad quirúrgica pediátrica'],['Desarrollo','Registro y análisis de desenlaces'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dra. Elena Vargas · Mentora de cirugía pediátrica'
+    },
+    hema: {
+      name:'Hematología',
+      tag:'2 proyectos activos',
+      summary:'Anemias, trombosis y trastornos hematológicos en poblaciones del Caribe.',
+      topics:['Anemia ferropénica','Trombosis venosa','Hemoglobinopatías','Transfusión y seguridad'],
+      method:['Series clínicas','Estudios de laboratorio','Análisis de supervivencia'],
+      phases:[['Exploración','Problema hematológico y pregunta'],['Desarrollo','Laboratorio y análisis clínico'],['Publicación','Manuscrito y revisión']],
+      mentor:'Dra. Lía Reyes · Mentora de hematología'
+    },
+    psiquiatria: {
+      name:'Psiquiatría',
+      tag:'2 proyectos activos',
+      summary:'Salud mental en estudiantes, depresión y adherencia al tratamiento.',
+      topics:['Depresión y ansiedad','Salud mental estudiantil','Adherencia terapéutica','Tamizaje comunitario'],
+      method:['Encuestas validadas','Cohortes clínicas','Revisión de alcance'],
+      phases:[['Exploración','Problema de salud mental'],['Desarrollo','Instrumentos y análisis'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dr. José Cabrera · Mentor de psiquiatría'
+    },
+    trauma: {
+      name:'Traumatología y Ortopedia',
+      tag:'2 proyectos activos',
+      summary:'Fracturas, rehabilitación y desenlaces funcionales en trauma musculoesquelético.',
+      topics:['Fracturas de cadera','Rehabilitación funcional','Trauma deportivo','Complicaciones de implantes'],
+      method:['Registros de trauma','Escalas funcionales','Análisis retrospectivo'],
+      phases:[['Exploración','Problema funcional y pregunta'],['Desarrollo','Datos y escalas de desenlace'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dr. Rafael Núñez · Mentor de traumatología'
+    },
+    gineco: {
+      name:'Ginecología y Obstetricia',
+      tag:'3 proyectos activos',
+      summary:'Preeclampsia, salud materna y desenlaces obstétricos en la región.',
+      topics:['Preeclampsia','Mortalidad materna','Control prenatal','Salud sexual y reproductiva'],
+      method:['Cohortes maternas','Auditoría de registros','Estudios transversales'],
+      phases:[['Exploración','Problema materno y pregunta'],['Desarrollo','Registro prenatal y análisis'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dra. Sofía Fermín · Mentora de obstetricia'
+    },
+    endo: {
+      name:'Endocrinología',
+      tag:'2 proyectos activos',
+      summary:'Diabetes, obesidad y trastornos tiroideos en atención primaria.',
+      topics:['Diabetes tipo 2','Obesidad y síndrome metabólico','Hipotiroidismo','Educación terapéutica'],
+      method:['Cohortes de atención primaria','Encuestas poblacionales','Revisión sistemática'],
+      phases:[['Exploración','Problema metabólico y pregunta'],['Desarrollo','Datos clínicos y análisis'],['Publicación','Manuscrito y revisión']],
+      mentor:'Dra. Karla Ureña · Mentora de endocrinología'
+    },
+    orl: {
+      name:'Otorrinolaringología',
+      tag:'1 proyecto activo',
+      summary:'Hipoacusia, rinosinusitis crónica y patología de vía aérea superior.',
+      topics:['Hipoacusia','Rinosinusitis crónica','Adenoides y amígdalas','Vértigo periférico'],
+      method:['Series de casos','Audiometría y pruebas funcionales','Revisión de guías'],
+      phases:[['Exploración','Síntoma y pregunta clínica'],['Desarrollo','Pruebas funcionales y análisis'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dr. Luis Emilio Gómez · Mentor de otorrinolaringología'
+    },
+    nefro: {
+      name:'Nefrología',
+      tag:'2 proyectos activos',
+      summary:'Enfermedad renal crónica, diálisis y complicaciones metabólicas.',
+      topics:['Enfermedad renal crónica','Diálisis y acceso vascular','Lesión renal aguda','Trasplante renal'],
+      method:['Cohortes renales','Análisis de laboratorio','Revisión de registros'],
+      phases:[['Exploración','Problema renal y pregunta'],['Desarrollo','Laboratorio y seguimiento'],['Publicación','Manuscrito y difusión']],
+      mentor:'Dr. Andrés Peña · Mentor de nefrología'
+    },
+    neuro: {
+      name:'Neurociencias y cognición',
+      tag:'2 proyectos activos',
+      summary:'Deterioro cognitivo, sueño y rehabilitación neurológica en población adulta.',
+      topics:['Deterioro cognitivo','Sueño y cognición','Rehabilitación neurológica','Neuroimagen clínica'],
+      method:['Cohortes clínicas','Escalas cognitivas validadas','Revisión sistemática'],
+      phases:[['Exploración','Fenotipo y pregunta de investigación'],['Desarrollo','Medición y análisis longitudinal'],['Publicación','Manuscrito y revisión']],
+      mentor:'Karla Ureña · Mentora de neurociencias'
+    },
+    pediatria: {
+      name:'Pediatría y salud del adolescente',
+      tag:'3 proyectos activos',
+      summary:'Asma, obesidad infantil y salud mental adolescente en centros escolares y clínicas.',
+      topics:['Asma y obesidad infantil','Salud mental adolescente','Vacunación','Desarrollo temprano'],
+      method:['Cohortes pediátricas','Encuestas escolares','Revisión de alcance'],
+      phases:[['Exploración','Necesidad pediátrica y contexto'],['Desarrollo','Instrumentos y trabajo de campo'],['Publicación','Análisis, manuscrito y difusión']],
+      mentor:'Sofía Fermín · Mentora de pediatría'
+    }
+  };
+
+  var detail = document.getElementById('lineDetail');
+  var mapEl = document.querySelector('.map');
+  var SHORT = {
+    cardio:'Cardio', cirugia:'Cirugía', cirped:'Cir. pediátrica', hema:'Hematología',
+    psiquiatria:'Psiquiatría', trauma:'Trauma', gineco:'Gineco', onco:'Oncología',
+    endo:'Endocrino', orl:'ORL', nefro:'Nefrología', infecto:'Infecto',
+    neuro:'Neuro', pediatria:'Pediatría'
+  };
+  if(mapEl){
+    var keys = Object.keys(LINES);
+    var html = '';
+    keys.forEach(function(k, i){
+      var ring = i < 7 ? 39 : 25.5;
+      var offset = i < 7 ? 0 : 360 / 14;
+      var angle = (-90 + offset + (i % 7) * (360 / 7)) * Math.PI / 180;
+      var x = 50 + Math.cos(angle) * ring;
+      var y = 50 + Math.sin(angle) * ring;
+      html += '<button class="node" type="button" data-line="' + k + '" aria-pressed="' + (i === 0) + '" style="--x:' + x.toFixed(2) + '%;--y:' + y.toFixed(2) + '%">' + (SHORT[k] || LINES[k].name) + '</button>';
     });
-  });
-  burger.addEventListener('click',function(){
-    var open=nav.classList.toggle('open');
-    burger.setAttribute('aria-expanded',String(open));
-    if(!open) closeAll();
-  });
-  document.addEventListener('click',function(e){ if(!e.target.closest('nav') && !e.target.closest('.burger')) closeAll(); });
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){ var abierto=tops.filter(function(b){return b.getAttribute('aria-expanded')==='true';})[0]; closeAll(); if(abierto) abierto.focus(); }
-  });
+    mapEl.insertAdjacentHTML('beforeend', html);
+  }
+  var tabs = [].slice.call(document.querySelectorAll('.line-tab'));
+  var nodes = [].slice.call(document.querySelectorAll('.node'));
+
+  function renderLine(key){
+    var L = LINES[key];
+    if(!L || !detail) return;
+    detail.innerHTML =
+      '<div class="lc-top">' +
+        '<span class="tag sage">' + L.tag + '</span>' +
+        '<h3>' + L.name + '</h3>' +
+        '<p>' + L.summary + '</p>' +
+      '</div>' +
+      '<div class="lc-cols">' +
+        '<div><h4>Temas frecuentes</h4><ul>' + L.topics.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul></div>' +
+        '<div><h4>Cómo trabajamos</h4><ul>' + L.method.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul></div>' +
+      '</div>' +
+      '<div class="lc-route">' +
+        '<h4>Ruta dentro de la línea</h4>' +
+        '<ol>' + L.phases.map(function(p, i){
+          return '<li><span class="rn">0' + (i + 1) + '</span><b>' + p[0] + '</b><small>' + p[1] + '</small></li>';
+        }).join('') + '</ol>' +
+      '</div>' +
+      '<div class="lc-foot">' +
+        '<p class="mentor"><span>Mentor de la línea</span>' + L.mentor + '</p>' +
+        '<a class="btn sm" href="#contacto">Postular a esta línea <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>' +
+      '</div>';
+    detail.classList.remove('swap');
+    void detail.offsetWidth;
+    detail.classList.add('swap');
+  }
+
+  function selectLine(key){
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', String(t.getAttribute('data-line') === key)); });
+    nodes.forEach(function(n){ n.setAttribute('aria-pressed', String(n.getAttribute('data-line') === key)); });
+    renderLine(key);
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ selectLine(t.getAttribute('data-line')); }); });
+  nodes.forEach(function(n){ n.addEventListener('click', function(){ selectLine(n.getAttribute('data-line')); }); });
+  renderLine('cardio');
+
+  /* Formulario de postulación */
+  var form = document.getElementById('applyForm');
+  var status = document.getElementById('formStatus');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = document.getElementById('f-name');
+      var email = document.getElementById('f-email');
+      var ok = true;
+      [name, email].forEach(function(f){
+        f.style.borderColor = '';
+        if(!f.value.trim() || (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.value.trim()))){
+          f.style.borderColor = '#c2621e';
+          f.focus();
+          ok = false;
+        }
+      });
+      if(!ok){
+        status.className = 'form-status err';
+        status.textContent = 'Revisa tu nombre y tu correo para poder enviar la postulación.';
+        return;
+      }
+      var stage = document.getElementById('f-stage').value;
+      var line = document.getElementById('f-line').value;
+      var msg = document.getElementById('f-msg').value;
+      var body = 'Nombre: ' + name.value.trim() + '\n' +
+                 'Correo: ' + email.value.trim() + '\n' +
+                 'Etapa: ' + stage + '\n' +
+                 'Línea de interés: ' + line + '\n\n' +
+                 'Mensaje:\n' + (msg.trim() || '(sin mensaje)');
+      var href = 'mailto:hola@synapticresearchleague.org?subject=' + encodeURIComponent('Postulación a la liga · ' + name.value.trim()) + '&body=' + encodeURIComponent(body);
+      status.className = 'form-status';
+      status.textContent = 'Abrimos tu cliente de correo con la postulación lista para enviar. Si no se abrió, escríbenos a hola@synapticresearchleague.org.';
+      window.location.href = href;
+    });
+    form.querySelectorAll('input, select, textarea').forEach(function(f){
+      f.addEventListener('input', function(){ f.style.borderColor = ''; });
+    });
+  }
+
+  /* Año del pie */
+  var year = document.getElementById('year');
+  if(year) year.textContent = String(new Date().getFullYear());
 })();
 </script>
 </body>

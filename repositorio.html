@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repositorio público · Synaptic Research League</title>
+<meta name="description" content="Repositorio público de Synaptic Research League: publicaciones verificadas de la liga con título, autores, resumen e información pública.">
+<meta name="theme-color" content="#f4f8fa">
+<link rel="icon" href="emblema.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="srl.css">
+<style>
+/* ===== Repositorio público ===== */
+.repo-hero{padding-top:calc(var(--head) + 54px);padding-bottom:38px;background:
+  radial-gradient(120% 130% at 88% -10%,rgba(217,236,241,.85),transparent 58%),
+  linear-gradient(180deg,var(--linen),var(--oat))}
+.repo-hero .wrap{position:relative}
+.repo-crumb{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;font-size:13px;font-weight:600;color:var(--pine);text-decoration:none;border-bottom:1px solid rgba(10,123,148,.35);padding-bottom:2px}
+.repo-crumb svg{width:15px;height:15px;transition:transform .18s var(--ease)}
+.repo-crumb:hover{color:var(--clay-deep);border-color:var(--clay)}
+.repo-crumb:hover svg{transform:translateX(-3px)}
+.repo-hero h1{margin-top:18px;font-family:var(--serif);font-weight:600;font-size:clamp(36px,5vw,60px);line-height:1.05;letter-spacing:-.028em;color:var(--pine);max-width:19ch}
+.repo-hero h1 em{font-style:normal;color:var(--clay)}
+.repo-lead{margin-top:20px;max-width:56ch;font-size:16.5px;line-height:1.8;color:var(--muted)}
+.repo-trust{display:flex;align-items:center;flex-wrap:wrap;gap:8px 10px;margin-top:22px;font-size:13px;color:rgba(14,40,58,.62)}
+.repo-trust svg{width:18px;height:18px;color:var(--clay);flex:none}
+.repo-trust span{width:3px;height:3px;border-radius:50%;background:rgba(14,40,58,.28)}
+.repo-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:38px;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--border)}
+.repo-stat{padding:18px 20px;background:rgba(251,252,253,.92)}
+.repo-stat b{display:block;font-family:var(--serif);font-size:30px;font-weight:500;line-height:1;color:var(--pine)}
+.repo-stat span{display:block;margin-top:6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,40,58,.48)}
+
+/* Buscador */
+.repo-main{padding:clamp(40px,5vw,64px) 0 clamp(64px,8vw,96px)}
+.repo-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.repo-head h2{font-family:var(--serif);font-size:clamp(26px,3.2vw,36px);font-weight:600;line-height:1.15;letter-spacing:-.02em}
+.repo-head p{margin-top:8px;max-width:52ch;font-size:14px;line-height:1.7;color:var(--muted)}
+.repo-head .count{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.repo-head .count b{color:var(--clay-deep)}
+.repo-tools{margin-top:26px;padding:20px;border:1px solid var(--border);border-radius:18px;background:var(--linen);display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:14px 18px;align-items:center}
+.repo-search{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 18px;border:1px solid var(--border-strong);border-radius:999px;background:var(--oat);transition:border-color .16s ease,box-shadow .16s ease}
+.repo-search:focus-within{border-color:var(--clay);box-shadow:0 0 0 3px rgba(10,123,148,.15);background:var(--linen)}
+.repo-search svg{width:18px;height:18px;color:rgba(14,40,58,.45);flex:none}
+.repo-search input{width:100%;min-height:50px;border:0;outline:0;background:transparent;font-size:15px;color:var(--pine)}
+.repo-search input::placeholder{color:rgba(14,40,58,.4)}
+.repo-pills{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.repo-pill{min-height:42px;padding:0 15px;border:1px solid var(--border-strong);border-radius:999px;background:transparent;font-size:13px;font-weight:600;color:rgba(14,40,58,.72);cursor:pointer;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+.repo-pill:hover{background:var(--oat-deep);border-color:var(--pine);color:var(--pine)}
+.repo-pill[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:var(--oat)}
+.repo-filters{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:2px}
+.repo-filters label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,40,58,.5)}
+.repo-filters select{min-height:44px;padding:0 34px 0 13px;border:1px solid var(--border-strong);border-radius:10px;background:var(--oat);font-size:13.5px;color:var(--pine);cursor:pointer}
+.repo-filters select:focus{outline:none;border-color:var(--clay);box-shadow:0 0 0 3px rgba(10,123,148,.14)}
+.repo-clear{min-height:44px;padding:0 14px;border:1px solid transparent;border-radius:999px;background:none;font-size:13px;font-weight:600;color:var(--clay-deep);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.repo-clear:hover{color:var(--clay)}
+.repo-note{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:20px;padding-bottom:10px;border-bottom:1px solid var(--border);font-size:12px;color:var(--muted)}
+.repo-note .sealed{display:inline-flex;align-items:center;gap:7px}
+.repo-note svg{width:14px;height:14px;color:var(--clay);flex:none}
+
+/* Resultados */
+.repo-list{display:grid;gap:16px;margin-top:22px}
+.repo-item{position:relative;padding:24px 26px;border:1px solid var(--border);border-radius:20px;background:var(--linen);transition:transform .2s var(--ease),box-shadow .25s ease,border-color .2s ease;animation:repo-in .35s var(--ease)}
+@keyframes repo-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.repo-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft);border-color:var(--border-strong)}
+.repo-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.repo-meta{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:600;letter-spacing:.04em;color:rgba(14,40,58,.48)}
+.repo-year{font-family:var(--serif);font-size:17px;font-weight:500;color:rgba(14,40,58,.42)}
+.repo-item h3{margin-top:12px;font-family:var(--serif);font-size:clamp(20px,2.4vw,25px);font-weight:600;line-height:1.28;letter-spacing:-.012em;color:var(--pine);max-width:70ch}
+.repo-authors{margin-top:9px;font-size:13px;line-height:1.55;color:var(--muted)}
+.repo-venue{margin-top:3px;font-size:13px;line-height:1.55;font-weight:600;color:var(--pine)}
+.repo-abstract{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.repo-abstract summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer;font-size:12px;font-weight:700;color:var(--clay-deep)}
+.repo-abstract summary::-webkit-details-marker{display:none}
+.repo-abstract summary::after{content:"+";font-size:16px;line-height:1;color:var(--clay);transition:transform .18s ease}
+.repo-abstract[open] summary::after{content:"−"}
+.repo-abstract p{margin-top:10px;max-width:88ch;font-size:13.5px;line-height:1.75;color:rgba(14,40,58,.76)}
+.repo-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px}
+.repo-line{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(14,40,58,.45)}
+.repo-public{font-size:11px;color:rgba(14,40,58,.42)}
+.repo-empty{grid-column:1/-1;padding:56px 24px;border:1px dashed var(--border-strong);border-radius:20px;background:var(--linen);text-align:center}
+.repo-empty b{display:block;font-family:var(--serif);font-size:24px;color:var(--pine);margin-bottom:6px}
+.repo-empty p{font-size:14px;color:var(--muted);max-width:46ch;margin:0 auto}
+.repo-empty .btn{margin-top:20px}
+
+/* Cierre */
+.repo-cta{margin-top:clamp(44px,6vw,70px);padding:clamp(26px,4vw,40px);border-radius:24px;background:var(--pine);color:var(--oat);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
+.repo-cta::after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border:1px solid rgba(251,252,253,.12);border-radius:50%;pointer-events:none}
+.repo-cta h2{font-family:var(--serif);font-size:clamp(24px,3vw,32px);font-weight:600;line-height:1.2;letter-spacing:-.018em;max-width:24ch}
+.repo-cta p{margin-top:8px;max-width:52ch;font-size:13.5px;line-height:1.7;color:rgba(251,252,253,.66)}
+.repo-cta .btn{position:relative;z-index:1}
+
+.repo-foot{background:var(--pine);color:var(--oat);padding:30px 0}
+.repo-foot-in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.repo-brand{display:flex;align-items:center;gap:12px}
+.repo-brand img{height:34px;width:auto}
+.repo-brand b{display:block;font-family:var(--serif);font-size:17px;line-height:1.1;color:var(--oat)}
+.repo-brand span{display:block;margin-top:2px;font-size:8.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(251,252,253,.55)}
+.repo-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:12.5px}
+.repo-links a{color:rgba(251,252,253,.76);text-decoration:none}
+.repo-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.repo-copy{width:100%;margin-top:20px;padding-top:14px;border-top:1px solid rgba(251,252,253,.15);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11px;color:rgba(251,252,253,.45)}
+
+#toast{position:fixed;left:50%;bottom:22px;z-index:80;transform:translate(-50%,12px);max-width:min(420px,92vw);padding:11px 18px;border-radius:999px;background:var(--pine);color:var(--oat);font-size:12.5px;font-weight:600;box-shadow:0 14px 40px rgba(14,40,58,.35);opacity:0;pointer-events:none;transition:opacity .2s ease,transform .25s var(--ease)}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1020px){
+  .repo-tools{grid-template-columns:1fr}
+  .repo-pills{justify-content:flex-start}
+  .main-nav{display:none}
+}
+@media (max-width:640px){
+  .repo-stats{grid-template-columns:1fr 1fr}
+  .repo-hero{padding-top:calc(var(--head) + 34px)}
+  .repo-item{padding:20px}
+  .repo-cta{padding:24px}
+  .head-actions .btn{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="site solid" id="site">
+  <div class="wrap nav-wrap">
+    <a class="brand" href="index.html" aria-label="Synaptic Research League, inicio">
+      <img src="emblema.png" alt="">
+      <span class="brand-text"><b>Synaptic Research League</b></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación del repositorio">
+      <a class="nav-link" href="index.html">Inicio</a>
+      <a class="nav-link" href="index.html#lineas">Líneas de investigación</a>
+      <a class="nav-link" href="repositorio.html" aria-current="page">Repositorio</a>
+    </nav>
+    <div class="head-actions">
+      <a class="btn sm ghost" href="portal.html">Área de miembros</a>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+  <section class="repo-hero grain" id="top">
+    <div class="wrap">
+      <a class="repo-crumb" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        Volver al sitio
+      </a>
+      <span class="eyebrow"><i></i>Archivo público</span>
+      <h1>El repositorio de la <em>Liga</em>.</h1>
+      <p class="repo-lead">Trabajos verificados de estudiantes y mentores de Synaptic Research League. Aquí encontrarás únicamente el título, los autores, el resumen y la información pública de cada publicación.</p>
+      <p class="repo-trust">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        Solo publicaciones verificadas <span aria-hidden="true"></span> Sin manuscritos en revisión <span aria-hidden="true"></span> Información pública
+      </p>
+
+      <div class="repo-stats" aria-label="Cifras del repositorio">
+        <div class="repo-stat"><b id="statPubs">8</b><span>publicaciones</span></div>
+        <div class="repo-stat"><b id="statLines">5</b><span>líneas representadas</span></div>
+        <div class="repo-stat"><b id="statJournals">5</b><span>revistas y actas</span></div>
+        <div class="repo-stat"><b>0</b><span>en revisión</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="repo-main">
+    <div class="wrap">
+      <div class="repo-head">
+        <div>
+          <span class="eyebrow">Consulta abierta</span>
+          <h2>Busca en el repositorio</h2>
+          <p>Filtra por estado, línea de investigación o año. Abre el resumen de cada trabajo para leer el abstract completo.</p>
+        </div>
+        <span class="count"><b id="repoCount" aria-live="polite">8 de 8 publicaciones</b></span>
+      </div>
+
+      <div class="repo-tools" data-reveal>
+        <label class="repo-search" for="repoq">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="repoq" type="search" autocomplete="off" placeholder="Buscar por título, autor, revista o congreso" aria-label="Buscar en el repositorio">
+        </label>
+        <div class="repo-pills" role="group" aria-label="Filtrar por estado">
+          <button class="repo-pill" type="button" data-status="todos" aria-pressed="true">Todas</button>
+          <button class="repo-pill" type="button" data-status="publicado" aria-pressed="false">Publicado</button>
+          <button class="repo-pill" type="button" data-status="aceptado" aria-pressed="false">Aceptado</button>
+          <button class="repo-pill" type="button" data-status="congreso" aria-pressed="false">Congreso</button>
+        </div>
+        <div class="repo-filters">
+          <label for="reporline">Línea</label>
+          <select id="reporline" aria-label="Filtrar por línea de investigación">
+            <option value="">Todas las líneas</option>
+          </select>
+          <label for="reporyear">Año</label>
+          <select id="reporyear" aria-label="Filtrar por año">
+            <option value="">Todos los años</option>
+          </select>
+          <button class="repo-clear" type="button" id="repoclear">Limpiar filtros</button>
+        </div>
+      </div>
+
+      <div class="repo-note">
+        <span>Ordenadas de la más reciente a la más antigua</span>
+        <span class="sealed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          Sin manuscritos en revisión
+        </span>
+      </div>
+
+      <div class="repo-list" id="reporesults"></div>
+
+      <aside class="repo-cta" aria-label="Cómo publicar con la liga">
+        <div>
+          <h2>¿Tienes una pregunta clínica que merezca un estudio?</h2>
+          <p>La liga acompaña el proceso completo: pregunta, protocolo, análisis y envío editorial. Los trabajos aceptados pasan a este repositorio.</p>
+        </div>
+        <a class="btn on-dark" href="index.html#contacto">Enviar tu idea
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="repo-foot">
+  <div class="wrap">
+    <div class="repo-foot-in">
+      <div class="repo-brand">
+        <img class="logo-tile" src="emblema.png" alt="">
+        <div><b>Synaptic Research League</b><span>Repositorio público</span></div>
+      </div>
+      <nav class="repo-links" aria-label="Pie del repositorio">
+        <a href="index.html">Inicio</a>
+        <a href="repositorio.html">Repositorio</a>
+        <a href="portal.html">Área de miembros</a>
+        <a href="index.html#contacto">Enviar tu idea</a>
+      </nav>
+    </div>
+    <div class="repo-copy">
+      <span>© <span id="year">2026</span> Synaptic Research League. Repositorio público.</span>
+      <span>Contenido educativo; no sustituye asesoría médica. Cifras de demostración.</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var site = document.getElementById('site');
+  function onScroll(){ site.classList.toggle('scrolled', window.scrollY > 8); }
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+
+  /* Solo información pública: publicado, aceptado o congreso */
+  var PUBS = [
+    {
+      t:'Detección molecular en endocarditis con hemocultivos negativos',
+      a:'Santana M, Peña A, Cabrera J, et al.',
+      v:'Journal of Cardiovascular Infection · Vol. 12',
+      y:2026, st:'publicado', line:'Infectología',
+      abs:'Evaluación de PCR y secuenciación metagenómica en una cohorte de pacientes con sospecha de endocarditis y hemocultivos negativos. El trabajo describe el rendimiento diagnóstico y propone un algoritmo de uso racional.'
+    },
+    {
+      t:'Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar',
+      a:'Santana M, Reyes L, et al.',
+      v:'Congreso Nacional de Cardiología · Presentación oral',
+      y:2026, st:'congreso', line:'Cardiología',
+      abs:'Resultados preliminares de una revisión sistemática sobre dispositivos de shunt interatrial en pacientes con insuficiencia cardíaca y hipertensión pulmonar. Presentado en la sesión de insuficiencia cardíaca avanzada.'
+    },
+    {
+      t:'Insuficiencia cardíaca en América Latina y el Caribe',
+      a:'Núñez R, Fermín S, et al.',
+      v:'Pan American Health · Vol. 8',
+      y:2025, st:'publicado', line:'Cardiología',
+      abs:'Análisis de la carga epidemiológica de la insuficiencia cardíaca en la región, con énfasis en acceso a diagnóstico, heterogeneidad de registros y determinantes sociales.'
+    },
+    {
+      t:'Estimulación del área de la rama izquierda tras TAVI',
+      a:'Peña A, Taveras D, et al.',
+      v:'EP Journal · Aceptado',
+      y:2025, st:'aceptado', line:'Cardiología',
+      abs:'Revisión sistemática sobre estimulación fisiológica del sistema de conducción después de implante valvular aórtico transcatéter, con comparación de desenlaces electrocardiográficos y clínicos.'
+    },
+    {
+      t:'Asma y obesidad infantil en escolares del Distrito Nacional',
+      a:'Fermín S, Ureña K, et al.',
+      v:'Revista Pediátrica Dominicana · Vol. 4',
+      y:2025, st:'publicado', line:'Pediatría',
+      abs:'Estudio transversal en centros escolares que explora la asociación entre obesidad, actividad física y control del asma en niños de 6 a 12 años.'
+    },
+    {
+      t:'Determinantes sociales del acceso a la salud cardiovascular',
+      a:'Núñez R, Gómez L, et al.',
+      v:'Caribbean Public Health · Aceptado',
+      y:2026, st:'aceptado', line:'Cardiología',
+      abs:'Análisis de encuestas poblacionales sobre barreras de acceso a control de hipertensión y diabetes en comunidades urbanas y rurales del Caribe.'
+    },
+    {
+      t:'Deterioro cognitivo y sueño en adultos mayores',
+      a:'Ureña K, Vargas E, et al.',
+      v:'Congreso de Neurociencias · Póster',
+      y:2025, st:'congreso', line:'Neurociencias',
+      abs:'Hallazgos preliminares de una cohorte clínica que evalúa la relación entre calidad del sueño, fragilidad y desempeño cognitivo en adultos mayores de 65 años.'
+    },
+    {
+      t:'Cardiotoxicidad en pacientes con cáncer de mama',
+      a:'Santana M, Gómez L, et al.',
+      v:'Cardio-Oncology Today · Vol. 6',
+      y:2024, st:'publicado', line:'Oncología',
+      abs:'Cohorte retrospectiva de pacientes tratadas con antraciclinas y trastuzumab. El estudio describe la incidencia de disfunción ventricular y los factores asociados al seguimiento cardiológico.'
+    }
+  ];
+
+  var STATUS = {
+    publicado:{label:'Publicado', cls:'tag sage'},
+    aceptado:{label:'Aceptado', cls:'tag'},
+    congreso:{label:'Congreso', cls:'tag clay'}
+  };
+  var state = { q:'', st:'todos', line:'', year:'' };
+
+  var results = document.getElementById('reporesults');
+  var count = document.getElementById('repoCount');
+  var qInput = document.getElementById('repoq');
+  var lineSel = document.getElementById('reporline');
+  var yearSel = document.getElementById('reporyear');
+  var pills = [].slice.call(document.querySelectorAll('.repo-pill'));
+
+  function norm(s){
+    return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  /* Filtros */
+  var lines = [];
+  PUBS.forEach(function(p){ if(lines.indexOf(p.line) < 0) lines.push(p.line); });
+  lines.sort(function(a,b){ return a.localeCompare(b,'es'); });
+  lines.forEach(function(l){
+    var o = document.createElement('option'); o.value = l; o.textContent = l; lineSel.appendChild(o);
+  });
+  var years = [];
+  PUBS.forEach(function(p){ if(years.indexOf(p.y) < 0) years.push(p.y); });
+  years.sort(function(a,b){ return b - a; });
+  years.forEach(function(y){
+    var o = document.createElement('option'); o.value = String(y); o.textContent = String(y); yearSel.appendChild(o);
+  });
+  document.getElementById('statPubs').textContent = String(PUBS.length);
+  document.getElementById('statLines').textContent = String(lines.length);
+  var venues = [];
+  PUBS.forEach(function(p){ var v = p.v.split('·')[0].trim(); if(venues.indexOf(v) < 0) venues.push(v); });
+  document.getElementById('statJournals').textContent = String(venues.length);
+
+  function filtered(){
+    var q = norm(state.q.trim());
+    return PUBS.filter(function(p){
+      if(state.st !== 'todos' && p.st !== state.st) return false;
+      if(state.line && p.line !== state.line) return false;
+      if(state.year && String(p.y) !== state.year) return false;
+      if(q){
+        var hay = norm([p.t,p.a,p.v,p.line,p.y].join(' '));
+        if(hay.indexOf(q) < 0) return false;
+      }
+      return true;
+    }).sort(function(a,b){ return b.y - a.y; });
+  }
+
+  function item(p){
+    var s = STATUS[p.st];
+    return '<article class="repo-item">' +
+      '<div class="repo-top">' +
+        '<span class="repo-meta"><span class="' + s.cls + '">' + s.label + '</span>' + esc(p.line) + '</span>' +
+        '<span class="repo-year">' + p.y + '</span>' +
+      '</div>' +
+      '<h3>' + esc(p.t) + '</h3>' +
+      '<p class="repo-authors">' + esc(p.a) + '</p>' +
+      '<p class="repo-venue">' + esc(p.v) + '</p>' +
+      '<details class="repo-abstract"><summary>Leer resumen</summary><p>' + esc(p.abs) + '</p></details>' +
+      '<div class="repo-foot">' +
+        '<span class="repo-line">' + esc(p.line) + '</span>' +
+        '<span class="repo-public">Información pública · sin manuscritos en revisión</span>' +
+        '<button class="copy-btn" type="button" data-cite="' + esc(p.a + ' (' + p.y + '). ' + p.t + '. ' + p.v + '.') + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+          'Copiar cita' +
+        '</button>' +
+      '</div>' +
+    '</article>';
+  }
+
+  function render(){
+    var list = filtered();
+    count.innerHTML = '<b>' + list.length + '</b> de ' + PUBS.length + ' publicaciones';
+    if(!list.length){
+      results.innerHTML = '<div class="repo-empty"><b>Sin resultados.</b><p>No hay publicaciones que coincidan con «' + esc(state.q.trim()) + '» y los filtros elegidos. Prueba con otro término o límpialos.</p><button class="btn sm" type="button" id="repoReset">Limpiar filtros</button></div>';
+      var er = document.getElementById('repoReset');
+      if(er) er.addEventListener('click', reset);
+      return;
+    }
+    results.innerHTML = list.map(item).join('');
+  }
+
+  function reset(){
+    state = { q:'', st:'todos', line:'', year:'' };
+    qInput.value = '';
+    lineSel.value = '';
+    yearSel.value = '';
+    pills.forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-status') === 'todos')); });
+    render();
+  }
+
+  qInput.addEventListener('input', function(){ state.q = qInput.value; render(); });
+  lineSel.addEventListener('change', function(){ state.line = lineSel.value; render(); });
+  yearSel.addEventListener('change', function(){ state.year = yearSel.value; render(); });
+  pills.forEach(function(b){
+    b.addEventListener('click', function(){
+      state.st = b.getAttribute('data-status');
+      pills.forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+      render();
+    });
+  });
+  document.getElementById('repoclear').addEventListener('click', reset);
+
+  /* Copiar cita */
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function say(msg){
+    toast.textContent = msg;
+    toast.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('on'); }, 2400);
+  }
+  results.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-cite]');
+    if(!btn) return;
+    var text = btn.getAttribute('data-cite');
+    function ok(){ say('Cita copiada al portapapeles.'); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly','');
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(err){ say('No se pudo copiar la cita.'); }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else fallback();
+  });
+
+  /* Revelados */
+  var revealEls = [].slice.call(document.querySelectorAll('[data-reveal]'));
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ entry.target.classList.add('seen'); io.unobserve(entry.target); }
+      });
+    }, { rootMargin:'-70px 0px -60px 0px', threshold:0.08 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('seen'); });
+  }
+
+  document.getElementById('year').textContent = String(new Date().getFullYear());
+  render();
+})();
+</script>
+</body>
+</html>

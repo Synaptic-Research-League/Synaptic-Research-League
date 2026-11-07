@@ -4,245 +4,1755 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gestión de investigación · Synaptic Research League</title>
-<link rel="icon" href="img/emblema.png">
+<meta name="description" content="Panel de gestión de proyectos de investigación, manuscritos y publicaciones científicas de Synaptic Research League.">
+<link rel="icon" href="emblema.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0e283a;--blue:#3b5f82;--cyan:#2cb1cc;--act:#0a7b94;--actd:#08677c;--ink:#10222f;--mut:#4a5d6b;--line:#d3dce3;--soft:#f1f5f8;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-*{box-sizing:border-box}body{margin:0;font:15px/1.5 var(--sans);color:var(--ink);background:#fff}
-a{color:inherit}:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}[hidden]{display:none!important}
-.bar{border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:10}
-.bar .in{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:24px;min-height:64px;flex-wrap:wrap}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;color:var(--navy);line-height:1.1}.logo img{height:38px}.logo small{display:block;font-weight:500;font-size:12px;color:var(--mut)}
-nav{display:flex;flex:1;flex-wrap:wrap}nav a{padding:21px 13px 18px;text-decoration:none;font-weight:500;border-bottom:4px solid transparent}
-nav a:hover{color:var(--act)}nav a.on{border-bottom-color:var(--cyan);color:var(--navy)}
-.out{font-weight:600;font-size:14px;color:var(--act)}
-.demo{background:var(--soft);border-bottom:1px solid var(--line);font-size:13.5px;color:var(--mut);text-align:center;padding:6px 12px}
-main{max-width:1240px;margin:0 auto;padding:28px 20px 64px}
-h1{font:600 clamp(26px,3.2vw,36px)/1.15 var(--sans);letter-spacing:-.01em;margin:0 0 6px;color:var(--navy)}
-h2{font:600 20px/1.25 var(--sans);margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);color:var(--navy)}
-h3{font:600 16px var(--sans);margin:0}.mut{color:var(--mut)}.sm{font-size:13.5px}
-.hero{display:grid;grid-template-columns:1.25fr 1fr;border:1px solid var(--line);margin-bottom:8px}
-.hero .tx{padding:28px 30px}.hero .ph{background:#cbd7df;position:relative;min-height:220px}.hero .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);margin-top:22px;border-top:1px solid var(--line)}
-.kpis div{padding:14px 12px 0 0}.kpis div+div{padding-left:14px;border-left:1px solid var(--line)}.kpis b{display:block;font-size:30px;font-weight:600;line-height:1.1;color:var(--navy)}.kpis span{font-size:13px;color:var(--mut)}
-.grid{display:grid;gap:0;grid-template-columns:repeat(3,1fr);border:1px solid var(--line)}
-.cell{padding:18px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 -1px -1px 0}
-.cell b{display:block;font-size:28px;font-weight:600;color:var(--navy);line-height:1.15}.cell span{font-weight:500}.cell em{display:block;font-style:normal;font-size:13px;color:var(--mut)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.st{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;white-space:nowrap}.st i{width:11px;height:11px;display:inline-block;flex:none}
-.trk{display:grid;grid-template-columns:230px 36px 1fr;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #e8eef2;cursor:pointer;background:none;border-width:0 0 1px;width:100%;font:inherit;text-align:left;color:inherit}
-.trk:hover{background:var(--soft)}.trk .bb{height:10px;background:var(--soft)}.trk .bb i{display:block;height:100%}
-.btn{display:inline-block;padding:9px 16px;border:2px solid var(--act);background:var(--act);color:#fff;font:600 14.5px var(--sans);cursor:pointer;text-decoration:none;border-radius:0}.btn:hover{background:var(--actd)}.btn.l{background:#fff;color:var(--navy);border-color:var(--navy)}.btn.l:hover{background:var(--soft)}
-input,select{font:inherit;padding:8px 10px;border:1px solid #9fb0bd;border-radius:0;background:#fff;color:var(--ink);max-width:100%}
-.fl{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}.fl input[type=search]{flex:1;min-width:220px}
-.gh{font-weight:600;background:var(--soft);padding:8px 14px;border:1px solid var(--line);border-bottom:0;margin-top:14px;color:var(--navy)}
-.it{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding:14px;border:1px solid var(--line);margin-top:-1px;cursor:pointer;background:#fff;width:100%;text-align:left;font:inherit;color:inherit}.it:hover{background:var(--soft)}
-.it h3{font-weight:600;font-size:15.5px}.it .m{font-size:13.5px;color:var(--mut)}
-.tl{display:flex;align-items:center;margin:8px 0 2px}.tl i{width:14px;height:14px;border:2px solid #aab8c3;background:#fff;flex:none}.tl i.d{background:var(--navy);border-color:var(--navy)}.tl i.c{background:var(--act);border-color:var(--act);outline:3px solid #bfe3ea}.tl u{flex:1;height:2px;background:#d5dde3}.tl u.d{background:var(--navy)}
-.tlb{display:flex;justify-content:space-between;font-size:11.5px;color:var(--mut)}
-.pc{border:1px solid var(--line);padding:18px;margin:0 -1px -1px 0}.pgrid{display:grid;grid-template-columns:repeat(3,1fr)}
-.pb{height:8px;background:var(--soft);margin:10px 0 4px}.pb i{display:block;height:100%;background:var(--act)}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}th{background:var(--soft);color:var(--navy);font-weight:600}td.n,th.n{text-align:right}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);border-left:1px solid var(--line);border-top:1px solid var(--line)}.cal>div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:92px;padding:4px 5px;font-size:12px}
-.cal .h{min-height:0;background:var(--soft);font-weight:600;text-align:center;padding:6px}.cal .o{background:#fafbfc;color:#9aa8b4}.cal .t{background:#e8f6f9}.cal div b{font-size:12.5px}
-.ev{display:block;margin-top:3px;line-height:1.25;padding-left:6px;border-left:4px solid}
-.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin:10px 0}.lg i{display:inline-block;width:11px;height:11px;margin-right:6px}
-.feed{list-style:none;margin:0;padding:0}.feed li{padding:10px 0;border-bottom:1px solid #e8eef2;font-size:14px}.feed small{display:block;color:var(--mut)}
-#drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:#fff;border-left:2px solid var(--navy);overflow:auto;padding:22px 24px 40px;z-index:30}
-#drawer dl{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;margin:14px 0;font-size:14px}#drawer dt{color:var(--mut)}#drawer dd{margin:0}
-.x{float:right;background:none;border:1px solid var(--navy);padding:4px 10px;cursor:pointer;font:600 14px var(--sans)}
-.hist{list-style:none;margin:0;padding:0 0 0 16px;border-left:2px solid var(--line)}.hist li{position:relative;padding:0 0 14px 6px;font-size:14px}.hist li::before{content:"";position:absolute;left:-23px;top:6px;width:10px;height:10px;background:var(--navy)}
-dialog{border:2px solid var(--navy);border-radius:0;padding:24px;width:min(520px,94vw)}dialog::backdrop{background:rgba(14,40,58,.45)}dialog label{display:block;font-weight:600;margin:12px 0 4px}dialog input,dialog select{width:100%}
-@media(max-width:900px){.hero,.two{grid-template-columns:1fr}.grid,.pgrid{grid-template-columns:1fr 1fr}.trk{grid-template-columns:1fr 30px}.trk .bb{display:none}nav a{padding:12px 10px}.kpis{grid-template-columns:1fr 1fr}.cal>div{min-height:60px}}
-@media(max-width:560px){.grid,.pgrid{grid-template-columns:1fr}.cal .ev{font-size:0;height:6px;padding:0}}
+:root{
+  --navy:#0e283a;--navy2:#143a52;--blue:#3b5f82;--accent:#0a7b94;--accent-dk:#08677c;--cyan:#2cb1cc;
+  --ink:#10222f;--mut:#4a5d6b;--line:#d3dce3;--line2:#e8eef2;--soft:#f1f6f9;--paper:#fbfcfd;--white:#fff;
+  --serif:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(14,40,58,.04);--r:0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.55 var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+body.no-scroll{overflow:hidden}
+a{color:inherit}
+button,input,select{font:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+[hidden]{display:none!important}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.ic{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px}
+.wrap,main{max-width:1280px;margin:0 auto;padding-left:24px;padding-right:24px}
+main{padding-top:26px;padding-bottom:64px}
+h1{font:600 clamp(28px,3.4vw,42px)/1.1 var(--serif);letter-spacing:-.015em;margin:0 0 8px;color:var(--navy)}
+h2{font:600 22px/1.25 var(--serif);letter-spacing:-.01em;margin:0;color:var(--navy)}
+h3{font:600 16px/1.3 var(--sans);margin:0;color:var(--navy)}
+p{margin:0}
+.mut{color:var(--mut)}
+.sm{font-size:13px}
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 5px}
+.sec-desc{margin:5px 0 0;color:var(--mut);font-size:14px;max-width:76ch}
+.note{font-size:12.5px;color:var(--mut);margin:-8px 0 0;padding:10px 12px;border-left:3px solid var(--cyan);background:#eef7f9}
+.page-head{margin:0 0 20px}
+.link{background:none;border:0;padding:0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-size:inherit}
+
+/* Barra superior */
+.bar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1280px;margin:0 auto;padding:0 24px;min-height:76px;display:flex;align-items:center;gap:26px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex:none}
+.brand img{height:42px;width:auto;display:block}
+.brand-tx{display:flex;flex-direction:column;line-height:1.08}
+.brand-tx b{font:600 15.5px/1.15 var(--serif);color:var(--navy);letter-spacing:-.005em;white-space:nowrap}
+.brand-tx span{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.brand-tx small{font-size:10.5px;color:var(--mut);margin-top:2px}
+nav{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav a{padding:10px 11px;text-decoration:none;font-weight:500;font-size:14.5px;color:var(--ink);border-radius:4px;white-space:nowrap;border-bottom:3px solid transparent}
+nav a:hover{color:var(--accent);background:var(--soft)}
+nav a.on{color:var(--navy);border-bottom-color:var(--cyan);font-weight:600}
+.bar-actions{display:flex;align-items:center;gap:14px;flex:none}
+.user-chip{display:flex;align-items:center;gap:8px}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600;flex:none}
+.user-tx{display:flex;flex-direction:column;line-height:1.15}
+.user-tx b{font-size:12.5px}.user-tx small{font-size:11px;color:var(--mut)}
+.hub{font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:7px 10px;border-radius:4px;white-space:nowrap}
+.hub:hover{background:var(--soft);border-color:var(--blue)}
+.mode-switch{display:inline-flex;align-items:center;gap:2px;padding:3px;border:1px solid var(--line);border-radius:99px;background:var(--soft)}
+.mode-switch button{border:0;background:none;border-radius:99px;padding:5px 10px;font-size:11.5px;font-weight:600;color:var(--mut);cursor:pointer;white-space:nowrap}
+.mode-switch button:hover{color:var(--navy)}
+.mode-switch button.on{background:var(--navy);color:#fff}
+.mode-banner{background:#fff7e6;border-bottom:1px solid #eedcae;font-size:12.5px;color:#7a5a12}
+.mode-banner .wrap{display:flex;align-items:center;gap:10px;padding:9px 0;flex-wrap:wrap}
+.mode-banner b{color:#5d430b}
+.mode-banner .btn{margin-left:auto}
+body.user-mode .admin-only{display:none!important}
+body.user-mode [data-new]{display:none!important}
+body.user-mode .dr-form,body.user-mode .upload,body.user-mode [data-rmdoc]{display:none!important}
+
+/* Equipo y roles */
+.role-table td{vertical-align:middle}
+.person-cell{display:flex;align-items:center;gap:10px}
+.person-cell .avatar{width:30px;height:30px;font-size:11px}
+.person-cell small{display:block;font-size:11px;color:var(--mut);font-weight:400}
+.role-pill{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--line);background:var(--soft);color:var(--navy)}
+.role-pill.admin{background:#e7f6f8;border-color:#b9e2ea;color:#08677c}
+.role-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.role-actions .btn{padding:5px 9px;font-size:12px}
+.you-tag{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+
+/* Edición del sitio */
+.site-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.site-card{border:1px solid var(--line);border-radius:10px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.site-card .cicon{width:34px;height:34px;border-radius:8px}
+.site-card b{font-size:14px;color:var(--navy)}
+.site-card p{font-size:12.5px;color:var(--mut);line-height:1.5}
+.site-card .btn{margin-top:auto;align-self:flex-start}
+.site-card .btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
+
+/* Alertas de eventos */
+.alert-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.alert-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid #eedcae;border-left:4px solid #c2621e;border-radius:8px;background:#fffdf7;padding:9px 11px;font-size:12px}
+.alert-list b{display:block;color:var(--navy);font-size:12.5px;line-height:1.3}
+.alert-list small{display:block;color:var(--mut);font-size:11px;margin-top:2px}
+.alert-list .when{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9a5b12;white-space:nowrap;text-align:right}
+
+/* Calendario editable */
+.cal-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cal .ev.own{border-left-style:dashed;font-weight:600}
+.up-list .up-actions{display:flex;gap:6px;margin-left:6px;flex-wrap:wrap}
+.up-list .up-actions a{font-size:10.5px;color:var(--accent);text-decoration:none;font-weight:600}
+.up-list .up-actions a.del{color:#a92e2e}
+.ev-form .dlg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ev-form .check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;color:var(--navy);font-weight:500}
+.ev-form .check input{width:16px;height:16px;accent-color:var(--accent)}
+
+.demo-bar{background:#eef4f7;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--mut)}
+.demo-bar .wrap{display:flex;align-items:center;gap:8px;padding:7px 0;flex-wrap:wrap}
+.demo-bar .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+
+/* Héroe */
+.hero{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.hero-main{padding:clamp(24px,3vw,38px);display:flex;flex-direction:column;justify-content:center}
+.hero h1{font-size:clamp(30px,3.6vw,46px)}
+.lede{font-size:15.5px;color:var(--mut);max-width:54ch}
+.hero-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;border-top:1px solid var(--line);margin-top:26px;padding-top:18px}
+.hero-kpis b{display:block;font:600 30px/1 var(--serif);color:var(--navy)}
+.hero-kpis span{display:block;font-size:12.5px;color:var(--mut);margin-top:4px}
+.hero-art{position:relative;background:var(--navy);color:#e8f0f4;padding:24px;display:flex;flex-direction:column;gap:15px;overflow:hidden;min-height:330px}
+.hero-art::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1px);background-size:18px 18px;opacity:.45;pointer-events:none}
+.hero-art::after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(44,177,204,.3),transparent 70%);right:-90px;top:-90px;pointer-events:none}
+.art-head{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;gap:10px}
+.art-head>span{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9fc3d3}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:#c9e5ef}
+.live i{width:7px;height:7px;border-radius:50%;background:#4fd1c5;box-shadow:0 0 0 4px rgba(79,209,197,.18);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.art-big{position:relative;z-index:1;display:flex;align-items:baseline;gap:10px}
+.art-big b{font:600 50px/1 var(--serif);color:#fff}
+.art-big span{font-size:12px;color:#9fc3d3}
+.art-pulse{position:relative;z-index:1;width:100%;height:58px;overflow:visible}
+.art-pulse path{fill:none;stroke:var(--cyan);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:trace 2.2s ease-out .2s forwards;vector-effect:non-scaling-stroke}
+@keyframes trace{to{stroke-dashoffset:0}}
+.art-grid{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14);padding:11px 0}
+.art-grid b{display:block;font:600 21px/1 var(--serif);color:#fff}
+.art-grid span{font-size:10.5px;color:#9fc3d3}
+.art-list{position:relative;z-index:1;list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.art-list li{display:grid;grid-template-columns:8px minmax(0,1fr) auto;gap:9px;align-items:start;font-size:12px;line-height:1.35;color:#d7e5ec}
+.art-list i{width:8px;height:8px;border-radius:50%;margin-top:4px}
+.art-list time{font-size:10px;color:#8fb3c3;white-space:nowrap}
+
+/* Secciones, tarjetas */
+.sec{margin-top:30px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:0 0 12px}
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.card{background:#fff;padding:15px 15px 13px;display:flex;flex-direction:column;gap:5px;min-height:116px}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cicon{width:29px;height:29px;border-radius:6px;display:grid;place-items:center;background:var(--soft);color:var(--accent)}
+.card b{font:600 27px/1 var(--serif);color:var(--navy)}
+.card>span{font-size:12.5px;font-weight:600;line-height:1.25}
+.card em{font-style:normal;font-size:11px;color:var(--mut);margin-top:auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);min-width:0}
+.panel h2{font-size:20px}
+
+/* Estado */
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;white-space:nowrap;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:99px;padding:3px 9px 3px 7px;max-width:100%}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.badge.sm{font-size:11px;padding:2px 7px 2px 6px;gap:5px}
+.badge.sm i{width:7px;height:7px}
+.tracker{display:grid;grid-template-columns:1fr 1fr;gap:0 38px;border-top:1px solid var(--line)}
+.trk{display:grid;grid-template-columns:minmax(0,1.35fr) 36px minmax(60px,1fr) 42px;align-items:center;gap:12px;padding:10px 0;border:0;border-bottom:1px solid var(--line2);background:none;text-align:left;cursor:pointer;font:inherit;color:inherit;border-radius:0}
+.trk:hover{background:linear-gradient(90deg,var(--soft),transparent)}
+.trk b{font:600 15px var(--sans);color:var(--navy);text-align:right}
+.pbar{display:block;height:7px;background:#e8eef2;border-radius:99px;overflow:hidden;min-width:40px}
+.pbar i{display:block;height:100%;border-radius:99px}
+.pbar.small{height:5px;background:#edf2f5}
+.trk-p{font-size:11px;color:var(--mut);text-align:right}
+
+/* Meta anual */
+.goal{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.goal svg{flex:none}
+.goal-legend{list-style:none;margin:0;padding:0;flex:1;min-width:190px;display:grid;gap:7px;font-size:12.5px}
+.goal-legend li{display:grid;grid-template-columns:11px 1fr auto;gap:8px;align-items:center;border-bottom:1px solid var(--line2);padding-bottom:6px}
+.goal-legend i{width:10px;height:10px;border-radius:2px}
+.goal-legend b{font-weight:600;color:var(--navy)}
+
+/* Actividad */
+.feed{list-style:none;margin:0;padding:0}
+.feed li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;padding:9px 0;border-bottom:1px solid var(--line2)}
+.feed li:last-child{border-bottom:0;padding-bottom:0}
+.ficon{width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center;color:var(--accent)}
+.ficon .ic{width:15px;height:15px}
+.ft{font-size:12.5px;line-height:1.4}
+.fm{font-size:11px;color:var(--mut);margin-top:2px}
+.fm a{text-decoration:none;color:var(--blue)}
+.fm a:hover{text-decoration:underline}
+
+/* Botones y filtros */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 15px;border:1px solid var(--accent);background:var(--accent);color:#fff;font:600 14px var(--sans);cursor:pointer;text-decoration:none;border-radius:4px;white-space:nowrap}
+.btn:hover{background:var(--accent-dk);border-color:var(--accent-dk)}
+.btn.l{background:#fff;color:var(--navy);border-color:var(--line)}
+.btn.l:hover{background:var(--soft);border-color:var(--blue)}
+.btn.sm{padding:6px 10px;font-size:12.5px}
+.filter-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px;box-shadow:var(--shadow);margin-bottom:18px}
+.search-row{display:flex;gap:10px;flex-wrap:wrap}
+.search{display:flex;align-items:center;gap:8px;flex:1;min-width:240px;border:1px solid #9fb0bd;border-radius:4px;padding:0 10px;background:#fff}
+.search .ic{color:var(--mut)}
+.search input{border:0;outline:0;padding:9px 0;width:100%;background:transparent}
+.filter-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:9px}
+select,input[type=text],input[type=date],input[type=search]{font:inherit;padding:8px 10px;border:1px solid #9fb0bd;border-radius:4px;background:#fff;color:var(--ink);max-width:100%;width:100%;min-width:0}
+.filter-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px;font-size:12px;color:var(--mut);flex-wrap:wrap}
+.group{margin-top:14px}
+.gh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;background:var(--soft);border:1px solid var(--line);border-bottom:0;border-radius:4px 4px 0 0;font-size:12px;font-weight:600;color:var(--navy);letter-spacing:.02em}
+.gh b{font-weight:600;color:var(--accent)}
+.it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:13px 15px;border:1px solid var(--line);margin-top:-1px;background:#fff;text-decoration:none;color:inherit;transition:background .15s}
+.it:hover{background:#fafcfd}
+.it h3{font:600 15.5px/1.3 var(--sans);margin:4px 0 3px;color:var(--navy)}
+.it-authors{font-size:12px;color:var(--mut)}
+.it-meta{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:11.5px;color:var(--mut);margin-top:5px}
+.it-meta span{display:inline-flex;align-items:center;gap:5px;min-width:0}
+.it-meta .ic{width:14px;height:14px;color:var(--blue)}
+.it-sub{font-size:11px;color:var(--mut);margin-top:5px}
+.it-go{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--accent)}
+.it:hover .it-go{background:var(--accent);color:#fff;border-color:var(--accent)}
+.it-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.it-date{font-size:11px;color:var(--mut)}
+.empty{padding:44px 20px;text-align:center;color:var(--mut);border:1px dashed var(--line);border-radius:var(--r);background:#fff;margin-top:14px}
+.empty b{display:block;color:var(--navy);font:600 17px var(--serif);margin-bottom:4px}
+
+/* Manuscritos */
+.man{display:grid;grid-template-columns:minmax(0,1fr) 160px;gap:18px;padding:15px 17px;border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;background:#fff;text-decoration:none;color:inherit;box-shadow:var(--shadow)}
+.man:hover{border-color:#a9bcc9}
+.man h3{font:600 16px/1.35 var(--sans);margin:6px 0 4px}
+.man .last{font-size:11.5px;color:var(--mut);margin-top:6px}
+.man-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:8px;text-align:right}
+.man-side small{font-size:11px;color:var(--mut)}
+.tl{display:grid;grid-template-columns:repeat(7,1fr);margin-top:10px}
+.tl-step{position:relative;padding-top:16px;text-align:center;font-size:10px;line-height:1.2;color:var(--mut)}
+.tl-step::before{content:"";position:absolute;top:5px;left:0;width:100%;height:2px;background:var(--line)}
+.tl-step:first-child::before{left:50%;width:50%}
+.tl-step:last-child::before{width:50%}
+.tl-step i{position:absolute;top:0;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;border:2px solid #b9c6d0;background:#fff;z-index:1}
+.tl-step.done::before{background:var(--navy)}
+.tl-step.done i{background:var(--navy);border-color:var(--navy)}
+.tl-step.cur i{border-color:var(--accent);box-shadow:0 0 0 3px #cfeaf0;background:#fff}
+.tl-step.cur.stop i{background:#a92e2e;border-color:#a92e2e;box-shadow:0 0 0 3px #f3d6d6}
+.tl-step.cur b{color:var(--navy);font-weight:600}
+.tl-step b{font-weight:500}
+
+/* Tablas */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line2);font-size:12.5px;vertical-align:top}
+th{background:var(--soft);color:var(--navy);font-weight:600;font-size:11.5px;letter-spacing:.02em;white-space:nowrap}
+td.n,th.n{text-align:right}
+tbody tr:hover{background:#fafcfd}
+td a{text-decoration:none;color:var(--blue)}
+td a:hover{text-decoration:underline}
+
+/* Proyectos */
+.projects{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.proj{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:19px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.proj-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.tag{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:#eaf4f7;border:1px solid #cfe6ec;border-radius:99px;padding:3px 8px}
+.team{font-size:10.5px;color:var(--mut)}
+.proj h3{font:600 18px/1.3 var(--serif)}
+.proj-meta{display:grid;gap:3px;font-size:12px;color:var(--mut)}
+.proj-meta b{color:var(--ink);font-weight:600}
+.proj-l{display:flex;justify-content:space-between;font-size:11.5px;gap:10px;margin-bottom:6px}
+.proj-l b{color:var(--navy)}
+.proj-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:9px 0}
+.proj-stats span{font-size:10px;color:var(--mut);line-height:1.25}
+.proj-stats b{display:block;font:600 17px/1 var(--serif);color:var(--navy);margin-bottom:3px}
+.proj-ms{display:grid;gap:5px}
+.proj-ms a{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:11.5px;color:var(--ink);min-width:0}
+.proj-ms a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.proj-ms .badge{flex:none}
+
+/* Calendario */
+.cal-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:15px}
+.cal-nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cal-nav b{min-width:150px;text-align:center;font:600 16px var(--serif);color:var(--navy)}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin:0 0 11px}
+.lg span{display:inline-flex;align-items:center;gap:6px}
+.lg i{width:10px;height:10px;border-radius:2px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.cal>div{border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);min-height:104px;padding:5px 6px;font-size:11.5px;min-width:0}
+.cal>div:nth-child(7n){border-right:0}
+.cal .h{min-height:0;background:var(--soft);font-weight:600;text-align:center;padding:7px;color:var(--navy);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.cal .o{background:#fbfcfd}
+.cal .today{background:#eef8fa;box-shadow:inset 0 0 0 2px var(--cyan)}
+.cal .today>b{color:var(--accent)}
+.cal .num{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.cal .num b{font-weight:600}
+.cal .ev{display:block;margin-top:3px;padding:2px 4px;border-left:3px solid var(--c);background:#fff;line-height:1.2;border-radius:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:var(--ink);text-decoration:none}
+.cal .ev:hover{background:var(--soft)}
+.cal .more{font-size:9px;color:var(--mut);margin-top:2px;display:block}
+.upcoming{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+.up-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:7px}
+.up-list li{display:grid;grid-template-columns:78px 8px 1fr;gap:8px;align-items:start;font-size:12px;border-bottom:1px solid var(--line2);padding-bottom:6px}
+.up-list time{color:var(--navy);font-weight:600;font-size:11px}
+.up-list i{width:8px;height:8px;border-radius:50%;margin-top:4px}
+.up-list span{color:var(--mut);line-height:1.3}
+
+/* Analítica y ranking */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
+.kpi{background:#fff;padding:15px}
+.kpi b{display:block;font:600 25px/1 var(--serif);color:var(--navy)}
+.kpi span{display:block;font-size:12px;font-weight:600;margin-top:5px}
+.kpi em{display:block;font-style:normal;font-size:10.5px;color:var(--mut);margin-top:3px}
+.chart-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin-top:16px;overflow-x:auto}
+.chart-card h2{font-size:18px;margin-bottom:4px}
+.chart{width:100%;height:auto;min-width:520px;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px}
+.rank-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.rank-grid .wide{grid-column:1/-1}
+.rk{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--soft);font-size:11px;font-weight:700;color:var(--mut)}
+.rk.top1{background:#f6e7b8;color:#7a5a00}
+.rk.top2{background:#e5e9ec;color:#4a5d6b}
+.rk.top3{background:#f2d8c2;color:#7a4a1e}
+.rank-name{display:flex;flex-direction:column;gap:5px;min-width:160px}
+
+/* Extras del panel */
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.hero-actions .btn{padding:10px 16px}
+.hero-actions .ic{width:16px;height:16px}
+.linkish{color:var(--blue);text-decoration:none;font-weight:500}
+.linkish:hover{text-decoration:underline}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 16px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.tabs button{border:1px solid transparent;background:none;padding:7px 11px;border-radius:4px;font:500 13px var(--sans);color:var(--mut);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.tabs button:hover{background:var(--soft);color:var(--navy)}
+.tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs b{font-weight:600;font-size:11.5px;background:rgba(14,40,58,.07);padding:1px 6px;border-radius:99px;color:inherit}
+.tabs button.on b{background:rgba(255,255,255,.18)}
+.two .chart-card{margin-top:0}
+.chart-card .pbar{margin-top:7px}
+.rank-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:11px}
+.rank-list li{display:grid;gap:4px}
+.rank-list .rl-top{display:flex;justify-content:space-between;gap:10px;font-size:12.5px}
+.rank-list .rl-top b{color:var(--navy)}
+.rank-list .rl-top span{color:var(--mut);font-size:11.5px;white-space:nowrap}
+.mini-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--mut);margin-top:6px}
+.mini-legend span{display:inline-flex;align-items:center;gap:5px}
+.mini-legend i{width:9px;height:9px;border-radius:2px}
+.attention{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.attention li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line2)}
+.attention li:last-child{border-bottom:0;padding-bottom:0}
+.attention a{text-decoration:none;font-size:12.5px;font-weight:600;color:var(--navy);display:block;line-height:1.35}
+.attention a:hover{color:var(--accent)}
+.attention small{display:block;font-size:11px;color:var(--mut);font-weight:400;margin-top:2px}
+
+
+/* Cajón de detalle */
+#scrim{position:fixed;inset:0;background:rgba(14,40,58,.42);z-index:39;backdrop-filter:blur(1px)}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);background:#fff;border-left:1px solid var(--line);box-shadow:-20px 0 50px rgba(14,40,58,.18);overflow:auto;padding:22px 24px 60px;z-index:40;animation:slide .22s ease-out}
+@keyframes slide{from{transform:translateX(24px);opacity:0}}
+.dr-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.x{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;color:var(--navy);flex:none}
+.x:hover{background:var(--soft)}
+#drawer h2{font:600 22px/1.3 var(--serif);margin:10px 0 6px}
+.dr-meta{display:grid;grid-template-columns:118px 1fr;gap:7px 14px;margin:16px 0;padding:14px;background:var(--soft);border-radius:var(--r);font-size:12.5px}
+.dr-meta dt{color:var(--mut)}
+.dr-meta dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.dr-sec{margin-top:22px;padding-top:17px;border-top:1px solid var(--line)}
+.dr-form{display:grid;gap:8px;margin-top:10px}
+.dr-form .row2{display:flex;gap:8px;flex-wrap:wrap}
+.dr-form select,.dr-form input{flex:1;min-width:150px}
+.docs{width:100%;border-collapse:collapse;margin-top:8px}
+.docs td{padding:8px 6px;border-bottom:1px solid var(--line2);font-size:12px;vertical-align:middle}
+.docs .fname{display:flex;align-items:center;gap:8px;min-width:0}
+.docs .fname span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ftype{font-size:9px;font-weight:700;letter-spacing:.04em;border-radius:3px;padding:2px 5px;background:var(--soft);color:var(--blue);flex:none}
+.upload{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:12.5px;font-weight:600;color:var(--accent);cursor:pointer;border-bottom:1px dashed currentColor}
+.upload input{position:absolute;width:1px;height:1px;opacity:0}
+.hist{list-style:none;margin:10px 0 0;padding:0 0 0 16px;border-left:2px solid var(--line2)}
+.hist li{position:relative;padding:0 0 13px 8px;font-size:12px}
+.hist li::before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--c,var(--navy))}
+.hist .hd{font-size:10.5px;color:var(--mut)}
+.hist p{margin-top:2px;color:var(--mut);line-height:1.4}
+
+/* Diálogo y avisos */
+dialog{border:1px solid var(--line);border-radius:8px;padding:0;width:min(540px,94vw);box-shadow:0 24px 80px rgba(14,40,58,.3)}
+dialog::backdrop{background:rgba(14,40,58,.45)}
+.dlg-in{padding:24px}
+.dlg-in h2{font-size:22px}
+.dlg-in p{color:var(--mut);font-size:13px;margin:4px 0 14px}
+.fld{display:block;font-size:12px;font-weight:600;margin:11px 0 4px;color:var(--navy)}
+.dlg-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.dlg-foot{display:flex;justify-content:flex-end;gap:9px;margin-top:20px;flex-wrap:wrap}
+#toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);background:var(--navy);color:#fff;font-size:13px;padding:10px 16px;border-radius:5px;box-shadow:0 12px 30px rgba(14,40,58,.3);z-index:60;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;max-width:90vw}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+.foot{border-top:1px solid var(--line);background:#fff}
+.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 0;font-size:11.5px;color:var(--mut)}
+
+@media(max-width:1120px){.user-chip{display:none}.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr}.hero-art{min-height:280px}
+  .two{grid-template-columns:1fr}.tracker{grid-template-columns:1fr}
+  .filter-row{grid-template-columns:1fr 1fr}
+  .projects,.rank-grid{grid-template-columns:1fr}.rank-grid .wide{grid-column:auto}
+  .kpis{grid-template-columns:1fr 1fr}
+  .upcoming{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .bar-in{flex-wrap:wrap;padding:10px 18px;gap:8px 16px;min-height:0}
+  .brand img{height:36px}
+  .brand-tx b{font-size:13.5px}
+  nav{order:3;width:100%;flex:1 1 100%;border-top:1px solid var(--line2);padding-top:4px}
+  .hub{display:none}
+  .cal>div{min-height:76px;padding:4px}
+  .cal .ev{font-size:0;height:5px;padding:0;border-left:0;border-radius:99px;background:var(--c);margin-top:2px}
+  .cal .more{display:none}
+  .man{grid-template-columns:1fr}.man-side{align-items:flex-start;text-align:left;flex-direction:row;justify-content:space-between;flex-wrap:wrap}
+  .it{grid-template-columns:1fr}.it-go{display:none}
+}
+@media(max-width:600px){
+  .wrap,main{padding-left:16px;padding-right:16px}
+  .bar{position:static}
+  .cards{grid-template-columns:1fr 1fr}
+  .hero-kpis{grid-template-columns:1fr 1fr;gap:12px}
+  .filter-row{grid-template-columns:1fr}
+  .dlg-grid{grid-template-columns:1fr}
+  .tl-step{font-size:8.5px}
+  .dr-meta{grid-template-columns:1fr}
+  .proj-stats{grid-template-columns:1fr 1fr}
+  .dr-form .row2{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .art-pulse path{animation:none;stroke-dashoffset:0}
+  .live i{animation:none}
+  #drawer{animation:none}
+  #toast{transition:none}
+}
 </style>
 </head>
 <body>
-<header class="bar"><div class="in">
-  <a class="logo" href="portal.html"><img src="img/emblema.png" alt=""><span>Synaptic<small>Gestión de investigación</small></span></a>
-  <nav id="nav" aria-label="Secciones">
-    <a href="#resumen">Resumen</a><a href="#articulos">Artículos</a><a href="#manuscritos">Manuscritos</a><a href="#proyectos">Proyectos</a><a href="#calendario">Calendario</a><a href="#analitica">Analítica</a>
-  </nav>
-  <a class="out" href="portal.html">Volver al hub</a>
-</div></header>
-<div class="demo">Datos de ejemplo: los cambios que hagas aquí no se guardan al recargar la página.</div>
-<main id="app"></main>
-<aside id="drawer" hidden aria-label="Detalle del manuscrito"></aside>
-<dialog id="dlg"><form method="dialog" id="nf">
-  <h3>Subir artículo</h3>
-  <label for="nt">Título del manuscrito</label><input id="nt" required>
-  <label for="np">Proyecto</label><select id="np"></select>
-  <label for="nj">Revista (si ya la elegiste)</label><input id="nj">
-  <label for="nfile">Archivo (PDF o DOCX)</label><input id="nfile" type="file" accept=".pdf,.doc,.docx">
-  <div class="fl" style="margin-top:18px"><button class="btn" type="submit">Guardar artículo</button><button class="btn l" type="button" id="nc">Cancelar</button></div>
-</form></dialog>
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15v3M12 9v9M17 5v13"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0Z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4 12 22l-9-9V3h10l7.6 7.6a3 3 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+</svg>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="index.html" aria-label="Synaptic Research League, inicio">
+      <img src="emblema.png" alt="" onerror="this.remove()">
+      <span class="brand-tx"><b>Synaptic Research League</b><small>Gestión de investigación</small></span>
+    </a>
+    <nav id="nav" aria-label="Secciones del panel">
+      <a href="#resumen">Resumen</a>
+      <a href="#articulos">Artículos</a>
+      <a href="#manuscritos">Manuscritos</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#calendario">Calendario</a>
+      <a href="#equipo" class="admin-only">Equipo</a>
+      <a href="#sitio" class="admin-only">Sitio</a>
+      <a href="#analitica">Analítica</a>
+      <a href="#ranking">Ranking</a>
+    </nav>
+    <div class="bar-actions">
+      <span class="user-chip"><span class="avatar" id="userAv" aria-hidden="true">MS</span><span class="user-tx"><b id="userName">Dra. Marisol Santana</b><small id="userRole">Administradora · acceso total</small></span></span>
+      <div class="mode-switch" role="group" aria-label="Modo de la cuenta">
+        <button type="button" data-mode="admin">Admin</button>
+        <button type="button" data-mode="user">Usuario</button>
+      </div>
+      <a class="hub" href="portal.html">Mi área</a>
+    </div>
+  </div>
+</header>
+
+<div class="mode-banner" id="modeBanner" hidden>
+  <div class="wrap"><span aria-hidden="true">👁</span><span><b>Modo usuario.</b> Estás viendo el panel como miembro: las acciones de administración están ocultas.</span><button class="btn l sm" type="button" data-mode="admin">Volver a modo administrador</button></div>
+</div>
+
+<div class="demo-bar">
+  <div class="wrap"><span class="dot" aria-hidden="true"></span><span>Datos de ejemplo de los últimos 12 meses. Los cambios se guardan en este navegador.</span><button class="link" type="button" data-reset>Restablecer datos</button></div>
+</div>
+
+<main id="app"></main>
+
+<div id="scrim" hidden></div>
+<aside id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden></aside>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <form id="nf" class="dlg-in" method="dialog" novalidate>
+    <h2 id="dlgTitle">Registrar artículo</h2>
+    <p>Añade un manuscrito al repositorio. Podrás completar la información y subir más documentos desde su ficha.</p>
+    <label class="fld" for="nt">Título del manuscrito</label>
+    <input id="nt" type="text" required placeholder="Título completo del trabajo">
+    <div class="dlg-grid">
+      <div><label class="fld" for="np">Proyecto</label><select id="np"></select></div>
+      <div><label class="fld" for="nst">Estado</label><select id="nst"></select></div>
+    </div>
+    <label class="fld" for="nau">Autores y colaboradores</label>
+    <input id="nau" type="text" placeholder="Separa los nombres con comas">
+    <div class="dlg-grid">
+      <div><label class="fld" for="nj">Revista</label><input id="nj" type="text" placeholder="Por definir"></div>
+      <div><label class="fld" for="nd">Fecha de referencia</label><input id="nd" type="date"></div>
+    </div>
+    <label class="fld" for="nfile">Archivos del manuscrito</label>
+    <input id="nfile" type="file" multiple accept=".pdf,.doc,.docx,.xlsx,.csv,.zip,.png,.jpg,.jpeg">
+    <div class="dlg-foot"><button class="btn l" type="button" id="nc">Cancelar</button><button class="btn" type="submit">Guardar artículo</button></div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="caldlg" aria-labelledby="caldlgTitle">
+  <form id="calf" class="dlg-in ev-form" method="dialog" novalidate>
+    <h2 id="caldlgTitle">Añadir fecha importante</h2>
+    <p>Las fechas propias se suman al calendario editorial y pueden generar alertas en el resumen.</p>
+    <label class="fld" for="cev-t">Título del evento</label>
+    <input id="cev-t" name="title" type="text" required placeholder="Ej. Cierre de postulaciones · Cohorte 2027">
+    <div class="dlg-grid">
+      <div><label class="fld" for="cev-d">Fecha</label><input id="cev-d" name="d" type="date" required></div>
+      <div><label class="fld" for="cev-l">Tipo</label><select id="cev-l" name="label">
+        <option>Convocatoria</option><option>Cierre de envío</option><option>Reunión de equipo</option>
+        <option>Defensa o presentación</option><option>Publicación</option><option>Otro</option>
+      </select></div>
+    </div>
+    <label class="fld" for="cev-n">Nota (opcional)</label>
+    <input id="cev-n" name="note" type="text" placeholder="Detalle breve para el equipo">
+    <label class="check"><input type="checkbox" name="imp" id="cev-imp"> Marcar como evento importante (genera alerta)</label>
+    <div class="dlg-foot"><button class="btn l" type="button" data-cclose>Cancelar</button><button class="btn" type="submit">Guardar fecha</button></div>
+  </form>
+</dialog>
+
+<footer class="foot">
+  <div class="wrap"><span>Synaptic Research League · Oficina de investigación</span><span>Datos de demostración · <button class="link" type="button" data-reset>Restablecer</button></span></div>
+</footer>
 <script>
-/* Acceso: solo miembros con sesión iniciada (los datos de abajo son de ejemplo) */
-try{ if(window.supabase){ supabase.createClient('https://ncikqsyqyivdmtvtpidn.supabase.co','sb_publishable_Esscr4NHrxRf1Hq0vulvzw_7VoVd5AV').auth.getSession().then(r=>{ if(!r.data.session) location.replace('portal.html'); }); } }catch(e){}
+'use strict';
+/* ===== Utilidades ===== */
+const HOY='2026-11-07';
+const $=s=>document.querySelector(s);
+const D=s=>new Date(s+'T12:00:00Z');
+const iso=d=>d.toISOString().slice(0,10);
+const add=(s,n)=>iso(new Date(D(s).getTime()+n*864e5));
+const fmt=s=>D(s).toLocaleDateString('es-DO',{day:'numeric',month:'short',year:'numeric'});
+const fmtLong=s=>D(s).toLocaleDateString('es-DO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const fmtShort=s=>D(s).toLocaleDateString('es-DO',{day:'2-digit',month:'short'});
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ic=n=>`<svg class="ic" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const rel=s=>{const n=Math.round((D(HOY)-D(s))/864e5);return n<=0?'hoy':n===1?'ayer':n<7?`hace ${n} días`:fmt(s);};
+const typeOf=n=>{const e=(n.split('.').pop()||'').toUpperCase();return e==='DOC'?'DOCX':e||'FILE';};
+const kb=n=>n>1024?(n/1024).toFixed(1)+' MB':Math.max(1,Math.round(n))+' KB';
+
+/* ===== Estados del ciclo editorial ===== */
+const ST={
+  prep:{n:'En preparación',c:'#8a99a8',ph:0,note:'Manuscrito iniciado.'},
+  borr:{n:'Borrador completado',c:'#687d91',ph:1,note:'Primer borrador completo.'},
+  revint:{n:'En revisión interna',c:'#4c74a5',ph:2,note:'Revisión por coautores y mentor.'},
+  env:{n:'Enviado',c:'#2f6fb0',ph:3,note:'Manuscrito enviado a la revista.'},
+  pares:{n:'En revisión por pares',c:'#1f4f8f',ph:4,note:'Manuscrito asignado a revisores.'},
+  rmen:{n:'Revisión solicitada (menor)',c:'#b8860b',ph:4,note:'Los revisores piden cambios menores.'},
+  rmay:{n:'Revisión solicitada (mayor)',c:'#c2621e',ph:4,note:'Los revisores piden cambios mayores y análisis adicional.'},
+  reenv:{n:'Reenviado',c:'#7a6a1f',ph:4,note:'Versión revisada reenviada con respuesta a revisores.'},
+  acep:{n:'Aceptado',c:'#2e7d5b',ph:5,note:'Decisión editorial: aceptado.'},
+  prensa:{n:'En prensa',c:'#1f6f63',ph:5,note:'Galeradas aprobadas.'},
+  publ:{n:'Publicado',c:'#0d5c3f',ph:6,note:'Publicado en línea.'},
+  rech:{n:'Rechazado',c:'#a92e2e',ph:4,note:'Decisión editorial: rechazado por alcance de la revista.'},
+  ret:{n:'Retirado',c:'#5b6068',ph:3,note:'Retirado por los autores.'}
+};
+const KEYS=Object.keys(ST);
+const PROG=['prep','borr','revint'],SENT=['env','pares','rmen','rmay','reenv'],ACC=['acep','prensa'],CLOSED=['publ','rech','ret'];
+const FASES=['Preparación','Borrador','Rev. interna','Enviado','Pares','Aceptado','Publicado'];
 
 /* ===== Datos de ejemplo ===== */
-const HOY='2026-11-06', $=s=>document.querySelector(s);
-const D=s=>new Date(s+'T12:00:00'), iso=d=>d.toISOString().slice(0,10), add=(s,n)=>iso(new Date(D(s).getTime()+n*864e5));
-const fmt=s=>D(s).toLocaleDateString('es-DO',{day:'numeric',month:'short',year:'numeric'});
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const ST={prep:['En preparación','#9aa8b4',0,'Manuscrito iniciado.'],borr:['Borrador completado','#7d8fa0',1,'Primer borrador completo.'],revint:['En revisión interna','#5f86b8',2,'Revisión por coautores y mentor.'],env:['Enviado','#2f6fb0',3,'Manuscrito enviado a la revista.'],pares:['En revisión por pares','#1f4f8f',4,'Asignado a revisores.'],rmen:['Revisión solicitada (menor)','#d4a017',4,'Los revisores piden cambios menores.'],rmay:['Revisión solicitada (mayor)','#c8641a',4,'Los revisores piden cambios importantes, incluido un análisis adicional.'],reenv:['Reenviado','#8f7a1c',4,'Versión revisada reenviada con respuesta a revisores.'],acep:['Aceptado','#2e8b57',5,'Decisión editorial: aceptado.'],prensa:['En prensa','#1f7a6b',5,'Galeradas aprobadas.'],publ:['Publicado','#0e5e3f',6,'Publicado en línea.'],rech:['Rechazado','#b3261e',4,'Decisión editorial: rechazado por alcance de la revista.'],ret:['Retirado','#5b6068',3,'Retirado por los autores.']};
-const SENT=['env','pares','rmen','rmay','reenv'],PROG=['prep','borr','revint'],ACC=['acep','prensa'];
-const FASES=['Preparación','Borrador','Rev. interna','Enviado','Pares','Aceptado','Publicado'];
-const AU=['Dra. M. Santana','Dr. A. Peña','L. Reyes','J. Cabrera','R. Núñez','S. Fermín','D. Taveras','K. Ureña'];
-const EQ=['Cardiología clínica','Infectología cardiovascular','Cardio-oncología','Epidemiología'];
-const P=[['Detección molecular en endocarditis con hemocultivos negativos','Infectología cardiovascular',0,[1,2,3],'Análisis de datos',72,1],
-['Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar','Insuficiencia cardíaca',1,[4,5],'Redacción',85,0],
-['Estimulación del área de la rama izquierda tras TAVI','Electrofisiología',1,[2,6],'Redacción',90,0],
-['Insuficiencia cardíaca en América Latina y el Caribe','Epidemiología cardiovascular',7,[3,5],'Extracción de datos',55,3],
-['Dosis de radiación en subestructuras cardíacas','Cardio-oncología',4,[6,0],'Análisis de datos',64,2],
-['Bacteriemia enterocócica persistente','Infectología',0,[2,7],'Redacción',78,1]];
-const RAW=[['Diagnostic accuracy of PCR versus mNGS in blood culture-negative infective endocarditis: a systematic review',0,'Clinical Microbiology and Infection','publ',1,'2025-11-04',24,[0,1,2]],
-['Interatrial shunt devices in HFpEF with pulmonary hypertension due to left heart disease: a systematic review',1,'JACC: Heart Failure','prensa',1,'2025-11-18',26,[1,4,5]],
-['Left bundle branch area pacing after transcatheter aortic valve implantation: a systematic review',2,'Europace','acep',1,'2026-02-10',27,[1,2,6]],
-['Heart failure epidemiology in Latin America and the Caribbean: a systematic review',3,'The Lancet Regional Health – Americas','pares',0,'2026-06-15',20,[7,3,5]],
-['Cardiac substructure radiation dose and cardiovascular outcomes in cancer survivors',4,'JACC: CardioOncology','rmay',0,'2026-06-08',22,[4,6,0]],
-['Treatment strategies for persistent enterococcal bacteremia: a systematic review',5,'Clinical Infectious Diseases','reenv',0,'2026-05-18',24,[0,2,7]],
-['Persistent enterococcal bacteremia: protocol and rationale of a systematic review',5,'Systematic Reviews','publ',0,'2025-11-12',18,[0,2]],
-['Interatrial shunts in HFpEF: protocol of a systematic review and meta-analysis',1,'BMJ Open','publ',0,'2025-12-01',16,[1,4]],
-['Predictors of conduction disturbances after TAVI: a narrative overview',2,'Revista Española de Cardiología','rech',0,'2026-03-02',25,[2,6]],
-['Mortality in heart failure registries of the Caribbean: data harmonization',3,'BMC Cardiovascular Disorders','revint',0,'2026-09-01',18,[7,3]],
-['Turnaround time and cost of mNGS in endocarditis diagnosis',0,'Journal of Clinical Microbiology','borr',0,'2026-09-20',15,[1,3]],
-['Mean heart dose thresholds in thoracic radiotherapy: a methods paper',4,'Radiotherapy and Oncology','prep',0,'2026-10-28',0,[4]],
-['Pacing strategies after TAVI: conference abstract',2,'Congreso regional de cardiología','ret',0,'2026-02-16',21,[2,6]],
-['Antibiotic combinations for persistent bacteremia: a scoping review',5,'International Journal of Antimicrobial Agents','env',0,'2026-08-17',19,[0,7]],
-['Update of PCR accuracy in culture-negative endocarditis',0,'Journal of Infection','rmen',1,'2026-03-16',22,[0,1,2]]];
-const BASE=['prep','borr','revint','env','pares'];
-function path(s,rev){ if(s==='rech')return[...BASE,'rech']; if(s==='ret')return[...BASE.slice(0,4),'ret'];
- if(['acep','prensa','publ'].includes(s))return[...BASE,...(rev?['rmen','reenv']:[]),'acep',...(s!=='acep'?['prensa']:[]),...(s==='publ'?['publ']:[])];
- if(s==='rmen'||s==='rmay')return[...BASE,s]; if(s==='reenv')return[...BASE,'rmay','reenv']; return BASE.slice(0,BASE.indexOf(s)+1); }
-const A=RAW.map((r,i)=>{const h=path(r[3],r[4]).map((s,k)=>{const d=add(r[5],r[6]*k);return{s,d:d>HOY?HOY:d,n:ST[s][3]}});
- return{id:i,t:r[0],p:r[1],j:r[2],st:r[3],au:r[7],h,x:[]};});
-const dOf=(a,s)=>{const e=a.h.find(x=>x.s===s);return e&&e.d};
-const doi=a=>(dOf(a,'acep')?'10.5555/srh.2026.'+(100+a.id):'');
-function files(a){const f=[],d=s=>dOf(a,s);
- if(d('borr'))f.push(['Manuscrito_v1.docx','DOCX',210+a.id*9,d('borr')]);
- if(d('revint'))f.push(['Tablas_suplementarias.docx','DOCX',74,d('revint')],['Figuras_1-4.pdf','PDF',1380,d('revint')]);
- if(d('env'))f.push(['Manuscrito_v2_enviado.pdf','PDF',640,d('env')]);
- const r=d('rmen')||d('rmay'); if(r)f.push(['Comentarios_de_revisores.pdf','PDF',96,r]);
- if(d('reenv'))f.push(['Respuesta_a_revisores.docx','DOCX',128,d('reenv')]);
- if(d('publ'))f.push(['Version_publicada.pdf','PDF',820,d('publ')]);
- return f;}
-A.forEach(a=>a.x=files(a));
-const S={f:{q:'',e:'',p:'',j:'',y:''},g:'p',cal:[2026,10]};
-const badge=s=>`<span class="st"><i style="background:${ST[s][1]}"></i>${ST[s][0]}</span>`;
-const last=a=>a.h[a.h.length-1];
-const authors=a=>a.au.map(i=>AU[i]).join(', ');
-const stage=s=>PROG.includes(s)?'Sin enviar':SENT.includes(s)?'Enviado (aún no aceptado)':ACC.includes(s)?'Aceptado (aún no publicado)':s==='publ'?'Publicado oficialmente':'Cerrado';
-const ev=(a,s)=>a.h.filter(x=>x.s===s);
+const AU=['Dra. Marisol Santana','Dr. Andrés Peña','Lía Reyes','José Cabrera','Dr. Rafael Núñez','Sofía Fermín','Daniel Taveras','Karla Ureña','Dra. Elena Vargas','Luis Emilio Gómez'];
+const EQ=['Cardiología clínica','Infectología cardiovascular','Cardio-oncología','Epidemiología cardiovascular'];
+const P=[
+ ['Detección molecular en endocarditis con hemocultivos negativos','Infectología cardiovascular',0,[1,2,3],'Análisis de datos',72,1],
+ ['Shunt interatrial en insuficiencia cardíaca con hipertensión pulmonar','Insuficiencia cardíaca',1,[4,5],'Redacción',85,0],
+ ['Estimulación del área de la rama izquierda tras TAVI','Electrofisiología',1,[2,6],'Redacción',90,0],
+ ['Insuficiencia cardíaca en América Latina y el Caribe','Epidemiología cardiovascular',7,[3,5],'Extracción de datos',55,3],
+ ['Dosis de radiación en subestructuras cardíacas','Cardio-oncología',4,[6,0],'Análisis de datos',64,2],
+ ['Bacteriemia enterocócica persistente','Infectología',0,[2,7],'Redacción',78,1]
+];
+const RAW=[
+ ['Diagnostic accuracy of PCR versus mNGS in blood culture-negative infective endocarditis: a systematic review',0,'Clinical Microbiology and Infection','publ',1,'2025-11-04',[0,1,2]],
+ ['Interatrial shunt devices in HFpEF with pulmonary hypertension due to left heart disease: a systematic review',1,'JACC: Heart Failure','prensa',1,'2026-06-08',[1,4,5]],
+ ['Left bundle branch area pacing after transcatheter aortic valve implantation: a systematic review',2,'Europace','acep',1,'2026-06-15',[1,2,6]],
+ ['Heart failure epidemiology in Latin America and the Caribbean: a systematic review',3,'The Lancet Regional Health – Americas','pares',0,'2026-06-15',[7,3,5]],
+ ['Cardiac substructure radiation dose and cardiovascular outcomes in cancer survivors',4,'JACC: CardioOncology','rmay',2,'2026-06-08',[4,6,0]],
+ ['Treatment strategies for persistent enterococcal bacteremia: a systematic review',5,'Clinical Infectious Diseases','reenv',2,'2026-05-18',[0,2,7]],
+ ['Persistent enterococcal bacteremia: protocol and rationale of a systematic review',5,'Systematic Reviews','publ',0,'2025-11-12',[0,2]],
+ ['Interatrial shunts in HFpEF: protocol of a systematic review and meta-analysis',1,'BMJ Open','publ',0,'2025-12-01',[1,4]],
+ ['Predictors of conduction disturbances after TAVI: a narrative overview',2,'Revista Española de Cardiología','rech',1,'2026-03-02',[2,6]],
+ ['Mortality in heart failure registries of the Caribbean: data harmonization',3,'BMC Cardiovascular Disorders','revint',0,'2026-09-01',[7,3]],
+ ['Turnaround time and cost of mNGS in endocarditis diagnosis',0,'Journal of Clinical Microbiology','borr',0,'2026-09-20',[1,3]],
+ ['Mean heart dose thresholds in thoracic radiotherapy: a methods paper',4,'Radiotherapy and Oncology','prep',0,'2026-10-28',[4]],
+ ['Pacing strategies after TAVI: conference abstract',2,'Congreso regional de cardiología','ret',0,'2026-02-16',[2,6]],
+ ['Antibiotic combinations for persistent bacteremia: a scoping review',5,'International Journal of Antimicrobial Agents','env',0,'2026-08-17',[0,7]],
+ ['Update of PCR accuracy in culture-negative endocarditis',0,'Journal of Infection','rmen',1,'2026-08-18',[0,1,2]],
+ ['Sex differences in heart failure outcomes in the Caribbean: a cohort analysis',3,'ESC Heart Failure','publ',1,'2025-09-08',[7,3,8]],
+ ['Radiation dose to cardiac substructures: protocol for a systematic review',4,'BMJ Open','publ',0,'2025-10-06',[4,6]],
+ ['Left bundle branch pacing versus biventricular pacing: an updated meta-analysis',2,'Heart Rhythm','pares',0,'2026-09-14',[1,6,2]],
+ ['Anticoagulation strategies in cancer-associated thrombosis: a systematic review',4,'Thrombosis Research','prep',0,'2026-10-30',[4,9]],
+ ['Quality of life after TAVI in low-risk patients: a prospective cohort',2,'Open Heart','borr',0,'2026-09-28',[2,6]],
+ ['Epidemiology of Chagas cardiomyopathy in the Dominican Republic: a scoping review',3,'Tropical Medicine & International Health','env',0,'2026-09-02',[7,8,3]]
+];
+const LAGS=[92,118,101,88,126,109,97,134,105,90,77,113,99,121,110,96,132,87,114,103,124];
+
+function hist(st,rev,anchor,id){
+  const out=[],put=(s,d,n)=>out.push({s,d,n:n||ST[s].note});
+  if(PROG.includes(st)){
+    if(st==='prep')put('prep',anchor);
+    else if(st==='borr'){put('prep',add(anchor,-24));put('borr',anchor);}
+    else{put('prep',add(anchor,-42));put('borr',add(anchor,-24));put('revint',anchor);}
+    return out;
+  }
+  const sub=anchor,lag=LAGS[id%LAGS.length];
+  put('prep',add(sub,-61));put('borr',add(sub,-39));put('revint',add(sub,-18));put('env',sub);
+  if(st==='env')return out;
+  put('pares',add(sub,22));
+  if(st==='pares')return out;
+  if(st==='rech'){put('rech',add(sub,71),'Decisión editorial: rechazado por alcance de la revista.');return out;}
+  if(st==='ret'){put('ret',add(sub,36),'Retirado por los autores antes de la decisión.');return out;}
+  if(rev===1){put('rmen',add(sub,43));if(st==='rmen')return out;put('reenv',add(sub,57));}
+  else if(rev===2){put('rmay',add(sub,50));if(st==='rmay')return out;put('reenv',add(sub,64));}
+  else{if(st==='rmen'){put('rmen',add(sub,43));return out;}if(st==='rmay'){put('rmay',add(sub,50));return out;}if(st==='reenv'){put('reenv',add(sub,57));return out;}}
+  if(st==='reenv')return out;
+  put('acep',add(sub,lag));if(st==='acep')return out;
+  put('prensa',add(sub,lag+17));if(st==='prensa')return out;
+  put('publ',add(sub,lag+35));return out;
+}
+
+/* ===== Persistencia de la demostración ===== */
+const KEY='srl_investigacion_v5';
+function seed(){return RAW.map((r,i)=>({id:i,t:r[0],p:r[1],j:r[2],st:r[3],au:r[6].map(k=>AU[k]),doi:['publ','acep','prensa'].includes(r[3])?'10.5555/srl.2026.'+(100+i):'',h:hist(r[3],r[4],r[5],i),x:[]}));}
+function load(){try{const o=JSON.parse(localStorage.getItem(KEY));if(o&&o.v===5&&Array.isArray(o.articles)&&o.articles.length)return o.articles;}catch(e){}return null;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({v:5,articles:A}));}catch(e){}}
+let A=load()||seed();
+A.forEach(a=>{if(!Array.isArray(a.au))a.au=[];if(!Array.isArray(a.h))a.h=[];if(!Array.isArray(a.x))a.x=[];if(!a.doi)a.doi='';});
+
+/* ===== Derivados ===== */
+const byId=id=>A.find(a=>a.id===id);
+const dOf=(a,s)=>{for(let i=a.h.length-1;i>=0;i--){if(a.h[i].s===s)return a.h[i].d;}return undefined;};
+const last=a=>a.h[a.h.length-1]||{s:a.st,d:HOY,n:''};
+const doiOf=a=>a.doi||(dOf(a,'acep')?'10.5555/srl.2026.'+(100+a.id):'');
+const yearOf=a=>(dOf(a,'env')||dOf(a,'publ')||last(a).d||HOY).slice(0,4);
 const cnt=ids=>A.filter(a=>ids.includes(a.st)).length;
+const stage=s=>PROG.includes(s)?'Sin enviar':s==='publ'?'Publicado oficialmente':ACC.includes(s)?'Aceptado, aún no publicado':s==='rech'||s==='ret'?'Cerrado':'Enviado, aún no aceptado';
+const sentCount=()=>A.filter(a=>!!dOf(a,'env')).length;
+const activeCount=()=>A.filter(a=>!CLOSED.includes(a.st)).length;
 
-/* ===== Vistas ===== */
+function ensureFiles(a){
+  const names=new Set(a.x.map(f=>f.n));
+  const d=s=>dOf(a,s);
+  const put=(n,type,kb,date)=>{if(!names.has(n)){a.x.push({n,type,kb,date});names.add(n);}};
+  if(d('borr'))put('Manuscrito_v1.docx','DOCX',214+(a.id%5)*17,d('borr'));
+  if(d('revint')){put('Tablas_suplementarias.docx','DOCX',78,d('revint'));put('Figuras_1-4.pdf','PDF',1380,d('revint'));}
+  if(d('env')){put('Manuscrito_v2_enviado.pdf','PDF',642,d('env'));put('Carta_de_presentacion.pdf','PDF',96,d('env'));}
+  const rr=d('rmen')||d('rmay');
+  if(rr)put('Comentarios_de_revisores.pdf','PDF',104,rr);
+  if(d('reenv')){put('Respuesta_a_revisores.docx','DOCX',132,d('reenv'));put('Manuscrito_v3_revisado.pdf','PDF',788,d('reenv'));}
+  if(d('acep'))put('Carta_de_aceptacion.pdf','PDF',88,d('acep'));
+  if(d('prensa'))put('Galeradas.pdf','PDF',910,d('prensa'));
+  if(d('publ'))put('Version_publicada.pdf','PDF',842,d('publ'));
+  if(d('rech'))put('Decision_editorial.pdf','PDF',74,d('rech'));
+  if(d('ret'))put('Carta_de_retiro.docx','DOCX',62,d('ret'));
+}
+A.forEach(ensureFiles);
+
+/* ===== Cuenta, roles y modo de trabajo ===== */
+const ME='Dra. Marisol Santana';
+const ROLES_KEY='srl_roles_v1', MODE_KEY='srl_mode_v1';
+const TEAM=[...AU,'Coordinador Académico','Coordinadora de Finanzas','Coordinador de Documentación y Producción Científica','Coordinadora de Relaciones Públicas'];
+let ROLES=(function(){
+  const base={};
+  TEAM.forEach((n,i)=>{base[n]=i===0?'admin':'member';});
+  try{
+    const o=JSON.parse(localStorage.getItem(ROLES_KEY));
+    if(o&&typeof o==='object')Object.keys(o).forEach(k=>{if(k in base)base[k]=o[k]==='admin'?'admin':'member';});
+  }catch(e){}
+  return base;
+})();
+function saveRoles(){try{localStorage.setItem(ROLES_KEY,JSON.stringify(ROLES));}catch(e){}}
+const isAdmin=()=>ROLES[ME]==='admin';
+let MODE=(function(){
+  if(!isAdmin())return 'user';
+  try{return localStorage.getItem(MODE_KEY)==='user'?'user':'admin';}catch(e){return 'admin';}
+})();
+function applyMode(){
+  document.body.classList.toggle('user-mode',MODE!=='admin');
+  document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on',b.dataset.mode===MODE));
+  const banner=document.getElementById('modeBanner');if(banner)banner.hidden=MODE==='admin';
+  const av=document.getElementById('userAv');
+  if(av)av.textContent=ME.split(' ').filter(w=>/^[A-ZÁÉÍÓÚ]/.test(w)).slice(-2).map(w=>w[0]).join('')||'MS';
+  const nm=document.getElementById('userName');if(nm)nm.textContent=ME;
+  const rl=document.getElementById('userRole');if(rl)rl.textContent=isAdmin()?'Administradora · acceso total':'Miembro de la liga';
+}
+function setMode(m){
+  if(m==='admin'&&!isAdmin()){toast('Tu cuenta no tiene permisos de administración.');return;}
+  MODE=m==='user'?'user':'admin';
+  try{localStorage.setItem(MODE_KEY,MODE);}catch(e){}
+  applyMode();render();
+}
+function canAdmin(){return MODE==='admin'&&isAdmin();}
+function requireAdmin(msg){if(canAdmin())return true;toast(msg||'Solo administradores pueden hacer este cambio.');return false;}
+
+/* ===== Calendario propio y alertas ===== */
+const CAL_KEY='srl_cal_v1';
+function seedCal(){
+  return [
+    {id:'c1',d:'2026-11-20',label:'Convocatoria',title:'Cierre de postulaciones · Cohorte 2027',note:'Enviar el formulario a los postulantes',imp:true},
+    {id:'c2',d:'2026-11-27',label:'Reunión de equipo',title:'Revisión mensual de manuscritos',note:'',imp:false},
+    {id:'c3',d:'2026-12-04',label:'Defensa o presentación',title:'Presentación de avances · cohorte 2026',note:'',imp:true}
+  ];
+}
+let CAL=(function(){
+  try{const o=JSON.parse(localStorage.getItem(CAL_KEY));if(Array.isArray(o))return o;}catch(e){}
+  return seedCal();
+})();
+function saveCal(){try{localStorage.setItem(CAL_KEY,JSON.stringify(CAL));}catch(e){}}
+function importantEvents(limit){
+  return CAL.filter(c=>c.imp&&c.d>=HOY).sort((a,b)=>a.d.localeCompare(b.d)).slice(0,limit||5);
+}
+
+/* ===== Formulario de postulación (Google Forms) ===== */
+const APPLY_KEY='srl_apply_form_v1';
+function getApply(){
+  try{const o=JSON.parse(localStorage.getItem(APPLY_KEY));return {url:(o&&o.url)||'',title:(o&&o.title)||'Formulario de postulación'};}catch(e){return {url:'',title:'Formulario de postulación'};}
+}
+function saveApply(o){try{localStorage.setItem(APPLY_KEY,JSON.stringify(o));}catch(e){}}
+const isGoogleForm=u=>/^https?:\/\//i.test(u)&&/docs\.google\.com\/forms|forms\.gle/i.test(u);
+
+/* ===== Componentes visuales ===== */
+const badge=(s,small)=>`<span class="badge${small?' sm':''}" style="--c:${ST[s].c}"><i aria-hidden="true"></i>${ST[s].n}</span>`;
+function tl(a){
+  const ph=ST[a.st].ph,stop=['rech','ret'].includes(a.st);
+  return `<div class="tl" role="img" aria-label="Fase ${ph+1} de 7: ${FASES[ph]}">${FASES.map((f,i)=>`<span class="tl-step ${i<ph?'done':''} ${i===ph?'cur':''} ${i===ph&&stop?'stop':''}"><i aria-hidden="true"></i><b>${f}</b></span>`).join('')}</div>`;
+}
+function ring(parts,total){
+  const R=68,C=2*Math.PI*R;let off=0;
+  let s=`<svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Avance de la meta anual: ${parts[0].v} de ${total} publicaciones">`;
+  s+=`<circle cx="90" cy="90" r="${R}" fill="none" stroke="#e3e9ee" stroke-width="16"/>`;
+  parts.forEach(p=>{if(p.v<=0)return;const len=C*p.v/total;s+=`<circle cx="90" cy="90" r="${R}" fill="none" stroke="${p.c}" stroke-width="16" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 90 90)"><title>${p.l}: ${p.v}</title></circle>`;off+=len;});
+  s+=`<text x="90" y="91" text-anchor="middle" font-size="31" font-weight="600" fill="#0e283a">${parts[0].v}/${total}</text><text x="90" y="111" text-anchor="middle" font-size="11" fill="#4a5d6b">publicados</text></svg>`;
+  return s;
+}
+function goalData(){
+  const target=15;
+  const pub=A.filter(a=>a.st==='publ'&&(dOf(a,'publ')||'').startsWith('2026')).length;
+  const acc=cnt(ACC);
+  const rev=cnt(SENT);
+  const used=Math.min(target,pub+acc);
+  const revSeg=Math.min(rev,target-used);
+  const rem=Math.max(0,target-used-revSeg);
+  return{target,pub,acc,rev,revSeg,rem,parts:[
+    {v:pub,c:'#0d5c3f',l:'Publicados'},
+    {v:acc,c:'#6bb08e',l:'Aceptados o en prensa'},
+    {v:revSeg,c:'#3b5f82',l:'En revisión'},
+    {v:rem,c:'#dfe6eb',l:'Faltan por encaminar'}
+  ]};
+}
+function activity(limit){
+  const ev=[];
+  A.forEach(a=>{
+    a.h.forEach(h=>ev.push({d:h.d,type:'status',s:h.s,text:ST[h.s].n,title:a.t,id:a.id,note:h.n}));
+    a.x.filter(f=>f.up).forEach(f=>ev.push({d:f.date,type:'file',text:'Documento añadido: '+f.n,title:a.t,id:a.id,note:''}));
+  });
+  ev.push({d:'2026-11-07',type:'status',s:'reenv',text:'Revisión reenviada con respuesta a revisores',title:A.find(a=>a.id===5)?.t||'',id:5,note:'Clinical Infectious Diseases'});
+  ev.push({d:'2026-11-07',type:'file',text:'3 documentos añadidos al repositorio',title:A.find(a=>a.id===4)?.t||'',id:4,note:'Galeradas y figuras'});
+  ev.push({d:'2026-11-06',type:'project',text:'Proyecto actualizado: progreso al 72 %',title:P[0][0],id:null,note:'Nuevo colaborador incorporado'});
+  ev.sort((a,b)=>b.d.localeCompare(a.d));
+  return ev.slice(0,limit||10);
+}
+function feedHtml(limit){
+  return `<ul class="feed">${activity(limit).map(e=>{
+    const icon=e.type==='file'?'file':e.type==='project'?'folder':'activity';
+    const title=e.id!=null?`<a href="#" data-open="${e.id}">${esc(e.title)}</a>`:esc(e.title);
+    return `<li><span class="ficon">${ic(icon)}</span><div><div class="ft"><b>${esc(e.text)}</b></div><div class="fm">${title}${e.note?' · '+esc(e.note):''} · ${rel(e.d)}</div></div></li>`;
+  }).join('')}</ul>`;
+}
+/* ===== Constantes de interfaz ===== */
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const S={q:'',st:'',proj:'',year:'',phase:'',order:'recent',tab:'activos',cal:HOY.slice(0,7)};
+const app=$('#app');
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const pad2=n=>String(n).padStart(2,'0');
+const short=(s,n)=>{s=String(s==null?'':s);return s.length>n?s.slice(0,n-1)+'…':s;};
+const pct=(a,b)=>b>0?Math.round(a/b*100):0;
+const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):0;
+const opts=(arr,sel)=>arr.map(o=>`<option value="${esc(o[0])}"${String(o[0])===String(sel)?' selected':''}>${esc(o[1])}</option>`).join('');
+const pbar=(v,c,cls)=>`<span class="pbar${cls?' '+cls:''}"><i style="width:${Math.max(0,Math.min(100,v)).toFixed(1)}%;background:${c}"></i></span>`;
+const totalDocs=()=>A.reduce((n,a)=>n+a.x.length,0);
+const GROUPS=[
+  {id:'prog',label:'En preparación',keys:PROG},
+  {id:'sent',label:'Enviados y en revisión',keys:SENT},
+  {id:'acc',label:'Aceptados y en prensa',keys:ACC},
+  {id:'pub',label:'Publicados',keys:['publ']},
+  {id:'closed',label:'Rechazados y retirados',keys:['rech','ret']}
+];
+const AREA_C=['#0e283a','#2f6fb0','#2cb1cc','#3b5f82','#6bb08e'];
+
+function projStats(i){
+  const arts=A.filter(a=>a.p===i);
+  return {arts,total:arts.length,publ:arts.filter(a=>a.st==='publ').length,acc:arts.filter(a=>ACC.includes(a.st)).length,
+    sent:arts.filter(a=>SENT.includes(a.st)).length,active:arts.filter(a=>!CLOSED.includes(a.st)).length};
+}
+function journalRows(){
+  const m=new Map();
+  A.forEach(a=>{
+    const k=a.j||'Por definir';
+    if(!m.has(k))m.set(k,{j:k,total:0,publ:0,acc:0});
+    const o=m.get(k);o.total++;if(a.st==='publ')o.publ++;if(ACC.includes(a.st))o.acc++;
+  });
+  return [...m.values()].sort((a,b)=>b.total-a.total||b.publ-a.publ||a.j.localeCompare(b.j,'es'));
+}
+function evColor(s){
+  if(ACC.includes(s)||s==='publ')return '#0d5c3f';
+  if(s==='rech'||s==='ret')return '#a92e2e';
+  if(s==='rmen'||s==='rmay')return '#b8860b';
+  if(['env','pares','reenv'].includes(s))return '#2f6fb0';
+  return '#8a99a8';
+}
+function allEvents(){
+  const ev=[];
+  A.forEach(a=>{
+    a.h.forEach(h=>ev.push({d:h.d,id:a.id,label:ST[h.s].n,title:a.t,type:h.s,c:evColor(h.s),note:h.n||''}));
+    if(!CLOSED.includes(a.st)){
+      const d=add(HOY,8+((a.id*7)%47));
+      const label=ACC.includes(a.st)?'Publicación prevista':PROG.includes(a.st)?'Entrega interna prevista':'Decisión editorial estimada';
+      ev.push({d,id:a.id,label,title:a.t,type:'est',c:ACC.includes(a.st)?'#0d5c3f':PROG.includes(a.st)?'#8a99a8':'#b8860b',note:''});
+    }
+  });
+  CAL.forEach(c=>ev.push({d:c.d,id:null,cid:c.id,label:c.label,title:c.title,type:'custom',c:c.imp?'#c2621e':'#0a7b94',note:c.note||'',custom:true,imp:!!c.imp}));
+  ev.sort((x,y)=>x.d.localeCompare(y.d));
+  return ev;
+}
+function nextMilestone(a){
+  if(a.st==='publ')return 'Publicado el '+fmt(dOf(a,'publ')||last(a).d);
+  if(a.st==='rech')return 'Cerrado el '+fmt(dOf(a,'rech')||last(a).d);
+  if(a.st==='ret')return 'Retirado el '+fmt(dOf(a,'ret')||last(a).d);
+  if(ACC.includes(a.st))return 'Publicación prevista: '+fmt(add(HOY,10+(a.id%30)));
+  if(SENT.includes(a.st))return 'Decisión estimada: '+fmt(add(HOY,8+(a.id%40)));
+  return 'Envío previsto: '+fmt(add(HOY,12+(a.id%35)));
+}
+function stageLabel(a){return stage(a.st);}
+
+function lastMonths(n){
+  const [y,m]=HOY.slice(0,7).split('-').map(Number);
+  const out=[];
+  for(let i=n-1;i>=0;i--){
+    const d=new Date(Date.UTC(y,m-1-i,1));
+    out.push(`${d.getUTCFullYear()}-${pad2(d.getUTCMonth()+1)}`);
+  }
+  return out;
+}
+function monthlyRows(n){
+  return lastMonths(n).map(ym=>({
+    m:ym,
+    label:MESES[+ym.slice(5,7)-1].slice(0,3),
+    full:MESES[+ym.slice(5,7)-1]+' de '+ym.slice(0,4),
+    a:A.filter(x=>x.h.some(h=>h.s==='env'&&h.d.startsWith(ym))).length,
+    b:A.filter(x=>x.h.some(h=>h.s==='publ'&&h.d.startsWith(ym))).length
+  }));
+}
+function svgGrouped(rows){
+  const W=760,H=280,PL=36,PR=8,PT=16,PB=34;
+  const max=Math.max(3,...rows.map(r=>Math.max(r.a,r.b)));
+  const iw=W-PL-PR,ih=H-PT-PB,step=iw/rows.length,bw=Math.min(20,step*.28);
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Envíos y publicaciones por mes durante los últimos doce meses">`;
+  for(let g=0;g<=4;g++){
+    const y=PT+ih-ih*g/4;
+    s+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="#e8eef2" stroke-width="1"/>`;
+    s+=`<text x="${PL-7}" y="${y+4}" text-anchor="end" font-size="10" fill="#4a5d6b">${Math.round(max*g/4)}</text>`;
+  }
+  rows.forEach((r,i)=>{
+    const cx=PL+step*(i+.5),ha=ih*r.a/max,hb=ih*r.b/max;
+    s+=`<rect x="${(cx-bw-2).toFixed(1)}" y="${(PT+ih-ha).toFixed(1)}" width="${bw.toFixed(1)}" height="${ha.toFixed(1)}" fill="#3b5f82" rx="1"><title>${r.full}: ${r.a} envíos</title></rect>`;
+    s+=`<rect x="${(cx+2).toFixed(1)}" y="${(PT+ih-hb).toFixed(1)}" width="${bw.toFixed(1)}" height="${hb.toFixed(1)}" fill="#2cb1cc" rx="1"><title>${r.full}: ${r.b} publicaciones</title></rect>`;
+    if(i%2===0)s+=`<text x="${cx}" y="${H-14}" text-anchor="middle" font-size="9.5" fill="#4a5d6b">${r.label}</text>`;
+  });
+  return s+'</svg>';
+}
+function svgHBars(rows){
+  const W=560,lw=146,rowH=34,H=rows.length*rowH+12,max=Math.max(1,...rows.map(r=>r.v));
+  let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribución de manuscritos por área clínica">`;
+  rows.forEach((r,i)=>{
+    const y=8+i*rowH,barW=W-lw-46;
+    s+=`<text x="0" y="${y+14}" font-size="11" fill="#10222f">${esc(short(r.l,25))}</text>`;
+    s+=`<rect x="${lw}" y="${y+3}" width="${barW}" height="14" fill="#eef2f5" rx="2"/>`;
+    s+=`<rect x="${lw}" y="${y+3}" width="${(barW*r.v/max).toFixed(1)}" height="14" fill="${r.c||'#2cb1cc'}" rx="2"><title>${esc(r.l)}: ${r.v}</title></rect>`;
+    s+=`<text x="${W-4}" y="${y+14}" text-anchor="end" font-size="11" font-weight="600" fill="#0e283a">${r.v}</text>`;
+  });
+  return s+'</svg>';
+}
+
+/* ===== Vista: resumen ===== */
 function vResumen(){
- const sent=cnt(SENT),acc=cnt(ACC),pub=cnt(['publ']),prog=cnt(PROG),act=A.filter(a=>!['publ','rech','ret'].includes(a.st)).length,ever=A.filter(a=>dOf(a,'env')).length;
- const goalT=12,done=A.filter(a=>(dOf(a,'publ')||'').startsWith('2026')).length,rest=Math.max(0,goalT-done-acc-sent);
- const cells=[[P.length,'Proyectos de investigación','todos en curso'],[act,'Manuscritos activos','sin publicar ni cerrar'],[ever,'Artículos enviados','alguna vez a una revista'],[prog,'Publicaciones en progreso','preparación, borrador o revisión interna'],[acc,'Artículos aceptados','incluye los que están en prensa'],[pub,'Artículos publicados','oficialmente en línea']];
- const ev2=[];A.forEach(a=>{a.h.forEach(h=>ev2.push({d:h.d,t:`${ST[h.s][0]}`,s:h.s,a:a.t,k:'estado'}));a.x.forEach(f=>ev2.push({d:f[3],t:'Archivo subido: '+f[0],a:a.t,k:'archivo'}))});
- ev2.push({d:'2026-10-30',t:'Proyecto actualizado: progreso al 72 %',a:P[0][0],k:'proyecto'},{d:'2026-10-22',t:'Proyecto actualizado: nuevo colaborador',a:P[4][0],k:'proyecto'});
- ev2.sort((x,y)=>y.d.localeCompare(x.d));
- return `<section class="hero"><div class="tx"><h1>Panel de investigación</h1><p class="mut" style="margin:0">${D(HOY).toLocaleDateString('es-DO',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}. ${sent} manuscritos están con revistas y ${acc} esperan su publicación.</p>
- <div class="kpis"><div><b>${P.length}</b><span>Proyectos activos</span></div><div><b>${sent}</b><span>En revisión</span></div><div><b>${acc}</b><span>Aceptados</span></div><div><b>${pub}</b><span>Publicados</span></div></div></div>
- <div class="ph"><img src="img/hero.jpg" alt="Estudiantes de medicina revisando datos de investigación" onerror="this.remove()"></div></section>
- <h2>Resumen de investigación</h2><div class="grid">${cells.map(c=>`<div class="cell"><b>${c[0]}</b><span>${c[1]}</span><em>${c[2]}</em></div>`).join('')}</div>
- <p class="sm mut">Enviado, aceptado y publicado son etapas distintas: un artículo solo cuenta como publicado cuando aparece oficialmente en la revista.</p>
- <h2>Estado de publicación</h2><div>${Object.keys(ST).map(k=>{const n=cnt([k]);return `<button class="trk" data-est="${k}">${badge(k)}<b>${n}</b><span class="bb"><i style="width:${n*100/Math.max(1,A.length)*3}%;background:${ST[k][1]}"></i></span></button>`}).join('')}</div>
- <div class="two"><div><h2>Meta anual 2026</h2><div style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">${ring([{v:done,c:'#0e5e3f'},{v:acc,c:'#7fc7a0'},{v:sent,c:'#2f6fb0'}],goalT)}
- <ul class="feed" style="flex:1;min-width:200px"><li><i class="st"><i style="background:#0e5e3f"></i></i>Publicados: <b>${done}</b></li><li><i class="st"><i style="background:#7fc7a0"></i></i>Aceptados o en prensa: <b>${acc}</b></li><li><i class="st"><i style="background:#2f6fb0"></i></i>En revisión: <b>${sent}</b></li><li><i class="st"><i style="background:#e3e9ee"></i></i>Faltan por encaminar: <b>${rest}</b> de ${goalT}</li></ul></div></div>
- <div><h2>Actividad reciente</h2><ul class="feed">${ev2.slice(0,8).map(e=>`<li>${e.s?badge(e.s):`<b>${e.t}</b>`}<small>${esc(e.s?'':'')}${esc(e.a.slice(0,80))} · ${fmt(e.d)}</small></li>`).join('')}</ul></div></div>`;}
-function ring(parts,T){const R=70,C=2*Math.PI*R;let o=0,s=`<svg viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Avance de la meta anual de publicaciones"><circle cx="90" cy="90" r="${R}" fill="none" stroke="#e3e9ee" stroke-width="18"/>`;
- parts.forEach(p=>{const l=C*p.v/T;s+=`<circle cx="90" cy="90" r="${R}" fill="none" stroke="${p.c}" stroke-width="18" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-o}" transform="rotate(-90 90 90)"/>`;o+=l});
- return s+`<text x="90" y="92" text-anchor="middle" font-size="30" font-weight="700" fill="#0e283a">${parts[0].v}/${T}</text><text x="90" y="112" text-anchor="middle" font-size="12" fill="#4a5d6b">publicados</text></svg>`;}
+  const pub26=A.filter(a=>a.st==='publ'&&(dOf(a,'publ')||'').startsWith('2026')).length;
+  const rev=cnt(SENT),acc=cnt(ACC),docs=totalDocs();
+  const g=goalData();
+  const rate=pct(cnt(['publ']),cnt(['publ','rech']));
+  const feed=activity(3);
+  const up=allEvents().filter(e=>e.d>=HOY).slice(0,5);
+  const att=A.filter(a=>['rmen','rmay','pares'].includes(a.st)).sort((a,b)=>last(a).d.localeCompare(last(b).d)).slice(0,4);
+  const maxTrk=Math.max(1,...KEYS.map(k=>cnt([k])));
+  return `
+  <section class="hero">
+    <div class="hero-main">
+      <p class="eyebrow">Oficina de investigación · ${cap(fmtLong(HOY))}</p>
+      <h1>Del borrador a la publicación, sin perder el hilo.</h1>
+      <p class="lede">Un panel para seguir cada proyecto, manuscrito y decisión editorial de la liga, con la meta anual siempre a la vista.</p>
+      <div class="hero-actions">
+        <button class="btn" type="button" data-new>${ic('file')}Registrar artículo</button>
+        <a class="btn l" href="#manuscritos">${ic('book')}Ver manuscritos</a>
+      </div>
+      <div class="hero-kpis">
+        <div><b>${pub26}</b><span>publicaciones en 2026</span></div>
+        <div><b>${rev}</b><span>en revisión o reenvío</span></div>
+        <div><b>${acc}</b><span>aceptados sin publicar</span></div>
+        <div><b>${P.length}</b><span>proyectos activos</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="art-head"><span>Actividad editorial</span><span class="live"><i></i>En vivo</span></div>
+      <div class="art-big"><b>${activeCount()}</b><span>manuscritos activos en ${A.length} registros</span></div>
+      <svg class="art-pulse" viewBox="0 0 560 58" preserveAspectRatio="none" aria-hidden="true">
+        <path pathLength="1" d="M0 32 H58 l7-19 9 38 9-38 6 19 H146 l7-12 8 26 8-26 5 12 H280 l7-23 9 45 9-45 6 23 H410 l7-14 8 30 8-30 5 14 H560"/>
+      </svg>
+      <div class="art-grid">
+        <div><b>${sentCount()}</b><span>envíos acumulados</span></div>
+        <div><b>${rate}%</b><span>tasa de aceptación</span></div>
+        <div><b>${docs}</b><span>documentos</span></div>
+      </div>
+      <ul class="art-list">
+        ${feed.map(e=>{
+          const tx=short(e.title,58);
+          return `<li><i style="background:${e.type==='file'?'#2cb1cc':'#4fd1c5'}"></i><span>${esc(e.text)}<br><span style="color:#8fb3c3">${esc(tx)}</span></span><time>${rel(e.d)}</time></li>`;
+        }).join('')}
+      </ul>
+    </div>
+  </section>
 
-function filtrados(){const f=S.f,q=f.q.toLowerCase();
- return A.filter(a=>(!f.e||a.st===f.e)&&(f.p===''||a.p==f.p)&&(!f.j||a.j===f.j)&&(!f.y||last(a).d.startsWith(f.y))&&(!q||(a.t+authors(a)+a.j+doi(a)+P[a.p][0]+a.x.map(x=>x[0]).join(' ')).toLowerCase().includes(q)));}
-function vArticulos(){const js=[...new Set(A.map(a=>a.j))].sort();
- return `<h1>Base de artículos</h1><p class="mut">Busca, filtra y abre cualquier manuscrito para ver sus documentos e historial.</p>
- <div class="fl"><input type="search" id="q" placeholder="Buscar por título, autor, revista, DOI o archivo" value="${esc(S.f.q)}" aria-label="Buscar">
- <select id="fe" aria-label="Estado"><option value="">Todos los estados</option>${Object.keys(ST).map(k=>`<option value="${k}"${S.f.e===k?' selected':''}>${ST[k][0]}</option>`).join('')}</select>
- <select id="fp" aria-label="Proyecto"><option value="">Todos los proyectos</option>${P.map((p,i)=>`<option value="${i}"${S.f.p!==''&&S.f.p==i?' selected':''}>${esc(p[0].slice(0,48))}</option>`).join('')}</select>
- <select id="fj" aria-label="Revista"><option value="">Todas las revistas</option>${js.map(j=>`<option${S.f.j===j?' selected':''}>${esc(j)}</option>`).join('')}</select>
- <select id="fy" aria-label="Año"><option value="">Todos los años</option><option${S.f.y==='2026'?' selected':''}>2026</option><option${S.f.y==='2025'?' selected':''}>2025</option></select>
- <select id="fg" aria-label="Agrupar por"><option value="p">Agrupar por proyecto</option><option value="e"${S.g==='e'?' selected':''}>Agrupar por estado</option><option value="j"${S.g==='j'?' selected':''}>Agrupar por revista</option><option value="y"${S.g==='y'?' selected':''}>Agrupar por año</option></select>
- <button class="btn" id="up">Subir artículo</button></div><div id="lista"></div>`;}
-function lista(){const L=filtrados(),key={p:a=>P[a.p][0],e:a=>ST[a.st][0],j:a=>a.j,y:a=>last(a).d.slice(0,4)}[S.g],G={};
- L.forEach(a=>(G[key(a)]=G[key(a)]||[]).push(a));
- $('#lista').innerHTML=L.length?Object.keys(G).sort().map(k=>`<div class="gh">${esc(k)} · ${G[k].length}</div>`+G[k].map(a=>`<button class="it" data-id="${a.id}"><div><h3>${esc(a.t)}</h3><div class="m">${esc(authors(a))}</div><div class="m">${esc(P[a.p][0])} · ${esc(a.j)}${doi(a)?' · DOI '+doi(a):''}</div><div class="m">${dOf(a,'env')?'Enviado '+fmt(dOf(a,'env')):'Sin enviar'}${dOf(a,'publ')?' · Publicado '+fmt(dOf(a,'publ')):''} · ${a.x.length} archivos</div></div><div>${badge(a.st)}</div></button>`).join('')).join(''):'<p class="mut">No hay manuscritos con esos filtros. Quita alguno para ver más resultados.</p>';}
-function tl(a){const ph=ST[a.st][2],stop=['rech','ret'].includes(a.st);return `<div class="tl" role="img" aria-label="Fase ${ph+1} de 7">${FASES.map((_,i)=>`<i class="${i<ph?'d':i===ph?(stop?'':'c'):''}"${stop&&i===ph?' style="background:'+ST[a.st][1]+';border-color:'+ST[a.st][1]+'"':''}></i>${i<6?`<u class="${i<ph?'d':''}"></u>`:''}`).join('')}</div><div class="tlb">${FASES.map(f=>`<span>${f}</span>`).join('')}</div>`;}
-function vManus(){const act=A.filter(a=>a.st!=='publ');
- const dec=[];A.forEach(a=>a.h.forEach(h=>{if(['rmen','rmay','acep','rech'].includes(h.s))dec.push([h.d,a,h])}));dec.sort((x,y)=>y[0].localeCompare(x[0]));
- return `<h1>Manuscritos en curso</h1><p class="mut">Sigue cada manuscrito desde el primer borrador hasta la publicación. Ábrelo para subir versiones o cambiar su estado.</p>
- ${act.map(a=>`<button class="it" data-id="${a.id}"><div><h3>${esc(a.t)}</h3><div class="m">${esc(P[a.p][0])} · ${esc(a.j)} · ${a.x.length} archivos · última novedad ${fmt(last(a).d)}</div>${tl(a)}<div class="m">${esc(last(a).n)}</div></div><div>${badge(a.st)}</div></button>`).join('')}
- <h2>Decisiones editoriales y comentarios de revisores</h2><table><tr><th>Fecha</th><th>Manuscrito</th><th>Decisión</th><th>Detalle</th></tr>${dec.map(d=>`<tr><td>${fmt(d[0])}</td><td>${esc(d[1].t.slice(0,70))}…</td><td>${badge(d[2].s)}</td><td>${esc(d[2].n)}</td></tr>`).join('')}</table>`;}
-function vProy(){return `<h1>Proyectos de investigación</h1><p class="mut">Estado de cada línea de trabajo y los manuscritos que han salido de ella.</p><div class="pgrid" style="border-top:1px solid var(--line);border-left:1px solid var(--line)">${P.map((p,i)=>{const ms=A.filter(a=>a.p===i);return `<div class="pc"><h3>${esc(p[0])}</h3><div class="mut sm">${esc(p[1])}</div>
- <p class="sm" style="margin:10px 0 2px"><b>Investigador principal:</b> ${AU[p[2]]}<br><b>Colaboradores:</b> ${p[3].map(k=>AU[k]).join(', ')}<br><b>Etapa:</b> ${p[4]}</p>
- <div class="pb"><i style="width:${p[5]}%"></i></div><div class="sm mut">${p[5]} % completado</div>
- <div class="sm" style="margin-top:10px"><b>${ms.length} manuscritos</b></div>${ms.map(a=>`<div class="sm" style="margin-top:4px">${badge(a.st)} <a href="#" data-id="${a.id}">${esc(a.t.slice(0,52))}…</a></div>`).join('')}</div>`}).join('')}</div>`;}
-function evs(){const e=[];A.forEach(a=>{const l=last(a),n=a.t.slice(0,34);
- if(a.st==='pares')e.push([add(l.d,70),'Decisión esperada: '+n,'#1f4f8f']);if(a.st==='env')e.push([add(l.d,50),'Decisión esperada: '+n,'#1f4f8f']);if(a.st==='reenv')e.push([add(l.d,45),'Decisión esperada: '+n,'#1f4f8f']);
- if(a.st==='rmay')e.push([add(l.d,42),'Plazo de revisión: '+n,'#c8641a']);if(a.st==='rmen')e.push([add(l.d,21),'Plazo de revisión: '+n,'#c8641a']);
- if(a.st==='revint')e.push([add(l.d,25),'Plazo de envío: '+n,'#2f6fb0']);if(a.st==='borr')e.push([add(l.d,30),'Plazo de envío: '+n,'#2f6fb0']);
- if(a.st==='prensa')e.push([add(l.d,40),'Publicación prevista: '+n,'#0e5e3f']);if(dOf(a,'publ'))e.push([dOf(a,'publ'),'Publicado: '+n,'#0e5e3f']);});
- e.push(['2026-11-18','Taller de revisiones sistemáticas','#6b4c9a'],['2026-11-27','Presentación de póster en congreso','#6b4c9a'],['2026-12-09','Congreso regional de cardiología','#6b4c9a']);return e;}
-function vCal(){const [y,m]=S.cal,first=new Date(y,m,1),off=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate(),E=evs(),pre=`${y}-${String(m+1).padStart(2,'0')}-`;
- let c=['L','M','X','J','V','S','D'].map(d=>`<div class="h">${d}</div>`).join('');for(let i=0;i<off;i++)c+='<div class="o"></div>';
- for(let d=1;d<=days;d++){const k=pre+String(d).padStart(2,'0');c+=`<div class="${k===HOY?'t':''}"><b>${d}</b>${E.filter(e=>e[0]===k).map(e=>`<span class="ev" style="border-color:${e[2]}">${esc(e[1])}</span>`).join('')}</div>`;}
- return `<h1>Calendario de publicaciones</h1><div class="fl"><button class="btn l" data-m="-1">Mes anterior</button><b style="min-width:150px;text-align:center">${first.toLocaleDateString('es-DO',{month:'long',year:'numeric'})}</b><button class="btn l" data-m="1">Mes siguiente</button></div>
- <div class="lg"><span><i style="background:#2f6fb0"></i>Plazo de envío</span><span><i style="background:#1f4f8f"></i>Decisión esperada</span><span><i style="background:#c8641a"></i>Plazo de revisión</span><span><i style="background:#6b4c9a"></i>Congresos y talleres</span><span><i style="background:#0e5e3f"></i>Publicación</span></div><div class="cal">${c}</div>`;}
-function bars(data,cols){const W=720,H=220,L=26,B=28,T=10,n=data.length,gw=(W-L)/n,m=Math.max(3,...data.flatMap(d=>d.v));let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="Gráfico mensual">`;
- for(let k=0;k<=m;k++){const y=T+(H-T-B)*(1-k/m);s+=`<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" stroke="#e3e9ee"/><text x="0" y="${y+4}" font-size="11" fill="#4a5d6b">${k}</text>`}
- data.forEach((d,i)=>{const bw=(gw-10)/d.v.length;d.v.forEach((v,j)=>{const h=(H-T-B)*v/m;s+=`<rect x="${L+i*gw+5+j*bw}" y="${H-B-h}" width="${bw-2}" height="${h}" fill="${cols[j]}"/>`});s+=`<text x="${L+i*gw+gw/2}" y="${H-9}" font-size="11" text-anchor="middle" fill="#4a5d6b">${d.l}</text>`});return s+'</svg>';}
-function rank(rows,h){rows.sort((a,b)=>b[1]-a[1]||b[2]-a[2]||b[3]-a[3]);return `<table><tr><th>${h}</th><th class="n">Publicados</th><th class="n">Aceptados</th><th class="n">Enviados</th></tr>${rows.map((r,i)=>`<tr><td>${i+1}. ${esc(r[0])}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td></tr>`).join('')}</table>`;}
-function vAna(){const meses=[];for(let i=0;i<12;i++){const d=new Date(2025,10+i,1);meses.push({k:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),l:d.toLocaleDateString('es-DO',{month:'short'}).replace('.','')})}
- const c=s=>m=>A.reduce((n,a)=>n+ev(a,s).filter(x=>x.d.startsWith(m.k)).length,0);
- const sub=meses.map(c('env')),acc=meses.map(c('acep')),pub=meses.map(c('publ'));let acu=0;
- const tiempos=A.filter(a=>dOf(a,'env')&&dOf(a,'acep')).map(a=>(D(dOf(a,'acep'))-D(dOf(a,'env')))/864e5),med=tiempos.length?Math.round(tiempos.reduce((x,y)=>x+y,0)/tiempos.length):0;
- const nAc=A.filter(a=>dOf(a,'acep')).length,nRe=cnt(['rech']),tasa=nAc+nRe?Math.round(nRe*100/(nAc+nRe)):0,nEnv=A.filter(a=>dOf(a,'env')).length,nPub=cnt(['publ']);
- const row=(f,keyf)=>{const o={};A.forEach(a=>{const k=keyf(a);o[k]=o[k]||[k,0,0,0];if(a.st==='publ')o[k][1]++;if(ACC.includes(a.st))o[k][2]++;if(dOf(a,'env'))o[k][3]++});return Object.values(o)};
- return `<h1>Analítica de investigación</h1><p class="mut">Tendencias de los últimos 12 meses (noviembre de 2025 a octubre de 2026).</p>
- <div class="grid" style="margin:18px 0"><div class="cell"><b>${tasa} %</b><span>Tasa de rechazo</span><em>${nRe} rechazado de ${nAc+nRe} con decisión</em></div><div class="cell"><b>${med} días</b><span>De envío a aceptación</span><em>promedio de ${tiempos.length} manuscritos</em></div><div class="cell"><b>${nPub}</b><span>Producción publicada</span><em>${nEnv} enviados en total</em></div></div>
- <h2>Manuscritos enviados y aceptados por mes</h2>${bars(meses.map((m,i)=>({l:m.l,v:[sub[i],acc[i]]})),['#2f6fb0','#2e8b57'])}<div class="lg"><span><i style="background:#2f6fb0"></i>Enviados</span><span><i style="background:#2e8b57"></i>Aceptados</span></div>
- <h2>Publicaciones acumuladas</h2>${bars(meses.map((m,i)=>({l:m.l,v:[acu+=pub[i]]})),['#0e5e3f'])}
- <h2>Tendencia anual</h2><table><tr><th>Año</th><th class="n">Enviados</th><th class="n">Aceptados</th><th class="n">Publicados</th><th class="n">Rechazo</th><th class="n">Días a aceptación</th></tr><tr><td>2024</td><td class="n">6</td><td class="n">3</td><td class="n">2</td><td class="n">25 %</td><td class="n">118</td></tr><tr><td>2025</td><td class="n">11</td><td class="n">7</td><td class="n">5</td><td class="n">22 %</td><td class="n">104</td></tr><tr><td>2026 (hasta hoy)</td><td class="n">${nEnv}</td><td class="n">${nAc}</td><td class="n">${nPub}</td><td class="n">${tasa} %</td><td class="n">${med}</td></tr></table>
- <h2>Ranking de publicaciones</h2><div class="two"><div>${rank(row(0,a=>P[a.p][0].slice(0,46)),'Proyectos')}</div><div>${rank(row(0,a=>EQ[P[a.p][6]]),'Equipos')}<div style="height:18px"></div>${rank(row(0,a=>a.j.slice(0,40)),'Revistas')}</div></div>`;}
+  ${(()=>{
+    const al=importantEvents(4);
+    if(!al.length)return '';
+    return `<section class="panel" style="margin-top:22px;border-color:#eedcae;background:#fffdf7">
+      <div class="sec-head"><div><p class="eyebrow">Alertas</p><h2>Eventos importantes</h2></div><a class="link" href="#calendario">Abrir calendario</a></div>
+      <ul class="alert-list">${al.map(c=>`<li><div><b>${esc(c.title)}</b><small>${esc(c.label)}${c.note?' · '+esc(c.note):''}</small></div><span class="when">${fmtShort(c.d)}</span></li>`).join('')}</ul>
+    </section>`;
+  })()}
 
-/* ===== Detalle del manuscrito ===== */
-function openD(id){const a=A[id],d=$('#drawer');
- d.innerHTML=`<button class="x" id="xd">Cerrar</button><h2 style="border:0;margin:0 0 10px;font-size:19px">${esc(a.t)}</h2>${badge(a.st)} <span class="sm mut">· ${stage(a.st)}</span>${tl(a)}
- <dl><dt>Autores</dt><dd>${esc(authors(a))}</dd><dt>Proyecto</dt><dd>${esc(P[a.p][0])}</dd><dt>Revista</dt><dd>${esc(a.j)}</dd><dt>DOI</dt><dd>${doi(a)||'Aún sin asignar'}</dd><dt>Envío</dt><dd>${dOf(a,'env')?fmt(dOf(a,'env')):'Sin enviar'}</dd><dt>Publicación</dt><dd>${dOf(a,'publ')?fmt(dOf(a,'publ')):'Sin publicar'}</dd></dl>
- <h3>Actualizar estado</h3><div class="fl" style="margin-top:8px"><select id="ns">${Object.keys(ST).map(k=>`<option value="${k}"${k===a.st?' selected':''}>${ST[k][0]}</option>`).join('')}</select><input id="nn" placeholder="Nota o comentario del revisor" style="flex:1;min-width:160px"><button class="btn" id="su" data-id="${id}">Guardar estado</button></div>
- <h3 style="margin-top:20px">Documentos (${a.x.length})</h3><table>${a.x.map(f=>`<tr><td>${esc(f[0])}</td><td>${f[1]}</td><td class="n">${f[2]>1024?(f[2]/1024).toFixed(1)+' MB':f[2]+' KB'}</td><td>${fmt(f[3])}</td></tr>`).join('')}</table>
- <div class="fl" style="margin-top:10px"><input type="file" id="uf" multiple accept=".pdf,.doc,.docx,.xlsx,.zip,.png,.jpg"><span class="sm mut">En esta versión de ejemplo el archivo solo se registra en la lista.</span></div>
- <h3 style="margin:20px 0 10px">Historial de estados</h3><ul class="hist">${[...a.h].reverse().map(h=>`<li>${badge(h.s)} <span class="sm mut">${fmt(h.d)}</span><br>${esc(h.n)}</li>`).join('')}</ul>`;
- d.hidden=false;d.dataset.id=id;d.scrollTop=0;$('#xd').focus();}
+  <section class="sec" aria-label="Indicadores del repositorio">
+    <div class="cards">
+      <article class="card"><div class="card-top"><span class="cicon">${ic('book')}</span></div><b>${pub26}</b><span>Publicaciones 2026</span><em>${cnt(['prensa'])} en prensa · meta de ${g.target}</em></article>
+      <article class="card"><div class="card-top"><span class="cicon">${ic('clock')}</span></div><b>${rev}</b><span>En revisión</span><em>${cnt(['pares'])} en revisión por pares</em></article>
+      <article class="card"><div class="card-top"><span class="cicon">${ic('check')}</span></div><b>${acc}</b><span>Aceptados</span><em>Pendientes de publicación</em></article>
+      <article class="card"><div class="card-top"><span class="cicon">${ic('file')}</span></div><b>${activeCount()}</b><span>Manuscritos activos</span><em>De ${A.length} en el repositorio</em></article>
+      <article class="card"><div class="card-top"><span class="cicon">${ic('folder')}</span></div><b>${P.length}</b><span>Proyectos</span><em>${new Set(P.map(p=>p[1])).size} áreas clínicas</em></article>
+      <article class="card"><div class="card-top"><span class="cicon">${ic('upload')}</span></div><b>${docs}</b><span>Documentos</span><em>Repositorio interno de la liga</em></article>
+    </div>
+  </section>
 
-/* ===== Navegación y eventos ===== */
-const V={resumen:vResumen,articulos:vArticulos,manuscritos:vManus,proyectos:vProy,calendario:vCal,analitica:vAna};
-function render(){const v=V[location.hash.slice(1)]?location.hash.slice(1):'resumen';$('#app').innerHTML=V[v]();
- document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.hash==='#'+v));if(v==='articulos')lista();}
-window.addEventListener('hashchange',()=>{$('#drawer').hidden=true;render();scrollTo(0,0)});
-document.addEventListener('click',e=>{const t=e.target;
- const it=t.closest('[data-id]');if(it&&!t.closest('#drawer')){e.preventDefault();openD(+it.dataset.id);return}
- if(t.closest('[data-est]')){S.f={q:'',e:t.closest('[data-est]').dataset.est,p:'',j:'',y:''};location.hash='articulos';return}
- if(t.dataset.m){S.cal[1]+=+t.dataset.m;if(S.cal[1]<0){S.cal[1]=11;S.cal[0]--}if(S.cal[1]>11){S.cal[1]=0;S.cal[0]++}render();return}
- if(t.id==='xd'){$('#drawer').hidden=true;return}
- if(t.id==='up'){$('#np').innerHTML=P.map((p,i)=>`<option value="${i}">${esc(p[0])}</option>`).join('');$('#dlg').showModal();return}
- if(t.id==='nc'){$('#dlg').close();return}
- if(t.id==='su'){const a=A[+t.dataset.id],s=$('#ns').value;if(s!==a.st||$('#nn').value.trim()){a.st=s;a.h.push({s,d:HOY,n:$('#nn').value.trim()||ST[s][3]});if(s==='env'||s==='revint'||s==='publ')a.x=files(a);render();openD(a.id)}}});
-document.addEventListener('input',e=>{const t=e.target,f=S.f;
- if(t.id==='q')f.q=t.value;else if(t.id==='fe')f.e=t.value;else if(t.id==='fp')f.p=t.value;else if(t.id==='fj')f.j=t.value;else if(t.id==='fy')f.y=t.value;else if(t.id==='fg')S.g=t.value;else return;lista();});
-document.addEventListener('change',e=>{if(e.target.id==='uf'){const a=A[+$('#drawer').dataset.id];[...e.target.files].forEach(f=>{a.x.push([f.name,(f.name.split('.').pop()||'').toUpperCase(),Math.max(1,Math.round(f.size/1024)),HOY])});a.h.push({s:a.st,d:HOY,n:'Documento añadido: '+[...e.target.files].map(f=>f.name).join(', ')});openD(a.id);render()}});
-$('#nf').addEventListener('submit',()=>{const t=$('#nt').value.trim();if(!t)return;const f=$('#nfile').files[0],id=A.length;
- A.push({id,t,p:+$('#np').value,j:$('#nj').value.trim()||'Por definir',st:'prep',au:[P[+$('#np').value][2]],h:[{s:'prep',d:HOY,n:'Manuscrito registrado.'}],x:f?[[f.name,f.name.split('.').pop().toUpperCase(),Math.max(1,Math.round(f.size/1024)),HOY]]:[]});
- $('#nf').reset();S.f={q:'',e:'',p:'',j:'',y:''};location.hash='articulos';render();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#drawer').hidden=true});
+  <section class="sec">
+    <div class="sec-head">
+      <div><p class="eyebrow">Ciclo editorial</p><h2>Los 13 estados de una publicación</h2>
+        <p class="sec-desc">Cada manuscrito avanza por un ciclo verificable. Selecciona un estado para ver los trabajos que se encuentran en él.</p></div>
+      <span class="sm mut">${A.length} manuscritos · ${activeCount()} activos</span>
+    </div>
+    <div class="panel">
+      <div class="tracker">
+        ${KEYS.map(k=>{const c=cnt([k]);return `<button class="trk" type="button" data-status="${k}" aria-label="Ver ${c} manuscritos en estado ${ST[k].n}">
+          <span>${badge(k,true)}</span><b>${c}</b>${pbar(pct(c,maxTrk)*100,ST[k].c)}<span class="trk-p">${pct(c,A.length)}%</span></button>`;}).join('')}
+      </div>
+    </div>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <div class="sec-head"><div><p class="eyebrow">Meta anual</p><h2>${g.target} publicaciones en 2026</h2></div><a class="link" href="#analitica">Ver analítica</a></div>
+      <div class="goal">
+        ${ring(g.parts,g.target)}
+        <ul class="goal-legend">${g.parts.map(p=>`<li><i style="background:${p.c}"></i><span>${p.l}</span><b>${p.v}</b></li>`).join('')}</ul>
+      </div>
+      <p class="note" style="margin-top:16px">${g.pub+g.acc} de ${g.target} ya están aseguradas o publicadas; ${g.rev} manuscritos en revisión sostienen el avance del año.</p>
+    </section>
+    <section class="panel">
+      <div class="sec-head"><div><p class="eyebrow">Registro</p><h2>Actividad reciente</h2></div><button class="link" type="button" data-open="${A[5].id}">Ver último cambio</button></div>
+      ${feedHtml(6)}
+    </section>
+  </div>
+
+  <div class="two">
+    <section class="panel">
+      <div class="sec-head"><div><p class="eyebrow">Agenda</p><h2>Próximos hitos</h2></div><a class="link" href="#calendario">Calendario</a></div>
+      ${up.length?`<ul class="up-list">${up.map(e=>`<li><time>${fmtShort(e.d)}</time><i style="background:${e.c}"></i><span><b style="color:var(--navy)">${esc(e.label)}</b><br>${esc(short(e.title,66))}</span></li>`).join('')}</ul>`:'<p class="mut sm">No hay hitos próximos registrados.</p>'}
+    </section>
+    <section class="panel">
+      <div class="sec-head"><div><p class="eyebrow">Seguimiento</p><h2>Requieren atención</h2></div><a class="link" href="#manuscritos">Ver todos</a></div>
+      ${att.length?`<ul class="attention">${att.map(a=>`<li><div><a href="#" data-open="${a.id}">${esc(short(a.t,82))}</a><small>${esc(a.j)} · ${ST[a.st].n} desde ${fmt(last(a).d)}</small></div>${badge(a.st,true)}</li>`).join('')}</ul>`:'<p class="mut sm">Ningún manuscrito requiere atención inmediata.</p>'}
+    </section>
+  </div>`;
+}
+
+/* ===== Vista: artículos ===== */
+function filteredArticles(){
+  const q=S.q.trim().toLowerCase();
+  let rows=A.filter(a=>{
+    if(q){
+      const hay=(a.t+' '+a.j+' '+a.au.join(' ')+' '+(P[a.p]?P[a.p][0]:'')).toLowerCase();
+      if(!hay.includes(q))return false;
+    }
+    if(S.st&&a.st!==S.st)return false;
+    if(S.proj!==''&&a.p!==+S.proj)return false;
+    if(S.year&&yearOf(a)!==S.year)return false;
+    if(S.phase){
+      if(S.phase==='prog'&&!PROG.includes(a.st))return false;
+      if(S.phase==='sent'&&!SENT.includes(a.st))return false;
+      if(S.phase==='acc'&&!ACC.includes(a.st))return false;
+      if(S.phase==='pub'&&a.st!=='publ')return false;
+      if(S.phase==='closed'&&!['rech','ret'].includes(a.st))return false;
+    }
+    return true;
+  });
+  switch(S.order){
+    case 'old':rows.sort((a,b)=>last(a).d.localeCompare(last(b).d));break;
+    case 'title':rows.sort((a,b)=>a.t.localeCompare(b.t,'es'));break;
+    case 'status':rows.sort((a,b)=>KEYS.indexOf(a.st)-KEYS.indexOf(b.st)||last(b).d.localeCompare(last(a).d));break;
+    default:rows.sort((a,b)=>last(b).d.localeCompare(last(a).d));
+  }
+  return rows;
+}
+function articleItem(a){
+  return `<a class="it" href="#" data-open="${a.id}">
+    <div>
+      <div class="it-top"><span>${badge(a.st,true)}</span><span class="it-date">Actualizado ${rel(last(a).d)}</span></div>
+      <h3>${esc(a.t)}</h3>
+      <div class="it-authors">${esc(a.au.join(', '))}</div>
+      <div class="it-meta">
+        <span>${ic('folder')}${esc(P[a.p][0])}</span>
+        <span>${ic('book')}${esc(a.j||'Revista por definir')}</span>
+        ${doiOf(a)?`<span>${ic('tag')}${esc(doiOf(a))}</span>`:''}
+      </div>
+      <div class="it-sub">${stage(a.st)} · ${dOf(a,'env')?'Enviado el '+fmt(dOf(a,'env')):'Aún sin enviar'} · ${a.x.length} documentos</div>
+    </div>
+    <span class="it-go">${ic('arrow')}</span>
+  </a>`;
+}
+function articleListHtml(){
+  const rows=filteredArticles();
+  if(!rows.length)return `<div class="empty"><b>Sin resultados</b>Prueba con otro término o limpia los filtros para ver todo el repositorio.</div>`;
+  return GROUPS.map(g=>{
+    const items=rows.filter(a=>g.keys.includes(a.st));
+    if(!items.length)return '';
+    return `<div class="group"><div class="gh"><span>${g.label}</span><b>${items.length}</b></div>${items.map(articleItem).join('')}</div>`;
+  }).join('');
+}
+function paintArticulos(){
+  const list=$('#list');if(!list)return;
+  const rows=filteredArticles();
+  list.innerHTML=articleListHtml();
+  const c=$('#fcount');if(c)c.textContent=`${rows.length} de ${A.length} manuscritos`;
+}
+function vArticulos(){
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Repositorio</p>
+    <h1>Artículos y manuscritos</h1>
+    <p class="sec-desc">Busca en todo el historial editorial de la liga. Filtra por estado, proyecto, año o fase del proceso y abre cualquier trabajo para consultar su ficha completa.</p>
+  </div>
+  <div class="filter-card">
+    <div class="search-row">
+      <label class="search">${ic('search')}<input id="fq" type="search" value="${esc(S.q)}" placeholder="Buscar por título, autor, revista o proyecto" aria-label="Buscar artículos"></label>
+      <button class="btn l" type="button" data-clear>Limpiar</button>
+      <button class="btn" type="button" data-new>${ic('file')}Nuevo artículo</button>
+    </div>
+    <div class="filter-row">
+      <select data-f="st" aria-label="Filtrar por estado">${opts([['','Todos los estados'],...KEYS.map(k=>[k,ST[k].n])],S.st)}</select>
+      <select data-f="proj" aria-label="Filtrar por proyecto">${opts([['','Todos los proyectos'],...P.map((p,i)=>[i,p[0]])],S.proj)}</select>
+      <select data-f="year" aria-label="Filtrar por año">${opts([['','Todos los años'],['2026','2026'],['2025','2025']],S.year)}</select>
+      <select data-f="phase" aria-label="Filtrar por fase">${opts([['','Todas las fases'],['prog','Sin enviar'],['sent','En revisión'],['acc','Aceptado o en prensa'],['pub','Publicado'],['closed','Cerrado']],S.phase)}</select>
+      <select data-f="order" aria-label="Ordenar resultados">${opts([['recent','Más recientes'],['old','Más antiguos'],['title','Título A–Z'],['status','Por estado']],S.order)}</select>
+    </div>
+    <div class="filter-foot"><span id="fcount">${filteredArticles().length} de ${A.length} manuscritos</span><span>Los resultados se agrupan por etapa editorial.</span></div>
+  </div>
+  <div id="list">${articleListHtml()}</div>`;
+}
+
+/* ===== Vista: manuscritos ===== */
+function manuscriptRows(){
+  let rows;
+  if(S.tab==='activos')rows=A.filter(a=>!CLOSED.includes(a.st));
+  else if(S.tab==='revision')rows=A.filter(a=>SENT.includes(a.st));
+  else if(S.tab==='aceptados')rows=A.filter(a=>ACC.includes(a.st));
+  else if(S.tab==='cerrados')rows=A.filter(a=>CLOSED.includes(a.st));
+  else rows=A.slice();
+  return rows.sort((a,b)=>last(b).d.localeCompare(last(a).d));
+}
+function vManuscritos(){
+  const rows=manuscriptRows();
+  const tab=(id,label,n)=>`<button type="button" class="${S.tab===id?'on':''}" data-tab="${id}">${label}<b>${n}</b></button>`;
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Seguimiento</p>
+    <h1>Manuscritos</h1>
+    <p class="sec-desc">El estado real de cada trabajo, con su línea de tiempo editorial, documentos y próximo hito. Abre un manuscrito para actualizar su estado o subir archivos.</p>
+  </div>
+  <div class="sec-head" style="margin-bottom:12px">
+    <div class="tabs">
+      ${tab('activos','Activos',A.filter(a=>!CLOSED.includes(a.st)).length)}
+      ${tab('revision','En revisión',cnt(SENT))}
+      ${tab('aceptados','Aceptados',cnt(ACC))}
+      ${tab('cerrados','Cerrados',cnt(['publ','rech','ret']))}
+      ${tab('todos','Todos',A.length)}
+    </div>
+    <button class="btn" type="button" data-new>${ic('file')}Registrar manuscrito</button>
+  </div>
+  ${rows.length?rows.map(a=>`<a class="man" href="#" data-open="${a.id}">
+    <div>
+      <div class="it-top"><span>${badge(a.st,true)}</span><span class="it-date">${stage(a.st)}</span></div>
+      <h3>${esc(a.t)}</h3>
+      <div class="it-authors">${esc(a.au.slice(0,4).join(', '))}${a.au.length>4?' y '+(a.au.length-4)+' más':''}</div>
+      <div class="it-meta">
+        <span>${ic('folder')}${esc(P[a.p][0])}</span>
+        <span>${ic('book')}${esc(a.j||'Revista por definir')}</span>
+        <span>${ic('file')}${a.x.length} documentos</span>
+      </div>
+      <div class="last">Último cambio: ${ST[last(a).s].n} · ${fmt(last(a).d)} · ${rel(last(a).d)}</div>
+      ${tl(a)}
+    </div>
+    <div class="man-side">
+      <div><small>Próximo hito</small><b class="sm">${esc(nextMilestone(a))}</b></div>
+      <span class="it-go">${ic('arrow')}</span>
+    </div>
+  </a>`).join(''):`<div class="empty"><b>No hay manuscritos en esta vista</b>Cambia de pestaña para consultar otros estados del ciclo editorial.</div>`}`;
+}
+
+/* ===== Vista: proyectos ===== */
+function vProyectos(){
+  const cards=P.map((p,i)=>{
+    const st=projStats(i);
+    const recent=st.arts.slice().sort((a,b)=>last(b).d.localeCompare(last(a).d)).slice(0,3);
+    return `<article class="proj">
+      <div class="proj-top"><span class="tag">${esc(p[1])}</span><span class="team">${new Set([p[2],...p[3]]).size} investigadores</span></div>
+      <h3>${esc(p[0])}</h3>
+      <div class="proj-meta">
+        <span>Investigador principal: <b>${esc(AU[p[2]])}</b></span>
+        <span>Etapa actual: <b>${esc(p[4])}</b></span>
+      </div>
+      <div><div class="proj-l"><span>Avance del proyecto</span><b>${p[5]}%</b></div>${pbar(p[5],'var(--accent)')}</div>
+      <div class="proj-stats">
+        <div><b>${st.total}</b><span>manuscritos</span></div>
+        <div><b>${st.publ}</b><span>publicados</span></div>
+        <div><b>${st.sent}</b><span>en revisión</span></div>
+        <div><b>${st.acc}</b><span>aceptados</span></div>
+      </div>
+      <div class="proj-ms">${recent.length?recent.map(a=>`<a href="#" data-open="${a.id}">${badge(a.st,true)}<span>${esc(short(a.t,62))}</span></a>`).join(''):'<span class="sm mut">Sin manuscritos registrados.</span>'}</div>
+    </article>`;
+  }).join('');
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Portafolio</p>
+    <h1>Proyectos de investigación</h1>
+    <p class="sec-desc">${P.length} proyectos activos en ${new Set(P.map(p=>p[1])).size} áreas clínicas. Cada ficha reúne a su equipo, su avance y los manuscritos que produce.</p>
+  </div>
+  <div class="projects">${cards}</div>`;
+}
+
+/* ===== Vista: calendario ===== */
+function monthCells(ym){
+  const [y,m]=ym.split('-').map(Number);
+  const first=new Date(Date.UTC(y,m-1,1));
+  const start=(first.getUTCDay()+6)%7;
+  const days=new Date(Date.UTC(y,m,0)).getUTCDate();
+  const cells=Array(start).fill(null);
+  for(let d=1;d<=days;d++)cells.push(`${y}-${pad2(m)}-${pad2(d)}`);
+  while(cells.length%7)cells.push(null);
+  return cells;
+}
+function calTitle(ym){
+  const [y,m]=ym.split('-').map(Number);
+  return `${cap(MESES[m-1])} de ${y}`;
+}
+function shiftMonth(n){
+  const [y,m]=S.cal.split('-').map(Number);
+  const d=new Date(Date.UTC(y,m-1+n,1));
+  const ym=`${d.getUTCFullYear()}-${pad2(d.getUTCMonth()+1)}`;
+  if(ym<'2024-01'||ym>'2027-12')return;
+  S.cal=ym;render();
+}
+function vCalendario(){
+  const ev=allEvents();
+  const cells=monthCells(S.cal);
+  const canEdit=canAdmin();
+  const dayHtml=cells.map(d=>{
+    if(!d)return '<div class="o" aria-hidden="true"></div>';
+    const list=ev.filter(e=>e.d===d);
+    const shown=list.slice(0,2).map(e=>e.custom
+      ? `<a class="ev own" href="#" data-cev="${e.cid}" style="--c:${e.c}" title="${esc(e.title)} — ${esc(e.label)}">${esc(short(e.label,26))}</a>`
+      : `<a class="ev" href="#" data-open="${e.id}" style="--c:${e.c}" title="${esc(e.title)} — ${esc(e.label)}">${esc(short(e.label,26))}</a>`).join('');
+    const more=list.length>2?`<span class="more">+${list.length-2} más</span>`:'';
+    return `<div class="${d===HOY?'today':''}" aria-label="${fmtLong(d)}${list.length?', '+list.length+' eventos':''}"><div class="num"><b>${+d.slice(8)}</b>${d===HOY?'<span style="font-size:9px;color:var(--accent);font-weight:600">HOY</span>':''}</div>${shown}${more}</div>`;
+  }).join('');
+  const up=ev.filter(e=>e.d>=HOY);
+  const near=up.slice(0,5),later=up.slice(5,10);
+  const item=e=>`<li><time>${fmtShort(e.d)}</time><i style="background:${e.c}"></i><span><b style="color:var(--navy)">${esc(e.label)}</b>${e.imp?' <span class="role-pill" style="padding:1px 6px;font-size:9px">Importante</span>':''}<br>${esc(short(e.title,70))}${e.note?' · '+esc(short(e.note,60)):''}${e.custom&&canEdit?`<span class="up-actions"><a href="#" data-cev="${e.cid}">Editar</a><a href="#" class="del" data-caldel="${e.cid}">Quitar</a></span>`:''}</span></li>`;
+  const listHtml=items=>items.length?`<ul class="up-list">${items.map(item).join('')}</ul>`:'<p class="mut sm">Sin hitos en este periodo.</p>';
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Agenda editorial</p>
+    <h1>Calendario de publicaciones</h1>
+    <p class="sec-desc">Envíos, decisiones, revisiones y fechas estimadas de publicación. Los hitos sólidos provienen del historial de cada manuscrito; los estimados se calculan a partir del estado actual.${canEdit?' Como administradora puedes añadir, editar y quitar fechas propias.':''}</p>
+  </div>
+  <div class="cal-head">
+    <div class="cal-nav">
+      ${canEdit?`<button class="btn" type="button" data-caledit>${ic('calendar')}Añadir fecha</button>`:''}
+      <button class="btn l sm" type="button" data-cal="-1" aria-label="Mes anterior">${ic('arrow')}</button>
+      <b>${calTitle(S.cal)}</b>
+      <button class="btn l sm" type="button" data-cal="1" aria-label="Mes siguiente">${ic('arrow')}</button>
+      <button class="btn l sm" type="button" data-cal="0">Hoy</button>
+    </div>
+    <div class="lg">
+      <span><i style="background:#0d5c3f"></i>Publicación o aceptación</span>
+      <span><i style="background:#2f6fb0"></i>Envío o revisión</span>
+      <span><i style="background:#b8860b"></i>Decisión pendiente</span>
+      <span><i style="background:#a92e2e"></i>Cierre</span>
+      <span><i style="background:#0a7b94"></i>Fecha propia</span>
+      <span><i style="background:#c2621e"></i>Evento importante</span>
+    </div>
+  </div>
+  <div class="cal" role="grid" aria-label="Calendario editorial de ${calTitle(S.cal)}">
+    ${DIAS.map(d=>`<div class="h" role="columnheader">${d}</div>`).join('')}
+    ${dayHtml}
+  </div>
+  <p class="note" style="margin-top:14px">Abre cualquier evento editorial para consultar el manuscrito completo. Las fechas propias (con borde punteado) se pueden editar o quitar desde aquí.</p>
+  <div class="upcoming" style="margin-top:26px">
+    <section class="panel"><div class="sec-head"><div><p class="eyebrow">En los próximos 60 días</p><h2>Hitos inmediatos</h2></div>${canEdit?`<button class="link" type="button" data-caledit>Añadir fecha</button>`:''}</div>${listHtml(near)}</section>
+    <section class="panel"><div class="sec-head"><div><p class="eyebrow">Más adelante</p><h2>Horizonte editorial</h2></div></div>${listHtml(later)}</section>
+  </div>`;
+}
+
+/* ===== Vista: analítica ===== */
+function firstDecisionDays(a){
+  const env=dOf(a,'env');if(!env)return null;
+  const c=['pares','rmen','rmay','reenv','acep','prensa','publ','rech','ret'].map(s=>dOf(a,s)).filter(Boolean).sort()[0];
+  if(!c)return null;
+  return Math.round((D(c)-D(env))/864e5);
+}
+function vAnalitica(){
+  const pubs=cnt(['publ']),sent=sentCount(),acc=cnt(ACC);
+  const decisions=cnt(['publ','rech']);
+  const rate=pct(pubs,decisions);
+  const dd=A.map(firstDecisionDays).filter(n=>n!=null&&n>=0);
+  const pd=A.filter(a=>dOf(a,'env')&&dOf(a,'publ')).map(a=>Math.round((D(dOf(a,'publ'))-D(dOf(a,'env')))/864e5));
+  const rows=monthlyRows(12);
+  const areas=[...new Set(A.map(a=>P[a.p][1]))].map((area,i)=>{
+    const arts=A.filter(a=>P[a.p][1]===area);
+    return {l:area,v:arts.length,c:AREA_C[i%AREA_C.length]};
+  }).sort((a,b)=>b.v-a.v);
+  const projectRows=P.map((p,i)=>({p,i,s:projStats(i)})).sort((a,b)=>b.s.total-a.s.total);
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Indicadores</p>
+    <h1>Analítica de la producción</h1>
+    <p class="sec-desc">Una lectura cuantitativa de los últimos doce meses: ritmo de envíos, publicaciones, tiempos editoriales y rendimiento por proyecto.</p>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b>${A.length}</b><span>Manuscritos registrados</span><em>${P.length} proyectos · ${new Set(A.map(a=>a.au[0])).size} autores líderes</em></div>
+    <div class="kpi"><b>${sent}</b><span>Envíos acumulados</span><em>${cnt(['env'])} enviados sin respuesta</em></div>
+    <div class="kpi"><b>${pubs}</b><span>Publicados</span><em>${A.filter(a=>a.st==='publ'&&(dOf(a,'publ')||'').startsWith('2026')).length} durante 2026</em></div>
+    <div class="kpi"><b>${rate}%</b><span>Tasa de aceptación</span><em>${pubs} de ${decisions} decisiones cerradas</em></div>
+    <div class="kpi"><b>${avg(dd)} días</b><span>Primera respuesta</span><em>Desde el envío hasta la primera decisión</em></div>
+    <div class="kpi"><b>${avg(pd)} días</b><span>Hasta publicación</span><em>Promedio en los trabajos publicados</em></div>
+    <div class="kpi"><b>${totalDocs()}</b><span>Documentos</span><em>${(totalDocs()/A.length).toFixed(1)} por manuscrito</em></div>
+    <div class="kpi"><b>${activeCount()}</b><span>Manuscritos activos</span><em>${acc} aceptados aún sin publicar</em></div>
+  </div>
+  <section class="chart-card">
+    <div class="sec-head"><div><p class="eyebrow">Ritmo editorial</p><h2>Envíos y publicaciones por mes</h2></div><span class="sm mut">Últimos 12 meses</span></div>
+    ${svgGrouped(rows)}
+    <div class="legend"><span><i style="background:#3b5f82"></i>Envíos</span><span><i style="background:#2cb1cc"></i>Publicaciones</span></div>
+  </section>
+  <div class="two">
+    <section class="chart-card">
+      <div class="sec-head"><div><p class="eyebrow">Distribución</p><h2>Manuscritos por área</h2></div></div>
+      ${svgHBars(areas)}
+      <div class="mini-legend">${areas.map(a=>`<span><i style="background:${a.c}"></i>${esc(short(a.l,18))}</span>`).join('')}</div>
+    </section>
+    <section class="chart-card">
+      <div class="sec-head"><div><p class="eyebrow">Producción</p><h2>Rendimiento por proyecto</h2></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Proyecto</th><th class="n">Manus.</th><th class="n">Publ.</th><th class="n">Rev.</th><th>Avance</th></tr></thead>
+        <tbody>${projectRows.map(({p,i,s})=>`<tr><td><a href="#" data-open="${s.arts[0]?s.arts[0].id:0}">${esc(short(p[0],42))}</a><div class="it-sub">${esc(p[1])}</div></td><td class="n">${s.total}</td><td class="n">${s.publ}</td><td class="n">${s.sent}</td><td style="min-width:110px">${pbar(p[5],'var(--accent)')}<div class="it-sub">${p[5]}%</div></td></tr>`).join('')}</tbody>
+      </table></div>
+    </section>
+  </div>
+  <p class="note" style="margin-top:22px">Los tiempos se calculan con los hitos registrados en el historial de cada manuscrito. Las fechas futuras son estimaciones basadas en el estado actual y no comprometen decisiones editoriales.</p>`;
+}
+
+/* ===== Vista: ranking ===== */
+function researcherRows(){
+  return AU.map(name=>{
+    const arts=A.filter(a=>a.au.includes(name));
+    const publ=arts.filter(a=>a.st==='publ').length;
+    const acep=arts.filter(a=>ACC.includes(a.st)).length;
+    const sent=arts.filter(a=>SENT.includes(a.st)).length;
+    return {name,arts:arts.length,publ,acep,sent,score:publ*5+acep*3+sent,
+      role:/^Dra?\./.test(name)?'Investigación':'Colaborador/a'};
+  }).sort((a,b)=>b.score-a.score||b.publ-a.publ||b.arts-a.arts||a.name.localeCompare(b.name,'es'));
+}
+function vRanking(){
+  const rs=researcherRows();
+  const top=Math.max(1,...rs.map(r=>r.score));
+  const projs=P.map((p,i)=>({p,i,s:projStats(i)})).sort((a,b)=>(b.s.publ*5+b.s.acc*3+b.s.sent)-(a.s.publ*5+a.s.acc*3+a.s.sent)||b.s.total-a.s.total);
+  const js=journalRows().slice(0,10);
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Reconocimiento</p>
+    <h1>Ranking de la liga</h1>
+    <p class="sec-desc">Un reconocimiento al trabajo sostenido del último año. La puntuación pondera publicaciones (5), aceptaciones (3) y manuscritos en revisión (1); no sustituye una evaluación académica formal.</p>
+  </div>
+  <div class="rank-grid">
+    <section class="panel wide">
+      <div class="sec-head"><div><p class="eyebrow">Investigadores</p><h2>Contribución editorial 2026</h2></div><span class="sm mut">${rs.length} personas</span></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>Investigador</th><th class="n">Publicados</th><th class="n">Aceptados</th><th class="n">En revisión</th><th class="n">Puntos</th><th>Avance</th></tr></thead>
+        <tbody>${rs.map((r,i)=>`<tr>
+          <td><span class="rk ${i===0?'top1':i===1?'top2':i===2?'top3':''}">${i+1}</span></td>
+          <td><div class="rank-name"><b>${esc(r.name)}</b><span class="sm mut">${r.role} · ${r.arts} manuscritos</span></div></td>
+          <td class="n">${r.publ}</td><td class="n">${r.acep}</td><td class="n">${r.sent}</td><td class="n"><b>${r.score}</b></td>
+          <td style="min-width:120px">${pbar(r.score/top*100,i<3?'#0a7b94':'#3b5f82')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </section>
+    <section class="panel">
+      <div class="sec-head"><div><p class="eyebrow">Proyectos</p><h2>Mayor producción</h2></div></div>
+      <ul class="rank-list">${projs.map(({p,i,s},n)=>`<li><div class="rl-top"><b>${n+1}. ${esc(short(p[0],44))}</b><span>${s.total} manuscritos</span></div>${pbar(s.total/Math.max(1,projs[0].s.total)*100,n===0?'#0a7b94':'#3b5f82')}<div class="mini-legend"><span>${s.publ} publicados</span><span>${s.sent} en revisión</span><span>${s.acc} aceptados</span></div></li>`).join('')}</ul>
+    </section>
+    <section class="panel">
+      <div class="sec-head"><div><p class="eyebrow">Revistas</p><h2>Destinos más frecuentes</h2></div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Revista</th><th class="n">Envíos</th><th class="n">Publ.</th><th class="n">Tasa</th></tr></thead>
+        <tbody>${js.map(j=>`<tr><td>${esc(short(j.j,34))}</td><td class="n">${j.total}</td><td class="n">${j.publ}</td><td class="n">${pct(j.publ,j.total)}%</td></tr>`).join('')}</tbody>
+      </table></div>
+    </section>
+  </div>`;
+}
+
+/* ===== Vista: equipo y permisos ===== */
+function initials(n){
+  return n.replace(/^(Dra?\.|Sr?a?\.)\s*/,'').split(' ').filter(w=>/^[A-ZÁÉÍÓÚ]/.test(w)).slice(0,2).map(w=>w[0]).join('')||'SR';
+}
+function vEquipo(){
+  const admins=TEAM.filter(n=>ROLES[n]==='admin').length;
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Administración</p>
+    <h1>Equipo y permisos</h1>
+    <p class="sec-desc">Solo los administradores pueden entrar a este panel, editar el sitio y borrar manuscritos. Aquí puedes promover o retirar permisos a cualquier miembro del equipo.</p>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><b>${TEAM.length}</b><span>Personas con acceso</span><em>${admins} administradores · ${TEAM.length-admins} miembros</em></div>
+    <div class="kpi"><b>${admins}</b><span>Administradores</span><em>Acceso total al panel y al editor del sitio</em></div>
+    <div class="kpi"><b>${TEAM.length-admins}</b><span>Miembros</span><em>Acceso de lectura y modo usuario</em></div>
+  </div>
+  <section class="panel" style="margin-top:22px">
+    <div class="sec-head"><div><p class="eyebrow">Permisos</p><h2>Cuentas del equipo</h2></div><span class="sm mut">Los cambios se guardan en este navegador</span></div>
+    <div class="table-wrap"><table class="role-table">
+      <thead><tr><th>Persona</th><th>Rol actual</th><th class="n">Acciones</th></tr></thead>
+      <tbody>${TEAM.map(n=>{
+        const admin=ROLES[n]==='admin';
+        const me=n===ME;
+        return `<tr>
+          <td><div class="person-cell"><span class="avatar">${initials(n)}</span><div><b>${esc(n)}</b>${me?' <span class="you-tag">Tú</span>':''}<small>${admin?'Acceso completo al panel':'Miembro · solo lectura'}</small></div></div></td>
+          <td><span class="role-pill ${admin?'admin':''}">${admin?'Administrador':'Miembro'}</span></td>
+          <td class="n"><div class="role-actions">${me?'<span class="sm mut">No puedes cambiar tu propio rol</span>':admin?`<button class="btn l" type="button" data-role="member" data-user="${esc(n)}">Quitar admin</button>`:`<button class="btn" type="button" data-role="admin" data-user="${esc(n)}">Hacer admin</button>`}</div></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>
+  </section>
+  <p class="note" style="margin-top:18px">Promover a alguien le da acceso al panel en este navegador. La sesión se simula con el nombre de la cuenta; para producción se conecta a la base de usuarios.</p>`;
+}
+
+/* ===== Vista: sitio y formularios ===== */
+function vSitio(){
+  const ap=getApply();
+  return `
+  <div class="page-head">
+    <p class="eyebrow">Administración</p>
+    <h1>Sitio y formularios</h1>
+    <p class="sec-desc">Edita el contenido del sitio público sin tocar el código, revisa la vista previa y configura el Google Form que se envía por Gmail a cada persona que completa la postulación.</p>
+  </div>
+  <section class="panel">
+    <div class="sec-head"><div><p class="eyebrow">Editor</p><h2>Modo de edición completa</h2></div><span class="role-pill admin">Solo admin</span></div>
+    <div class="site-grid">
+      <article class="site-card"><span class="cicon">${ic('file')}</span><b>Sitio público</b><p>Activa el modo de edición sobre la página principal: textos, títulos, equipo y pie de página.</p><button class="btn" type="button" data-edit-site="index.html">${ic('arrow')}Editar sitio</button></article>
+      <article class="site-card"><span class="cicon">${ic('book')}</span><b>Repositorio público</b><p>Revisa cómo se ven los artículos publicados y sus abstracts antes de difundir el enlace.</p><a class="btn l" href="repositorio.html" target="_blank" rel="noopener">Abrir repositorio</a></article>
+      <article class="site-card"><span class="cicon">${ic('users')}</span><b>Área de miembros</b><p>Abre el portal tal como lo ve un miembro de la liga.</p><a class="btn l" href="portal.html" target="_blank" rel="noopener">Abrir portal</a></article>
+    </div>
+  </section>
+  <section class="panel" style="margin-top:22px">
+    <div class="sec-head"><div><p class="eyebrow">Postulaciones</p><h2>Google Form de seguimiento</h2></div>${ap.url?'<span class="role-pill admin">Configurado</span>':'<span class="role-pill">Sin configurar</span>'}</div>
+    <p class="sm mut" style="max-width:70ch">Pega aquí el enlace del formulario que quieres enviar por Gmail a cada persona que complete el formulario de postulación. Se guarda en este navegador y se muestra en el mensaje de confirmación del sitio.</p>
+    <form id="applyf" class="dr-form" style="margin-top:14px">
+      <label class="fld" for="apply-title">Nombre del formulario</label>
+      <input id="apply-title" name="title" type="text" value="${esc(ap.title)}" placeholder="Formulario de postulación · Cohorte 2027">
+      <label class="fld" for="apply-url">Enlace de Google Forms</label>
+      <input id="apply-url" name="url" type="url" value="${esc(ap.url)}" placeholder="https://docs.google.com/forms/d/e/.../viewform">
+      <div class="dlg-foot">
+        ${ap.url?`<a class="btn l" href="${esc(ap.url)}" target="_blank" rel="noopener">Abrir formulario</a>`:''}
+        <button class="btn" type="submit">${ic('check')}Guardar enlace</button>
+      </div>
+    </form>
+    ${ap.url?`<div style="margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--soft);min-height:420px"><iframe src="${esc(ap.url)}" title="${esc(ap.title)}" style="display:block;width:100%;height:calc(100vh - 320px);min-height:420px;border:0;background:#fff"></iframe></div>`:`<p class="note" style="margin-top:14px">Aún no hay un formulario configurado. Al guardar un enlace podrás verlo embebido y compartirlo por Gmail.</p>`}
+  </section>`;
+}
+
+/* ===== Cajón de detalle ===== */
+let openId=null;
+function docsHtml(a){
+  if(!a.x.length)return `<p class="sm mut" style="margin-top:8px">Aún no hay documentos en este manuscrito.</p>`;
+  return `<table class="docs"><tbody>${a.x.map((f,i)=>`<tr><td><div class="fname"><span class="ftype">${esc(f.type||typeOf(f.n))}</span><span>${esc(f.n)}</span></div><div class="it-sub">${kb(f.kb)} · ${fmt(f.date)}${f.up?' · añadido desde el panel':''}</div></td><td class="n" style="white-space:nowrap"><a href="#" data-doc="${esc(f.n)}">Abrir</a> <a href="#" data-rmdoc="${i}" style="color:#a92e2e;margin-left:6px">Quitar</a></td></tr>`).join('')}</tbody></table>`;
+}
+function histHtml(a){
+  return `<ol class="hist">${a.h.slice().reverse().map(h=>`<li style="--c:${ST[h.s].c}"><div class="hd">${fmt(h.d)} · ${rel(h.d)}</div><b>${ST[h.s].n}</b>${h.n?`<p>${esc(h.n)}</p>`:''}</li>`).join('')}</ol>`;
+}
+function drawerHtml(a){
+  return `
+  <div class="dr-top">
+    <div><div>${badge(a.st)}</div><div class="it-date" style="margin-top:6px">Actualizado ${rel(last(a).d)} · ${a.x.length} documentos</div></div>
+    <button class="x" type="button" data-close aria-label="Cerrar detalle">${ic('close')}</button>
+  </div>
+  <h2 id="drawerTitle">${esc(a.t)}</h2>
+  <p class="mut sm">${esc(a.au.join(', '))}</p>
+  ${tl(a)}
+  <dl class="dr-meta">
+    <dt>Proyecto</dt><dd>${esc(P[a.p][0])}</dd>
+    <dt>Revista</dt><dd>${esc(a.j||'Por definir')}</dd>
+    <dt>Estado</dt><dd>${stage(a.st)}</dd>
+    <dt>Fase</dt><dd>${FASES[ST[a.st].ph]} · ${ST[a.st].ph+1} de 7</dd>
+    <dt>DOI</dt><dd>${a.doi?`<a class="linkish" href="https://doi.org/${encodeURI(a.doi)}" target="_blank" rel="noopener">${esc(a.doi)}</a>`:'Pendiente'}</dd>
+    <dt>Última actualización</dt><dd>${fmt(last(a).d)} · ${rel(last(a).d)}</dd>
+  </dl>
+  <div class="dr-sec">
+    <h3>Actualizar estado</h3>
+    <p class="sm mut" style="margin-top:4px">El cambio se añade al historial y conserva los documentos ya cargados.</p>
+    <form class="dr-form" id="stf">
+      <label class="fld" for="ss">Nuevo estado</label>
+      <select id="ss" name="st">${opts(KEYS.map(k=>[k,ST[k].n]),a.st)}</select>
+      <div class="row2">
+        <input type="date" name="d" value="${HOY}" aria-label="Fecha del cambio">
+        <input type="text" name="n" placeholder="Nota del cambio (opcional)" aria-label="Nota del cambio">
+      </div>
+      <div><button class="btn" type="submit">${ic('check')}Guardar cambio de estado</button></div>
+    </form>
+  </div>
+  <div class="dr-sec">
+    <h3>Documentos (${a.x.length})</h3>
+    ${docsHtml(a)}
+    <label class="upload">${ic('upload')} Añadir documentos<input type="file" multiple data-upload accept=".pdf,.doc,.docx,.xlsx,.csv,.zip,.png,.jpg,.jpeg"></label>
+  </div>
+  <div class="dr-sec">
+    <h3>Datos del manuscrito</h3>
+    <form class="dr-form" id="mf">
+      <label class="fld" for="mj">Revista</label>
+      <input id="mj" name="j" type="text" value="${esc(a.j||'')}" placeholder="Revista o medio">
+      <div class="row2">
+        <input name="doi" type="text" value="${esc(doiOf(a))}" placeholder="DOI (opcional)" aria-label="DOI">
+        <select name="p" aria-label="Proyecto">${opts(P.map((p,i)=>[i,p[0]]),a.p)}</select>
+      </div>
+      <div><button class="btn l" type="submit">Guardar datos</button></div>
+    </form>
+  </div>
+  <div class="dr-sec">
+    <h3>Historial editorial</h3>
+    ${histHtml(a)}
+  </div>
+  ${canAdmin()?`<div class="dr-sec">
+    <h3>Administración</h3>
+    <p class="sm mut" style="margin-top:4px">Eliminar este manuscrito del repositorio junto con sus documentos e historial. Esta acción no se puede deshacer.</p>
+    <div style="margin-top:10px"><button class="btn l" type="button" data-delart style="border-color:#e3b4b4;color:#a92e2e">${ic('close')}Eliminar manuscrito</button></div>
+  </div>`:''}`;
+}
+function openDrawer(id){
+  const a=byId(id);if(!a)return;
+  openId=id;
+  const dr=$('#drawer');
+  dr.innerHTML=drawerHtml(a);
+  dr.hidden=false;$('#scrim').hidden=false;
+  document.body.classList.add('no-scroll');
+  dr.scrollTop=0;
+  const x=dr.querySelector('.x');if(x)x.focus();
+}
+function closeDrawer(){
+  const dr=$('#drawer');
+  dr.hidden=true;$('#scrim').hidden=true;
+  document.body.classList.remove('no-scroll');
+  openId=null;
+}
+function removeDoc(i){
+  if(!requireAdmin('Solo administradores pueden quitar documentos.'))return;
+  const a=byId(openId);if(!a||!a.x[i])return;
+  a.x.splice(i,1);save();render();openDrawer(a.id);toast('Documento eliminado del repositorio');
+}
+function uploadFiles(files){
+  if(!requireAdmin('Solo administradores pueden añadir documentos.'))return;
+  const a=byId(openId);if(!a||!files||!files.length)return;
+  let n=0;
+  [...files].forEach(f=>{
+    a.x.push({n:f.name,type:typeOf(f.name),kb:Math.max(1,Math.round(f.size/1024)),date:HOY,up:true});
+    n++;
+  });
+  save();render();openDrawer(a.id);
+  toast(n===1?'Documento añadido':n+' documentos añadidos');
+}
+
+/* ===== Avisos y diálogo ===== */
+let toastTimer=null;
+function toast(msg){
+  const t=$('#toast');
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('on'),2800);
+}
+function openNew(){
+  if(!requireAdmin('Solo administradores pueden registrar manuscritos.'))return;
+  $('#np').innerHTML=opts(P.map((p,i)=>[i,p[0]]),0);
+  $('#nst').innerHTML=opts(KEYS.map(k=>[k,ST[k].n]),'prep');
+  $('#nt').value='';$('#nau').value='';$('#nj').value='';$('#nfile').value='';$('#nd').value=HOY;
+  $('#dlg').showModal();
+  setTimeout(()=>$('#nt').focus(),30);
+}
+
+/* ===== Diálogo de calendario ===== */
+let calEditId=null;
+function openCalDlg(id){
+  if(!requireAdmin('Solo administradores pueden editar el calendario.'))return;
+  calEditId=id||null;
+  const c=id?CAL.find(x=>x.id===id):null;
+  const t=document.getElementById('caldlgTitle');if(t)t.textContent=c?'Editar fecha':'Añadir fecha importante';
+  document.getElementById('cev-t').value=c?c.title:'';
+  document.getElementById('cev-d').value=c?c.d:HOY;
+  document.getElementById('cev-l').value=c?c.label:'Convocatoria';
+  document.getElementById('cev-n').value=c?(c.note||''):'';
+  document.getElementById('cev-imp').checked=c?!!c.imp:false;
+  document.getElementById('caldlg').showModal();
+  setTimeout(()=>document.getElementById('cev-t').focus(),30);
+}
+function saveCalFromForm(form){
+  if(!requireAdmin('Solo administradores pueden editar el calendario.'))return;
+  const fd=new FormData(form);
+  const title=String(fd.get('title')||'').trim();
+  const d=String(fd.get('d')||'').trim();
+  if(!title||!d){toast('Completa el título y la fecha.');return;}
+  const editing=!!calEditId;
+  const data={id:calEditId||('c'+Date.now()),d,label:String(fd.get('label')||'Otro'),title,note:String(fd.get('note')||'').trim(),imp:fd.get('imp')==='on'};
+  if(editing){const i=CAL.findIndex(x=>x.id===calEditId);if(i>=0)CAL[i]=data;else CAL.push(data);}
+  else CAL.push(data);
+  saveCal();calEditId=null;document.getElementById('caldlg').close();render();
+  toast(editing?'Fecha actualizada':'Fecha añadida al calendario');
+}
+function removeCalEvent(id){
+  if(!requireAdmin('Solo administradores pueden editar el calendario.'))return;
+  const c=CAL.find(x=>x.id===id);if(!c)return;
+  if(!confirm('¿Quitar "'+c.title+'" del calendario?'))return;
+  CAL=CAL.filter(x=>x.id!==id);saveCal();render();toast('Fecha eliminada del calendario');
+}
+function deleteArticle(){
+  if(!requireAdmin('Solo administradores pueden eliminar manuscritos.'))return;
+  const a=byId(openId);if(!a)return;
+  if(!confirm('¿Eliminar definitivamente este manuscrito y sus documentos del repositorio?'))return;
+  A=A.filter(x=>x.id!==a.id);save();closeDrawer();render();toast('Manuscrito eliminado del repositorio');
+}
+function setRole(name,role){
+  if(!requireAdmin('Solo administradores pueden cambiar roles.'))return;
+  if(name===ME){toast('No puedes cambiar tu propio rol.');return;}
+  if(!(name in ROLES))return;
+  ROLES[name]=role==='admin'?'admin':'member';saveRoles();render();
+  toast(name+' ahora es '+(role==='admin'?'administrador':'miembro'));
+}
+function launchEditor(file){
+  if(!requireAdmin('Solo administradores pueden editar el sitio.'))return;
+  try{localStorage.setItem('srl_edit','1');localStorage.setItem('srl_user','1');}catch(e){}
+  window.open(file+'?edit=1','_blank','noopener');
+  toast('Modo de edición activado en '+file);
+}
+
+/* ===== Enrutado ===== */
+const VIEWS={resumen:vResumen,articulos:vArticulos,manuscritos:vManuscritos,proyectos:vProyectos,calendario:vCalendario,equipo:vEquipo,sitio:vSitio,analitica:vAnalitica,ranking:vRanking};
+const TITLES={resumen:'Resumen',articulos:'Artículos',manuscritos:'Manuscritos',proyectos:'Proyectos',calendario:'Calendario',equipo:'Equipo y permisos',sitio:'Sitio y formularios',analitica:'Analítica',ranking:'Ranking'};
+function currentView(){
+  const h=location.hash.replace(/^#/,'');
+  if(!VIEWS[h])return 'resumen';
+  if((h==='equipo'||h==='sitio')&&!canAdmin())return 'resumen';
+  return h;
+}
+function render(){
+  const v=currentView();
+  app.innerHTML=VIEWS[v]();
+  document.querySelectorAll('#nav a').forEach(a=>{
+    const on=a.getAttribute('href')==='#'+v;
+    a.classList.toggle('on',on);
+    if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+  });
+  document.title=`${TITLES[v]} · Gestión de investigación — Synaptic Research League`;
+}
+function go(hash){
+  if(location.hash===hash)render();
+  else location.hash=hash;
+}
+function resetDemo(){
+  if(!requireAdmin('Solo administradores pueden restablecer los datos.'))return;
+  if(!confirm('¿Restablecer los datos de demostración? Se perderán los cambios guardados en este navegador.'))return;
+  try{localStorage.removeItem(KEY);}catch(e){}
+  A=seed();A.forEach(ensureFiles);save();
+  closeDrawer();render();toast('Datos de demostración restablecidos');
+}
+
+/* ===== Interacción ===== */
+document.addEventListener('click',e=>{
+  const mode=e.target.closest('[data-mode]');
+  if(mode){e.preventDefault();setMode(mode.dataset.mode);return;}
+  const cev=e.target.closest('[data-cev]');
+  if(cev){e.preventDefault();openCalDlg(cev.dataset.cev);return;}
+  const cedit=e.target.closest('[data-caledit]');
+  if(cedit){e.preventDefault();openCalDlg(null);return;}
+  const cdel=e.target.closest('[data-caldel]');
+  if(cdel){e.preventDefault();removeCalEvent(cdel.dataset.caldel);return;}
+  const cclose=e.target.closest('[data-cclose]');
+  if(cclose){e.preventDefault();$('#caldlg').close();calEditId=null;return;}
+  const del=e.target.closest('[data-delart]');
+  if(del){e.preventDefault();deleteArticle();return;}
+  const role=e.target.closest('[data-role]');
+  if(role){e.preventDefault();setRole(role.dataset.user,role.dataset.role);return;}
+  const editSite=e.target.closest('[data-edit-site]');
+  if(editSite){e.preventDefault();launchEditor(editSite.dataset.editSite||'index.html');return;}
+  const o=e.target.closest('[data-open]');
+  if(o){e.preventDefault();openDrawer(+o.dataset.open);return;}
+  const x=e.target.closest('[data-close]');
+  if(x){e.preventDefault();closeDrawer();return;}
+  if(e.target.id==='scrim'){closeDrawer();return;}
+  const nw=e.target.closest('[data-new]');
+  if(nw){e.preventDefault();openNew();return;}
+  const rs=e.target.closest('[data-reset]');
+  if(rs){e.preventDefault();resetDemo();return;}
+  const st=e.target.closest('[data-status]');
+  if(st){e.preventDefault();S.st=st.dataset.status;S.phase='';go('#articulos');return;}
+  const tab=e.target.closest('[data-tab]');
+  if(tab){e.preventDefault();S.tab=tab.dataset.tab;render();return;}
+  const cal=e.target.closest('[data-cal]');
+  if(cal){e.preventDefault();const n=+cal.dataset.cal;if(n===0){S.cal=HOY.slice(0,7);render();}else shiftMonth(n);return;}
+  const clr=e.target.closest('[data-clear]');
+  if(clr){e.preventDefault();S.q='';S.st='';S.proj='';S.year='';S.phase='';S.order='recent';render();return;}
+  const doc=e.target.closest('[data-doc]');
+  if(doc){e.preventDefault();toast('Documento de demostración: '+doc.dataset.doc);return;}
+  const rm=e.target.closest('[data-rmdoc]');
+  if(rm){e.preventDefault();removeDoc(+rm.dataset.rmdoc);return;}
+});
+document.addEventListener('input',e=>{
+  if(e.target.id==='fq'){S.q=e.target.value;paintArticulos();}
+});
+document.addEventListener('change',e=>{
+  if(e.target.matches('select[data-f]')){S[e.target.dataset.f]=e.target.value;paintArticulos();return;}
+  if(e.target.matches('[data-upload]')){uploadFiles(e.target.files);return;}
+});
+document.addEventListener('submit',e=>{
+  const form=e.target;
+  if(form.id==='calf'){
+    e.preventDefault();
+    saveCalFromForm(form);
+    return;
+  }
+  if(form.id==='applyf'){
+    e.preventDefault();
+    if(!requireAdmin('Solo administradores pueden configurar el formulario.'))return;
+    const title=form.querySelector('[name="title"]').value.trim()||'Formulario de postulación';
+    const url=form.querySelector('[name="url"]').value.trim();
+    if(url&&!/^https?:\/\//i.test(url)){toast('El enlace debe comenzar con https://');return;}
+    saveApply({title,url});render();
+    toast(url?'Formulario de Google guardado':'Formulario eliminado');
+    return;
+  }
+  if(form.id==='stf'){
+    e.preventDefault();
+    if(!requireAdmin('Solo administradores pueden actualizar estados.'))return;
+    const a=byId(openId);if(!a)return;
+    const fd=new FormData(form);
+    const st=String(fd.get('st')||a.st);
+    const d=String(fd.get('d')||HOY);
+    const n=String(fd.get('n')||'').trim()||ST[st].note;
+    if(st===a.st&&d===last(a).d){toast('No hay cambios que guardar.');return;}
+    a.h.push({s:st,d,n});
+    a.h.sort((p,q)=>p.d.localeCompare(q.d));
+    a.st=st;
+    if(!a.doi&&ACC.includes(st))a.doi='10.5555/srl.2026.'+(100+a.id);
+    save();render();openDrawer(a.id);
+    toast('Estado actualizado: '+ST[st].n);
+    return;
+  }
+  if(form.id==='mf'){
+    e.preventDefault();
+    if(!requireAdmin('Solo administradores pueden editar manuscritos.'))return;
+    const a=byId(openId);if(!a)return;
+    const fd=new FormData(form);
+    a.j=String(fd.get('j')||'').trim()||'Por definir';
+    a.doi=String(fd.get('doi')||'').trim();
+    a.p=Math.max(0,Math.min(P.length-1,parseInt(fd.get('p'),10)||0));
+    save();render();openDrawer(a.id);
+    toast('Datos del manuscrito guardados');
+    return;
+  }
+  if(form.id==='nf'){
+    e.preventDefault();
+    if(!requireAdmin('Solo administradores pueden registrar manuscritos.'))return;
+    const t=$('#nt').value.trim();
+    if(!t){toast('Escribe el título del manuscrito.');$('#nt').focus();return;}
+    const id=A.length?Math.max(...A.map(x=>x.id))+1:0;
+    const st=$('#nst').value||'prep';
+    const d=$('#nd').value||HOY;
+    const p=Math.max(0,Math.min(P.length-1,parseInt($('#np').value,10)||0));
+    const au=$('#nau').value.split(',').map(s=>s.trim()).filter(Boolean);
+    const a={id,t,p,j:$('#nj').value.trim()||'Por definir',st,au:au.length?au:[AU[0]],doi:'',h:[{s:st,d,n:'Artículo registrado en el panel.'}],x:[]};
+    [...$('#nfile').files].forEach(f=>a.x.push({n:f.name,type:typeOf(f.name),kb:Math.max(1,Math.round(f.size/1024)),date:HOY,up:true}));
+    A.push(a);ensureFiles(a);save();
+    $('#dlg').close();render();openDrawer(id);
+    toast('Artículo registrado en el repositorio');
+    return;
+  }
+});
+$('#nc').addEventListener('click',()=>$('#dlg').close());
+$('#dlg').addEventListener('click',e=>{if(e.target===$('#dlg'))$('#dlg').close();});
+const calDlgEl=$('#caldlg');
+if(calDlgEl)calDlgEl.addEventListener('click',e=>{if(e.target===calDlgEl){calDlgEl.close();calEditId=null;}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&!$('#drawer').hidden)closeDrawer();
+});
+window.addEventListener('hashchange',()=>{
+  closeDrawer();render();
+  window.scrollTo({top:0,behavior:'auto'});
+});
+
+/* ===== Arranque ===== */
+applyMode();
 render();
+
+
 </script>
 </body>
 </html>
