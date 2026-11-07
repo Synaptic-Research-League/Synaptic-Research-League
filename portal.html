@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seguimiento de artículos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,500..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fdf4f3; --grid1:#f7dedf; --grid2:#efc3c6;
+  --ink:#1e1b24; --muted:#6a5f68; --petrol:#0b4f6c; --red:#b3202f; --ok:#1f7a4d; --warn:#8a5a00;
+  --serif:"Literata",Georgia,"Times New Roman",serif;
+  --sans:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --r:4px;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;font:17px/1.55 var(--sans);color:var(--ink);background-color:var(--paper);
+  background-image:linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px),
+  linear-gradient(var(--grid1) 1px,transparent 1px),linear-gradient(90deg,var(--grid1) 1px,transparent 1px);
+  background-size:100px 100px,100px 100px,20px 20px,20px 20px}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--petrol);outline-offset:2px}
+.brand{display:flex;align-items:center;gap:10px;font:600 17px var(--serif);color:var(--ink)}
+.brand svg{width:34px;height:20px;fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- Acceso ---------- */
+.auth{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);padding:clamp(20px,4vw,48px) clamp(20px,5vw,72px);align-items:center}
+.hero{display:grid;gap:clamp(24px,4vw,44px);align-content:center}
+.hero h1{font:700 clamp(34px,5vw,62px)/1.08 var(--serif);letter-spacing:-.015em;margin:0;max-width:15ch}
+.hero p{margin:0;max-width:40ch;font-size:19px;color:var(--muted)}
+.etapas{width:100%;max-width:640px}
+.ecg{display:block;width:100%;height:auto;overflow:visible}
+.ecg path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;stroke-dashoffset:1;animation:trace 2.8s cubic-bezier(.4,0,.2,1) .3s forwards}
+@keyframes trace{to{stroke-dashoffset:0}}
+.etapas ol{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);text-align:center}
+.etapas li{font:700 14px/1.25 var(--sans);padding:0 2px;opacity:0;animation:in .4s ease-out forwards;animation-delay:calc(.3s + 2.8s*(var(--i) + .6)/5)}
+.etapas li::before{content:"";display:block;width:2px;height:10px;background:var(--ink);margin:0 auto 6px}
+@keyframes in{to{opacity:1}}
+.card{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:clamp(22px,3vw,34px);width:100%;max-width:430px;justify-self:center}
+.tabs{display:flex;margin:0 0 22px;border-bottom:2px solid var(--ink)}
+.tab{flex:1;background:none;border:0;padding:10px 4px;margin-bottom:-2px;font:700 16px var(--sans);color:var(--muted);cursor:pointer;border-bottom:4px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--petrol)}
+h2{font:700 28px/1.15 var(--serif);margin:0 0 6px}
+.sub{margin:0 0 18px;color:var(--muted)}
+label{display:block;font-weight:700;font-size:15px;margin:16px 0 6px}
+input{width:100%;padding:12px;border:2px solid var(--ink);border-radius:var(--r);font:17px var(--sans);background:#fff;color:var(--ink)}
+input:focus{border-color:var(--petrol)}
+.btn{display:block;width:100%;margin-top:22px;padding:13px 16px;border:2px solid var(--petrol);border-radius:var(--r);background:var(--petrol);color:#fff;font:700 17px var(--sans);cursor:pointer}
+.btn:hover{background:#093f57}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.ghost{background:none;color:var(--ink);border-color:var(--ink);margin-top:10px}
+.btn.ghost:hover{background:var(--grid1)}
+.link{background:none;border:0;padding:0;color:var(--petrol);font:700 15px var(--sans);text-decoration:underline;cursor:pointer}
+.row{display:flex;justify-content:flex-end;margin-top:10px}
+.msg{margin-top:16px;padding:10px 12px;border-radius:var(--r);font-size:15px;border:2px solid}
+.msg.err{background:#fdecea;border-color:var(--red);color:#7d1520}
+.msg.ok{background:#e7f5ec;border-color:var(--ok);color:#14502f}
+.notice{background:#fff4d6;border:2px solid #d9b34a;color:#5c4000;padding:12px;border-radius:var(--r);font-size:15px;margin-bottom:16px}
+.privacy{margin:22px 0 0;font-size:14px;color:var(--muted)}
+
+/* ---------- Perfil ---------- */
+async function getPerfil(){
+  const { data:{ user } } = await sb.auth.getUser();
+  const { data } = await sb.from('profiles').select('nombre,rol').eq('id', user.id).maybeSingle();
+  return { user, nombre: (data && data.nombre) || '', rol: (data && data.rol) || 'estudiante' };
+}
+
+/* ---------- Inicio (hub) ----------
+   PARA AGREGAR UNA OPCIÓN NUEVA:
+   1) Añade un objeto a MODULOS (titulo, texto y, si ya funciona, ruta; si no, pronto:true).
+      Usa soloAdmin:true para mostrarla solo a administradores.
+   2) Crea su pantalla: un <main class="panel" id="..."> con un botón <a class="btn ghost" href="#inicio">Inicio</a>.
+   3) Escribe su función (como loadPanel), añade su id a show() y regístrala en VISTAS. */
+const MODULOS = [
+  { ruta:'articulos',
+    titulo: p => p.rol === 'admin' ? 'Todos los artículos' : 'Mis artículos',
+    texto:  p => p.rol === 'admin' ? 'Revisa en qué etapa va el manuscrito de cada estudiante.' : 'Consulta en qué etapa va cada uno de tus manuscritos.' },
+  { titulo: () => 'Calendario de actividades', texto: () => 'Talleres, charlas y fechas límite del programa.', pronto:true },
+  { titulo: () => 'Materiales de estudio', texto: () => 'Guías, plantillas y recursos para tus proyectos.', pronto:true }
+];
+const VISTAS = { articulos: () => loadPanel() };
+
+async function loadHub(){
+  show('hub');
+  const P = await getPerfil(), admin = P.rol === 'admin';
+  const primero = (P.nombre || P.user.email.split('@')[0]).split(' ')[0];
+  $('hubHello').textContent = 'Hola, ' + primero;
+  $('hubRole').textContent = P.user.email + (admin ? ' · Administrador' : '');
+  const ul = $('mods'); ul.replaceChildren();
+  MODULOS.filter(m => !m.soloAdmin || admin).forEach(m => {
+    const li = el('li'), activo = !!m.ruta && !m.pronto;
+    const caja = el(activo ? 'a' : 'div', 'mod');
+    if(activo) caja.href = '#' + m.ruta;
+    const txt = el('div'); txt.append(el('h3', '', m.titulo(P)), el('p', '', m.texto(P)));
+    caja.append(txt, el('span', 'tag ' + (activo ? 'go' : 'soon'), activo ? 'Abrir' : 'Próximamente'));
+    li.append(caja); ul.append(li);
+  });
+}
+let activa = false;
+function route(){
+  const h = location.hash.replace('#', '');
+  if(VISTAS[h]) VISTAS[h](); else loadHub();
+}
+window.addEventListener('hashchange', () => { if(activa) route(); });
+
+/* ---------- Panel: artículos ---------- */
+.panel{max-width:980px;margin:0 auto;padding:clamp(20px,4vw,40px) 20px 64px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin:28px 0 24px}
+.top h1{font:700 clamp(30px,4vw,44px)/1.1 var(--serif);letter-spacing:-.01em;margin:0}
+.top small{display:block;margin-top:6px;color:var(--muted);font-size:16px}
+.top .btn{width:auto;margin:0;padding:10px 20px}
+.list{list-style:none;margin:0;padding:0;background:#fff;border:2px solid var(--ink);border-radius:var(--r)}
+.list li{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:12px 32px;align-items:center;padding:18px 22px;border-bottom:1px solid #d8ced2}
+.list li:last-child{border-bottom:0}
+.who{font-size:14px;color:var(--muted)}
+.art{font:600 19px/1.3 var(--serif);margin:0}
+.track{display:flex;align-items:center}
+.st{flex:none;width:14px;height:14px;border-radius:50%;border:2px solid #b8aab0;background:#fff}
+.ln{flex:1;height:2px;background:#d9cdd1}
+.st.on{background:var(--ink);border-color:var(--ink)} .ln.on{background:var(--ink)}
+.st.cur{background:var(--petrol);border-color:var(--petrol);box-shadow:0 0 0 4px rgba(11,79,108,.2)}
+.track.rej .st.cur{background:var(--red);border-color:var(--red);box-shadow:0 0 0 4px rgba(179,32,47,.2)}
+.etapa{margin-top:8px;font-size:15px}
+.etapa b{font-weight:700}
+.etapa span{color:var(--muted)}
+.etapa b.Rechazado{color:var(--red)}
+.empty{padding:40px 22px;text-align:center;color:var(--muted)}
+
+/* ---------- Inicio (hub) ---------- */
+.mods{list-style:none;margin:0;padding:0;background:#fff;border:2px solid var(--ink);border-radius:var(--r)}
+.mods li{border-bottom:1px solid #d8ced2}
+.mods li:last-child{border-bottom:0}
+.mod{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 24px;align-items:center;padding:20px 22px;color:inherit;text-decoration:none;border-left:6px solid #d9cdd1}
+a.mod{border-left-color:var(--petrol)}
+a.mod:hover{background:var(--grid1)}
+.mod h3{font:600 22px/1.25 var(--serif);margin:0}
+.mod p{margin:4px 0 0;color:var(--muted);font-size:16px;max-width:54ch}
+.tag{font-weight:700;font-size:15px;white-space:nowrap}
+.tag.go{color:var(--petrol);text-decoration:underline}
+.tag.soon{color:var(--muted);font-weight:400}
+.top a.btn{text-decoration:none;text-align:center}
+.top .acciones{display:flex;gap:10px}
+@media (max-width:860px){
+  .auth{grid-template-columns:1fr;align-items:start}
+  .list li{grid-template-columns:1fr}
+  .mod{grid-template-columns:1fr}
+  .etapas li{font-size:12.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ecg path{animation:none;stroke-dashoffset:0}
+  .etapas li{animation:none;opacity:1}
+}
+</style>
+</head>
+<body>
+
+<!-- ACCESO -->
+<main class="auth" id="auth" hidden>
+  <section class="hero">
+    <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
+    <h1>Cada artículo, del borrador a la publicación.</h1>
+    <p>Consulta en qué etapa va cada manuscrito y cuándo se actualizó por última vez.</p>
+    <div class="etapas">
+      <svg class="ecg" viewBox="0 0 500 90" aria-hidden="true" preserveAspectRatio="none">
+        <path pathLength="1" d="M0 60 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14 h26 q5 -9 10 0 h10 l3 7 l5 -52 l5 59 l3 -14 h8 q8 -16 16 0 h14"/>
+      </svg>
+      <ol aria-label="Etapas de un artículo">
+        <li style="--i:0">En redacción</li><li style="--i:1">Enviado</li><li style="--i:2">En revisión</li><li style="--i:3">Aceptado</li><li style="--i:4">Publicado</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="notice" id="noconfig" hidden>Falta configurar Supabase. Escribe tu URL y tu clave pública en el archivo, al inicio del script.</div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-login" aria-selected="true" type="button">Entrar</button>
+      <button class="tab" role="tab" id="tab-signup" aria-selected="false" type="button">Crear cuenta</button>
+    </div>
+    <h2 id="title">Entrar</h2>
+    <p class="sub" id="sub">Usa el correo con el que te registraste.</p>
+    <form id="form" novalidate>
+      <div id="nameField" hidden>
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" type="text" autocomplete="name" maxlength="120">
+      </div>
+      <label for="email">Correo electrónico</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" autocomplete="current-password" minlength="8" required>
+      <div class="row"><button class="link" type="button" id="forgot">Olvidé mi contraseña</button></div>
+      <button class="btn" type="submit" id="submit">Entrar</button>
+      <button class="btn ghost" type="button" id="magic">Enviarme un enlace de acceso</button>
+    </form>
+    <div id="msg" role="status" aria-live="polite"></div>
+    <p class="privacy">Guardamos tu nombre, tu correo y el estado de tus artículos. Solo tú y los administradores del programa pueden verlos.</p>
+  </section>
+</main>
+
+<!-- NUEVA CONTRASEÑA -->
+<main class="auth" id="recovery" hidden>
+  <section class="hero">
+    <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
+    <h1>Crea una contraseña nueva.</h1>
+    <p>Elige una de al menos 8 caracteres.</p>
+  </section>
+  <section class="card">
+    <h2>Contraseña nueva</h2>
+    <form id="recForm" novalidate>
+      <label for="newpass">Contraseña nueva</label>
+      <input id="newpass" type="password" autocomplete="new-password" minlength="8" required>
+      <button class="btn" type="submit">Guardar contraseña</button>
+    </form>
+    <div id="recMsg" role="status" aria-live="polite"></div>
+  </section>
+</main>
+
+<!-- INICIO (HUB) -->
+<main class="panel" id="hub" hidden>
+  <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
+  <header class="top">
+    <div>
+      <h1 id="hubHello">Inicio</h1>
+      <small id="hubRole"></small>
+    </div>
+    <button class="btn ghost" type="button" id="logout2">Salir</button>
+  </header>
+  <ol class="mods" id="mods"></ol>
+</main>
+
+<!-- PANEL: ARTÍCULOS -->
+<main class="panel" id="panel" hidden>
+  <div class="brand"><svg viewBox="0 0 34 20" aria-hidden="true"><path d="M1 11h8l3-8 5 15 3-7h13"/></svg>Seguimiento de artículos</div>
+  <header class="top">
+    <div>
+      <h1 id="hello">Mis artículos</h1>
+      <small id="role"></small>
+    </div>
+    <div class="acciones">
+      <a class="btn ghost" href="#inicio">Inicio</a>
+      <button class="btn ghost" type="button" id="logout">Salir</button>
+    </div>
+  </header>
+  <ol class="list" id="list"></ol>
+  <div class="empty" id="empty" hidden>Aún no tienes artículos registrados. Cuando tu coordinador añada uno, aparecerá aquí con su estado.</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script>
+/* ====== CONFIGURA AQUÍ (la clave pública "publishable" es segura de publicar; la "secret" NUNCA) ====== */
+const SUPABASE_URL = 'https://ncikqsyqyivdmtvtpidn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_Esscr4NHrxRf1Hq0vulvzw_7VoVd5AV';
+/* ========================================================================================================= */
+
+const $ = id => document.getElementById(id);
+const configured = !SUPABASE_URL.includes('TU-PROYECTO') && !SUPABASE_ANON_KEY.includes('TU_CLAVE');
+const sb = configured ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const back = location.origin + location.pathname;
+const ETAPAS = ['En redacción','Enviado','En revisión','Aceptado','Publicado'];
+let mode = 'login';
+
+function show(view){ ['auth','recovery','hub','panel'].forEach(v => $(v).hidden = v !== view); }
+function say(el, text, type){
+  el.replaceChildren();
+  if(!text) return;
+  const d = document.createElement('div'); d.className = 'msg ' + type; d.textContent = text; el.append(d);
+}
+function friendly(err){
+  const m = (err && err.message || '').toLowerCase();
+  if(m.includes('invalid login')) return 'El correo o la contraseña no son correctos.';
+  if(m.includes('not confirmed')) return 'Confirma tu correo antes de entrar. Revisa tu bandeja de entrada.';
+  if(m.includes('already registered')) return 'Ese correo ya tiene una cuenta. Usa “Entrar”.';
+  if(m.includes('password')) return 'La contraseña debe tener al menos 8 caracteres.';
+  if(m.includes('rate') || m.includes('seconds')) return 'Espera un momento antes de intentarlo de nuevo.';
+  return 'No pudimos completar la acción. Inténtalo de nuevo.';
+}
+function busy(on){ document.querySelectorAll('#form .btn, #recForm .btn').forEach(b => b.disabled = on); }
+
+/* ---------- Pestañas ---------- */
+function setMode(m){
+  mode = m;
+  const signup = m === 'signup';
+  $('tab-login').setAttribute('aria-selected', String(!signup));
+  $('tab-signup').setAttribute('aria-selected', String(signup));
+  $('nameField').hidden = !signup;
+  $('title').textContent = signup ? 'Crear cuenta' : 'Entrar';
+  $('sub').textContent = signup ? 'Te enviaremos un correo para confirmar tu cuenta.' : 'Usa el correo con el que te registraste.';
+  $('submit').textContent = signup ? 'Crear cuenta' : 'Entrar';
+  $('password').autocomplete = signup ? 'new-password' : 'current-password';
+  $('forgot').hidden = signup; $('magic').hidden = signup;
+  say($('msg'), '');
+}
+$('tab-login').onclick = () => setMode('login');
+$('tab-signup').onclick = () => setMode('signup');
+
+/* ---------- Acciones ---------- */
+$('form').addEventListener('submit', async e => {
+  e.preventDefault(); if(!sb) return;
+  const email = $('email').value.trim(), password = $('password').value;
+  if(!email || password.length < 8){ say($('msg'), 'Escribe tu correo y una contraseña de al menos 8 caracteres.', 'err'); return; }
+  busy(true); say($('msg'), '');
+  try{
+    if(mode === 'signup'){
+      const nombre = $('nombre').value.trim();
+      if(!nombre){ say($('msg'), 'Escribe tu nombre completo.', 'err'); return; }
+      const { error } = await sb.auth.signUp({ email, password, options:{ data:{ nombre }, emailRedirectTo: back } });
+      if(error) throw error;
+      say($('msg'), 'Cuenta creada. Revisa tu correo y confirma para poder entrar.', 'ok');
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if(error) throw error;
+    }
+  }catch(err){ say($('msg'), friendly(err), 'err'); }
+  finally{ busy(false); }
+});
+
+$('magic').onclick = async () => {
+  if(!sb) return;
+  const email = $('email').value.trim();
+  if(!email){ say($('msg'), 'Escribe tu correo para enviarte el enlace.', 'err'); return; }
+  busy(true);
+  const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: back, shouldCreateUser:false } });
+  busy(false);
+  say($('msg'), error ? friendly(error) : 'Listo. Abre el enlace que te enviamos al correo.', error ? 'err' : 'ok');
+};
+
+$('forgot').onclick = async () => {
+  if(!sb) return;
+  const email = $('email').value.trim();
+  if(!email){ say($('msg'), 'Escribe tu correo y vuelve a pulsar “Olvidé mi contraseña”.', 'err'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: back });
+  say($('msg'), error ? friendly(error) : 'Si el correo existe, recibirás un enlace para crear una contraseña nueva.', error ? 'err' : 'ok');
+};
+
+$('recForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const p = $('newpass').value;
+  if(p.length < 8){ say($('recMsg'), 'La contraseña debe tener al menos 8 caracteres.', 'err'); return; }
+  const { error } = await sb.auth.updateUser({ password: p });
+  if(error){ say($('recMsg'), friendly(error), 'err'); return; }
+  say($('recMsg'), 'Contraseña actualizada.', 'ok');
+  setTimeout(route, 900);
+});
+
+$('logout').onclick = $('logout2').onclick = async () => { await sb.auth.signOut(); };
+
+/* ---------- Panel ---------- */
+function el(tag, cls, text){ const n = document.createElement(tag); if(cls) n.className = cls; if(text !== undefined) n.textContent = text; return n; }
+function track(estado){
+  const idx = ETAPAS.indexOf(estado), rej = idx < 0;
+  const t = el('div', 'track' + (rej ? ' rej' : ''));
+  t.setAttribute('role', 'img');
+  t.setAttribute('aria-label', rej ? estado : 'Etapa ' + (idx + 1) + ' de 5: ' + estado);
+  ETAPAS.forEach((_, i) => {
+    const on = !rej && i <= idx;
+    t.append(el('span', 'st' + (on ? ' on' : '') + ((rej ? i === 0 : i === idx) ? ' cur' : '')));
+    if(i < 4) t.append(el('span', 'ln' + (!rej && i < idx ? ' on' : '')));
+  });
+  return t;
+}
+async function loadPanel(){
+  show('panel');
+  const P = await getPerfil(), user = P.user, perfil = { nombre: P.nombre, rol: P.rol };
+  const admin = perfil && perfil.rol === 'admin';
+  $('hello').textContent = admin ? 'Todos los artículos' : 'Mis artículos';
+  $('role').textContent = (perfil && perfil.nombre ? perfil.nombre + ' · ' : '') + user.email + (admin ? ' · Administrador' : '');
+
+  const { data, error } = await sb.from('articulos').select('titulo,estado,updated_at,profiles(nombre)').order('updated_at', { ascending:false });
+  const list = $('list'); list.replaceChildren();
+  $('list').hidden = false;
+  $('empty').hidden = !!(data && data.length);
+  if(error){ $('empty').hidden = false; $('empty').textContent = 'No pudimos cargar los artículos. Recarga la página.'; return; }
+  if(!data || !data.length){ $('list').hidden = true; $('empty').textContent = 'Aún no tienes artículos registrados. Cuando tu coordinador añada uno, aparecerá aquí con su estado.'; }
+  (data || []).forEach(a => {
+    const li = el('li'), left = el('div'), right = el('div');
+    if(admin) left.append(el('div', 'who', a.profiles && a.profiles.nombre || 'Sin nombre'));
+    left.append(el('h3', 'art', a.titulo));
+    right.append(track(a.estado));
+    const info = el('div', 'etapa');
+    const b = el('b', a.estado === 'Rechazado' ? 'Rechazado' : '', a.estado);
+    info.append(b, el('span', '', ' · actualizado el ' + new Date(a.updated_at).toLocaleDateString('es-DO', { day:'numeric', month:'short', year:'numeric' })));
+    right.append(info);
+    li.append(left, right); list.append(li);
+  });
+}
+
+/* ---------- Arranque ---------- */
+if(!sb){ $('noconfig').hidden = false; show('auth'); setMode('login'); }
+else{
+  setMode('login');
+  sb.auth.onAuthStateChange((event, session) => {
+    if(event === 'PASSWORD_RECOVERY'){ show('recovery'); return; }
+    if(session){ activa = true; setTimeout(route, 0); } else { activa = false; show('auth'); }
+  });
+}
+</script>
+</body>
+</html>
